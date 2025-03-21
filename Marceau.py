@@ -12,12 +12,14 @@ from lecture_donnees import donnees_noc_regions
 donnees_athlete_events
 donnees_noc_regions
 
-for i in donnees_athlete_events
-:
-    nation = {}
-    if i[10] == 2016:
-        if i[7] in nation:
-            nation[i[7]] += 1
-        else:
-            nation[i[7]] = 0
-return max(nation[k] for k in nation), min(nation[k] for k in nation)
+
+def rep_question2():
+    for i in donnees_athlete_events:
+        nation = {}
+        if i[9] == 2016:
+            if i[-1] != "NA":
+                if i[6] in nation:
+                    nation[i[6]] += 1
+                else:
+                    nation[i[6]] = 0
+    return max(nation[k] for k in nation), min(nation[k] for k in nation)
