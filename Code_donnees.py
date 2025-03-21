@@ -14,8 +14,3 @@ with open(chemin_csv, 'r', encoding='utf-8') as fichier:
 # Afficher les 5 premières lignes
 for ligne in donnees[:5]:
     print(ligne)
-
-for elements in donnees:
-    nombre_medailles = 0
-    if elements[-1] != 'NA':
-        nombre_medailles
