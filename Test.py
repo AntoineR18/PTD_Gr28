@@ -1,3 +1,5 @@
-# lalalala
-# test2
-# lalalav2
+from lecture_donnees import donnees_athlete_events
+from lecture_donnees import donnees_noc_regions
+
+donnees_athlete_events
+donnees_noc_regions
