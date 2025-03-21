@@ -2,7 +2,8 @@
 
 # Mckael Felps
 
-# Trouvez des bornes inférieures et supérieures pour le nombre de médailles par nation pour les
+# Trouvez des bornes inférieures et supérieures pour le nombre de
+# médailles par nation pour les
 # Jeux Olympiques de 2016
 
 # indice 10 d'une ligne cest l'année
