@@ -1,6 +1,4 @@
-# questions
-
-# Mckael Felps
+# question 2
 
 # Trouvez des bornes inférieures et supérieures pour le nombre de
 # médailles par nation pour les
