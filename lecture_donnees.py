@@ -1,5 +1,5 @@
 import os
-import csv # Module qui gère mieux les séparations notamment dans le cas 
+import csv  # Module qui gère mieux les séparations notamment dans le cas
 
 chemin_csv1 = os.path.join("donnees_jeux_olympiques", "athlete_events.csv")
 chemin_csv2 = os.path.join("donnees_jeux_olympiques", "noc_regions.csv")

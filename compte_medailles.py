@@ -44,13 +44,14 @@ for ligne in donnees_athlete_events:
             "Gold": 0,
             "Silver": 0,
             "Bronze": 0,
-            "Total": 0
+            "Total": 0,
         }
 
     medailles_par_annee_et_pays[annee][pays][medaille] += 1
     medailles_par_annee_et_pays[annee][pays]["Total"] += 1
 
 # === 3. Fonction d'accès aux données ===
+
 
 def medaille_pays_annee(pays, annee, type_medaille):
     """
