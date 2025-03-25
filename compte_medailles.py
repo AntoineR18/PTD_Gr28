@@ -1,5 +1,3 @@
-import os
-import csv
 from lecture_donnees import donnees_athlete_events, donnees_noc_regions
 
 # === 1. Préparation des données ===
