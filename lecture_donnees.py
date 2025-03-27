@@ -64,6 +64,12 @@ chemin_noc = os.path.join("donnees_jeux_olympiques", "noc_regions.csv")
 donnees_athlete_events = lire_csv(chemin_athletes)
 donnees_noc_regions = lire_csv(chemin_noc)
 
+# Création du tableau des médaillés
+athletes_medailles = []
+for ligne in donnees_athlete_events:
+    if ligne[-1] != "NA":
+        athletes_medailles.append(ligne)
+
 # Création de la structure globale de sports par année
 # ----------------------------------------------------
 # sports_par_annee est un dictionnaire de la forme suivante :
