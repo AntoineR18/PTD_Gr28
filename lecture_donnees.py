@@ -26,7 +26,8 @@ def lire_csv(chemin):
 
 def lister_sports_par_annee(donnees_athletes):
     """
-    Retourne un dictionnaire contenant pour chaque année la liste des sports distincts.
+    Retourne un dictionnaire contenant pour chaque année la liste des sports
+    distincts.
 
     Parameters
     ----------
@@ -80,9 +81,9 @@ sports_par_annee = lister_sports_par_annee(donnees_athlete_events)
 
 def dico_epreuves_collectives(donnees_athletes):
     """
-    Détecte les épreuves collectives pour chaque année à partir des données d'athlètes,
-    en considérant aussi le sexe pour éviter les confusions entre épreuves masculines
-    et féminines.
+    Détecte les épreuves collectives pour chaque année à partir des données
+    d'athlètes, en considérant aussi le sexe pour éviter les confusions entre
+    épreuves masculines et féminines.
 
     Parameters
     ----------
@@ -133,6 +134,7 @@ def dico_epreuves_collectives(donnees_athletes):
 
 # Dictionnaire des épreuves collectives par année.
 # Exemple : sport_collectif_par_annee["2016"] =
-#       {"Basketball Men's Basketball", "Athletics Men's 4 x 100 metres Relay", ...}
+#   {"Basketball Men's Basketball",
+#    "Athletics Men's 4 x 100 metres Relay", ...}
 # Permet d’éviter les doublons lors du comptage des médailles collectives.
 sport_collectif_par_annee = dico_epreuves_collectives(donnees_athlete_events)
