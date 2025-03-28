@@ -83,6 +83,3 @@ def medaille_pays_annee(pays, annee, type_medaille):
         return 0
 
     return medailles_par_annee_et_pays[annee][pays][type_medaille]
-
-
-print(medailles_par_annee_et_pays["2016"]["Usa"]["Total"])
