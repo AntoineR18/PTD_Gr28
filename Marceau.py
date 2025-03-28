@@ -14,13 +14,17 @@ donnees_athlete_events
 donnees_noc_regions
 
 
-def rep_question2():
+def rep_question2(annee):
     for i in donnees_athlete_events:
         nation = {}
-        if i[9] == 2016:
+        if i[9] == annee:
             if i[-1] != "NA":
                 if i[6] in nation:
                     nation[i[6]] += 1
                 else:
                     nation[i[6]] = 0
-    return max(nation[k] for k in nation), min(nation[k] for k in nation)
+            print(nation)
+    return max(nation), min(nation[k] for k in nation)
+
+
+print(rep_question2(2016))
