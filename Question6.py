@@ -38,23 +38,7 @@ id = 0
 for ligne in athletes_medailles:
     id = ligne[0]
     if id != id_avant:
-        if nb_med[0] > plus_medaille_athlete_ID_nb_med[1]:
-            plus_medaille_athlete_ID_nb_med[0] = id_avant
-            plus_medaille_athlete_ID_nb_med[1] = nb_med[0]
-            plus_medaille_athlete_ID_nb_med[2] = nb_med[1]
-            plus_medaille_athlete_ID_nb_med[3] = nb_med[2]
-        elif nb_med[0] == plus_medaille_athlete_ID_nb_med[1]:
-            if nb_med[1] > plus_medaille_athlete_ID_nb_med[2]:
-                plus_medaille_athlete_ID_nb_med[0] = id_avant
-                plus_medaille_athlete_ID_nb_med[1] = nb_med[0]
-                plus_medaille_athlete_ID_nb_med[2] = nb_med[1]
-                plus_medaille_athlete_ID_nb_med[3] = nb_med[2]
-            elif nb_med[1] == plus_medaille_athlete_ID_nb_med[2]:
-                if nb_med[2] == plus_medaille_athlete_ID_nb_med[3]:
-                    plus_medaille_athlete_ID_nb_med[0] = id_avant
-                    plus_medaille_athlete_ID_nb_med[1] = nb_med[0]
-                    plus_medaille_athlete_ID_nb_med[2] = nb_med[1]
-                    plus_medaille_athlete_ID_nb_med[3] = nb_med[2]
+        test_meilleur(nb_med, plus_medaille_athlete_ID_nb_med)
         nb_med = [0, 0, 0]
     if ligne[14] == "Gold":
         nb_med[0] += 1
@@ -70,3 +54,25 @@ print(
     plus_medaille_athlete_ID_nb_med[2],
     plus_medaille_athlete_ID_nb_med[3],
 )
+
+annees = []
+for ligne in athletes_medailles:
+    if ligne[0] == plus_medaille_athlete_ID_nb_med[0]:
+        if ligne[8] not in annees:
+            annees.append(ligne[8])
+print(annees)
+
+medailles = [0, 0, 0, 0]
+for ligne in athletes_medailles:
+    for i in range(4):
+        if ligne[0] == plus_medaille_athlete_ID_nb_med[0] and ligne[8] == annees[i]:
+            if ligne[14] == "Gold":
+                medailles[i] += 3
+            elif ligne[14] == "Silver":
+                medailles[i] += 2
+            else:
+                medailles[i] += 1
+print(medailles)
+id_max = medailles.index(max(medailles))
+
+print(annees[medailles.index(max(medailles))])
