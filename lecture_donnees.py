@@ -66,9 +66,12 @@ donnees_noc_regions = lire_csv(chemin_noc)
 
 # Création du tableau des médaillés
 athletes_medailles = []
+athletes_non_medailles = []
 for ligne in donnees_athlete_events:
     if ligne[-1] != "NA":
         athletes_medailles.append(ligne)
+    else:
+        athletes_non_medailles.append(ligne)
 
 # Création de la structure globale de sports par année
 # ----------------------------------------------------
