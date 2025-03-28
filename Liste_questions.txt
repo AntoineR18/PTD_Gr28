@@ -9,7 +9,7 @@ Trouvez des bornes inférieures et supérieures pour le nombre de médailles par
 Jeux Olympiques de 2016.
 
 Question 3 :
-Combien de médailles de [couleur] a obtenu [pays] en [année] ?
+Combien de médailles de [Type] a obtenu [pays] en [année] ? (Traiter dans compte_medailles.py en python base)
 
 Question 4 :
 Quelle est la moyenne/médiane d'âge des athlètes ?
