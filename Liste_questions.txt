@@ -1,15 +1,15 @@
 Liste des questions :
 
-Question 1 :
+Question 1 : Claire
 Déterminez le nombre de médailles gagnées par Michael Phelps. Son nom complet est Michael
 Fred Phelps, II.
 
-Question 2 :
+Question 2 : Antoine
 Trouvez des bornes inférieures et supérieures pour le nombre de médailles par nation pour les
 Jeux Olympiques de 2016.
 
 Question 3 :
-Combien de médailles d'or a obtenu [pays] en [année] ?
+Combien de médailles de [couleur] a obtenu [pays] en [année] ?
 
 Question 4 :
 Quelle est la moyenne/médiane d'âge des athlètes ?
@@ -18,7 +18,17 @@ Les gymnastes les plus jeunes obtiennent-ils plus de médailles que les plus vie
 A quel-âge (exact) obtient-on le plus de médailles si l'on pratique le biathlon ?
 
 Question 5 :
-Quel est le pays avec le plus de participants, n'ayant obtenu aucune médaille ?
+Quel est le pays avec le plus de participants, n'ayant obtenu aucune médaille en [annee] ?
+Sur toutes les éditions ?
 
 Question 6 :
 Quel est l'athlète le plus médaillé ? Lors de quels jeux a-t-il obtenu le plus de médailles ?
+
+Question 7 :
+Quel est l'athlète ayant reçu le plus de médailles sur une seule édition ?
+
+Question 8 :
+Dans quelles épreuves, les Etats-Unis ont-ils gagné une médaille en 2016 ?
+
+Question 9 :
+Dans quelle discipline, chaque pays a-t-il gagné le plus de médailles ?
