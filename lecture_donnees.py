@@ -65,6 +65,12 @@ def lister_sports_par_annee(donnees_athletes):
     return sports_par_annee
 
 
+# Création du tableau des médaillés
+athletes_medailles = []
+for ligne in donnees_athlete_events:
+    if ligne[-1] != "NA":
+        athletes_medailles.append(ligne)
+
 # Création de la structure globale de sports par année
 # ----------------------------------------------------
 # sports_par_annee est un dictionnaire de la forme suivante :
@@ -78,13 +84,6 @@ def lister_sports_par_annee(donnees_athletes):
 #       sports_par_annee["2016"]
 # Cela permet d’avoir une base claire pour travailler sans doublons par année.
 sports_par_annee = lister_sports_par_annee(donnees_athlete_events)
-
-
-# Création du tableau des médaillés
-athletes_medailles = []
-for ligne in donnees_athlete_events:
-    if ligne[-1] != "NA":
-        athletes_medailles.append(ligne)
 
 
 def lister_epreuves_par_annee(donnees_athletes):
@@ -139,11 +138,9 @@ def dico_epreuves_collectives(donnees_athletes):
     donnees = donnees_athletes[1:]
 
     idx_year = entete.index("Year")
-    idx_sport = entete.index("Sport")
     idx_event = entete.index("Event")
-    idx_team = entete.index("Team")
+    idx_noc = entete.index("NOC")
     idx_medal = entete.index("Medal")
-    idx_sex = entete.index("Sex")
 
     from collections import defaultdict
 
@@ -151,16 +148,14 @@ def dico_epreuves_collectives(donnees_athletes):
 
     for ligne in donnees:
         annee = ligne[idx_year]
-        sport = ligne[idx_sport]
         event = ligne[idx_event]
-        team = ligne[idx_team]
+        noc = ligne[idx_noc]
         medal = ligne[idx_medal]
-        sex = ligne[idx_sex]
 
         if medal not in ("Gold", "Silver", "Bronze"):
             continue  # Ignore les non-médaillés
 
-        cle = (annee, event, sport, team, medal, sex)
+        cle = (annee, event, noc, medal)
         regroupement[cle].append(ligne)
 
     epreuves_collectives = defaultdict(set)

@@ -22,10 +22,13 @@ event_idx = entetes.index("Event")  # pour détecter les épreuves collectives
 # Structure pour éviter les doublons sur les épreuves collectives
 epreuves_deja_comptees = set()  # Contiendra les tuples (annee, event, noc)
 
-# === 2. Construction du dictionnaire de médailles ===
+# === 2. Construction du dictionnaire de médailles (corrigé) ===
 
 # Structure : {année: {pays: {"Gold": ..., "Silver": ..., "Bronze": ..., "Total": ...}}}
 medailles_par_annee_et_pays = {}
+
+# Structure pour éviter les doublons sur les épreuves collectives
+epreuves_deja_comptees = set()  # Contiendra les tuples (annee, event, noc, medal)
 
 for ligne in donnees_athlete_events:
     annee = ligne[annee_idx]
@@ -37,15 +40,16 @@ for ligne in donnees_athlete_events:
 
     event = ligne[event_idx]
     est_collectif = event in lecture_donnees.sport_collectif_par_annee.get(annee, set())
-    cle = (annee, event, code_noc)
+    cle = (annee, event, code_noc, medaille)  # clé corrigée
 
-    if est_collectif and cle in epreuves_deja_comptees:
-        continue  # Médaille collective déjà comptée
     if est_collectif:
+        if cle in epreuves_deja_comptees:
+            continue  # Médaille collective déjà comptée pour cette médaille
         epreuves_deja_comptees.add(cle)
 
-    pays = noc_to_country.get(code_noc, code_noc)  # nom du pays ou code si inconnu
-    pays = pays.strip().title()  # uniformisation (ex : "france" → "France")
+    pays = (
+        noc_to_country.get(code_noc, code_noc).strip().title()
+    )  # nom du pays ou code si inconnu
 
     if annee not in medailles_par_annee_et_pays:
         medailles_par_annee_et_pays[annee] = {}
@@ -60,6 +64,7 @@ for ligne in donnees_athlete_events:
 
     medailles_par_annee_et_pays[annee][pays][medaille] += 1
     medailles_par_annee_et_pays[annee][pays]["Total"] += 1
+
 
 # === 3. Fonction d'accès aux données ===
 
