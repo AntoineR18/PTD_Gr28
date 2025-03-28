@@ -1,0 +1,42 @@
+# Environnement virtuel
+.venv/
+venv/
+env/
+
+# Fichiers temporaires Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.py~ 
+
+# Fichiers de log / debug
+*.log
+
+# Fichiers générés par l'utilisateur
+*.sqlite3
+*.db
+*.csv~  # au cas où un éditeur en crée
+*.bak
+
+# Fichiers de config d'IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Tests / couverture
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache/
+.pytest_cache/
+
+# Black / flake8 caches
+.mypy_cache/
+.black/
+.flake8/
