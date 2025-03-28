@@ -40,16 +40,14 @@ for ligne in donnees_athlete_events:
 
     event = ligne[event_idx]
     est_collectif = event in lecture_donnees.sport_collectif_par_annee.get(annee, set())
-    cle = (annee, event, code_noc, medaille)  # clé corrigée
+    cle = (annee, event, code_noc, medaille)
 
     if est_collectif:
         if cle in epreuves_deja_comptees:
             continue  # Médaille collective déjà comptée pour cette médaille
         epreuves_deja_comptees.add(cle)
 
-    pays = (
-        noc_to_country.get(code_noc, code_noc).strip().title()
-    )  # nom du pays ou code si inconnu
+    pays = noc_to_country.get(code_noc, code_noc).strip().title()
 
     if annee not in medailles_par_annee_et_pays:
         medailles_par_annee_et_pays[annee] = {}
