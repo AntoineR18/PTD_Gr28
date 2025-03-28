@@ -65,12 +65,6 @@ def lister_sports_par_annee(donnees_athletes):
     return sports_par_annee
 
 
-# Création du tableau des médaillés
-athletes_medailles = []
-for ligne in donnees_athlete_events:
-    if ligne[-1] != "NA":
-        athletes_medailles.append(ligne)
-
 # Création de la structure globale de sports par année
 # ----------------------------------------------------
 # sports_par_annee est un dictionnaire de la forme suivante :
@@ -84,6 +78,13 @@ for ligne in donnees_athlete_events:
 #       sports_par_annee["2016"]
 # Cela permet d’avoir une base claire pour travailler sans doublons par année.
 sports_par_annee = lister_sports_par_annee(donnees_athlete_events)
+
+
+# Création du tableau des médaillés
+athletes_medailles = []
+for ligne in donnees_athlete_events:
+    if ligne[-1] != "NA":
+        athletes_medailles.append(ligne)
 
 
 def lister_epreuves_par_annee(donnees_athletes):
