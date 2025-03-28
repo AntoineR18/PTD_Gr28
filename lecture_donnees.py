@@ -24,6 +24,14 @@ def lire_csv(chemin):
     return table
 
 
+# Chargement des deux bases
+chemin_athletes = os.path.join("donnees_jeux_olympiques", "athlete_events.csv")
+chemin_noc = os.path.join("donnees_jeux_olympiques", "noc_regions.csv")
+
+donnees_athlete_events = lire_csv(chemin_athletes)
+donnees_noc_regions = lire_csv(chemin_noc)
+
+
 def lister_sports_par_annee(donnees_athletes):
     """
     Retourne un dictionnaire contenant pour chaque année la liste des sports
@@ -57,13 +65,6 @@ def lister_sports_par_annee(donnees_athletes):
     return sports_par_annee
 
 
-# Chargement des deux bases
-chemin_athletes = os.path.join("donnees_jeux_olympiques", "athlete_events.csv")
-chemin_noc = os.path.join("donnees_jeux_olympiques", "noc_regions.csv")
-
-donnees_athlete_events = lire_csv(chemin_athletes)
-donnees_noc_regions = lire_csv(chemin_noc)
-
 # Création du tableau des médaillés
 athletes_medailles = []
 for ligne in donnees_athlete_events:
@@ -83,6 +84,38 @@ for ligne in donnees_athlete_events:
 #       sports_par_annee["2016"]
 # Cela permet d’avoir une base claire pour travailler sans doublons par année.
 sports_par_annee = lister_sports_par_annee(donnees_athlete_events)
+
+
+def lister_epreuves_par_annee(donnees_athletes):
+    """
+    Retourne un dictionnaire contenant pour chaque année la liste
+    des épreuves distinctes.
+
+    Parameters
+    ----------
+    donnees_athletes : list of list
+        Données brutes du fichier athlete_events.csv.
+
+    Returns
+    -------
+    dict of set
+        Dictionnaire {année : ensemble des épreuves disputées cette année}.
+    """
+    entete = donnees_athletes[0]
+    donnees = donnees_athletes[1:]
+    idx_year = entete.index("Year")
+    idx_event = entete.index("Event")
+    epreuves_par_annee = {}
+    for ligne in donnees:
+        annee = ligne[idx_year]
+        epreuve = ligne[idx_event]
+        if annee not in epreuves_par_annee:
+            epreuves_par_annee[annee] = set()
+        epreuves_par_annee[annee].add(epreuve)
+    return epreuves_par_annee
+
+
+dictionnaire_epreuves_par_annee = lister_epreuves_par_annee(donnees_athlete_events)
 
 
 def dico_epreuves_collectives(donnees_athletes):
