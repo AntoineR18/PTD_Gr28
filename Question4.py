@@ -46,7 +46,7 @@ age_min = moy_ages_par_sport[0][1]
 for sport in moy_ages_par_sport:
     if sport[1] < age_min:
         age_min = sport[1]
-        sport_min = sport
+        sport_min = sport[0]
 print(f"Le sport avec la plus petite moyenne d'âge est {sport_min} avec une "
       f"moyenne de {age_min} ans.")
 
@@ -54,27 +54,29 @@ print(f"Le sport avec la plus petite moyenne d'âge est {sport_min} avec une "
 # de médailles que les plus vieux ?
 
 
-def compare_med_age(sport: str):
+def comp_meda_moy_age(sport: str):
     j = 0
     for i in range(len(moy_ages_par_sport)):
         if moy_ages_par_sport[i][0] == sport:
             j = j + i
             break
-    if i == len(moy_ages_par_sport):
+    if j == len(moy_ages_par_sport):
         raise ValueError("Le sport rentré n'est pas dans la liste des sports")
-    age_moyen_sport = moy_ages_par_sport[i][1]
+    age_moyen_sport = moy_ages_par_sport[j][1]
     nb_med_jeunes = 0
     nb_med_vieux = 0
     for ligne in donnees_athlete_events[1:]:
-        if ligne[3] != "NA":
-            if float(ligne[3]) < age_moyen_sport:
-                if ligne[14] != "NA":
-                    nb_med_jeunes += 1
-            else:
-                if ligne[14] != "NA":
-                    nb_med_vieux += 1
+        if ligne[3] != 'NA':
+            if ligne[12] == sport:
+                if float(ligne[3]) < age_moyen_sport:
+                    if ligne[14] != 'NA':
+                        nb_med_jeunes += 1
+                elif float(ligne[3]) >= age_moyen_sport:
+                    if ligne[14] != 'NA':
+                        nb_med_vieux += 1
     print(nb_med_jeunes, nb_med_vieux)
 
 
-compare_med_age("Swimming")
-compare_med_age("Trampolining")
+comp_meda_moy_age("Swimming")
+comp_meda_moy_age("Trampolining")
+comp_meda_moy_age("Gymnastics")
