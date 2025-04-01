@@ -11,11 +11,10 @@ Jeux Olympiques de 2016.
 Question 3 :
 Combien de médailles de [Type] a obtenu [pays] en [année] ? (Traiter dans compte_medailles.py en python base)
 
-Question 4 :
-Quelle est la moyenne/médiane d'âge des athlètes ?
+Question 4 : Claire
+Quelle est la moyenne d'âge pour chaque sport ?
 Quel est le sport avec la plus petite moyenne d'âge ?
-Les gymnastes les plus jeunes obtiennent-ils plus de médailles que les plus vieux ?
-A quel-âge (exact) obtient-on le plus de médailles si l'on pratique le biathlon ?
+Les nageurs les plus jeunes obtiennent-ils plus de médailles que les plus vieux ?
 
 Question 5 :
 Quel est le pays avec le plus de participants, n'ayant obtenu aucune médaille en [annee] ?
