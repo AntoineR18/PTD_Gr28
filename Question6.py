@@ -73,6 +73,4 @@ for ligne in athletes_medailles:
             else:
                 medailles[i] += 1
 print(medailles)
-id_max = medailles.index(max(medailles))
-
 print(annees[medailles.index(max(medailles))])
