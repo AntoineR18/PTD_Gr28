@@ -16,25 +16,27 @@ for ligne in donnees_athlete_events:
 table_sport_h = list(set(table_sport_h))
 
 # on fait un dictionnaire des âges par sport.
-ages_par_sport = {}
+ages_par_sport_h = {}
 for ligne in donnees_athlete_events[1:]:
     sport = ligne[12]
     age = ligne[3]
-    if age == 'NA':
-        continue
-    age = int(age)
-    if sport not in ages_par_sport:
-        ages_par_sport[sport] = []
-    ages_par_sport[sport].append(age)
+    if ligne[2] == 'M':
+        if sport not in ages_par_sport_h:
+            ages_par_sport_h[sport] = []
+        if age != 'NA':
+            age = int(age)
+            ages_par_sport_h[sport].append(age)
+
+print(len(ages_par_sport_h['Swimming']))
 
 # On fait un tableau des âges moyens par sport : pour chaque élément de la liste on a
 # le sport et la moyenne d'âge de ce sport. On somme ages_par_sport pour chaque sport et
 # on divise par la longueur de ages_par_sport[sport].
 moy_ages_par_sport = []
 for sport in table_sport_h:
-    if sport in ages_par_sport:
-        total_ages = sum(ages_par_sport[sport])
-        effectif = len(ages_par_sport[sport])
+    if sport in ages_par_sport_h:
+        total_ages = sum(ages_par_sport_h[sport])
+        effectif = len(ages_par_sport_h[sport])
         moyenne_age = round(total_ages / effectif, 1)
         moy_ages_par_sport.append([sport, moyenne_age])
 print(moy_ages_par_sport)
