@@ -1,5 +1,6 @@
 # Question 5 :
-# Quel est le pays avec le plus de participants, n'ayant obtenu aucune médaille chaque année ? Dans l'histoire
+# Quel est le pays avec le plus de participants, n'ayant obtenu aucune
+# médaille chaque année ? Dans l'histoire ?
 
 from lecture_donnees import donnees_athlete_events, donnees_noc_regions
 
@@ -50,11 +51,19 @@ def pays_non_medaille_plus_participants_annee(annee):
     return pays_max
 
 
+annees = [annee for annee in range(1896, 1993, 4)]
+annees.pop(annees.index(1916))
+annees.pop(annees.index(1940))
+annees.pop(annees.index(1944))
+annees.append(1906)
+annees.extend([annee for annee in range(1994, 2017, 2)])
+annees.sort()
+
+print([pays_non_medaille_plus_participants_annee(str(annee)) for annee in annees])
+
+
 def pays_non_medaille_plus_participants_toujours():
     pays_non_medailles_toujours = {ligne[0]: False for ligne in donnees_noc_regions}
-    annees = []
     pays_non_medaille_participants_toujours = {}
     for ligne in donnees_athlete_events:
-        annee = ligne[idx_annee]
-        if annee not in annees:
-            annees.append(annee)
+        
