@@ -6,7 +6,7 @@ from lecture_donnees import (
 
 pays = []
 pays_final = []
-for ligne in donnees_athlete_events:
+for ligne in donnees_athlete_events[1 : len(donnees_athlete_events)]:
     L = 0
     if ligne[7] == "SGP":
         noc = "SIN"
@@ -25,4 +25,18 @@ for ligne in donnees_athlete_events:
 
 for pays_i in pays:
     pays_final.append([pays_i[0], min(pays_i[1 : len(pays_i)])])
-print(pays_final)
+
+
+pays_final_toutes_lettres = []
+for pays in pays_final:
+    val = pays[1]
+    noc_a_changer = pays[0]
+    for ligne in donnees_noc_regions:
+        if ligne[0] == noc_a_changer:
+            if ligne[2] == "":
+                nom_pays = ligne[1]
+            else:
+                nom_pays = ligne[2]
+            break
+    pays_final_toutes_lettres.append([nom_pays, val])
+print(pays_final_toutes_lettres)

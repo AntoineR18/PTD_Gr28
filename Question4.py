@@ -27,8 +27,6 @@ for ligne in donnees_athlete_events[1:]:
             age = int(age)
             ages_par_sport_h[sport].append(age)
 
-print(len(ages_par_sport_h['Swimming']))
-
 # On fait un tableau des âges moyens par sport : pour chaque élément de la liste on a
 # le sport et la moyenne d'âge de ce sport. On somme ages_par_sport pour chaque sport et
 # on divise par la longueur de ages_par_sport[sport].
@@ -39,8 +37,6 @@ for sport in table_sport_h:
         effectif = len(ages_par_sport_h[sport])
         moyenne_age = round(total_ages / effectif, 1)
         moy_ages_par_sport.append([sport, moyenne_age])
-print(moy_ages_par_sport)
-
 
 # 4.2 : Quel est le sport avec la plus petite moyenne d'âge ?
 
@@ -66,7 +62,7 @@ def comp_meda_moy_age(sport: str):
         raise ValueError("Le sport rentré n'est pas dans la liste des sports")
     age_moyen_sport = moy_ages_par_sport[j][1]
     nb_med_jeunes = 0
-    nb_med_vieux = 0
+    nb_med_ages = 0
     for ligne in donnees_athlete_events[1:]:
         if ligne[3] != 'NA':
             if ligne[12] == sport:
@@ -75,8 +71,10 @@ def comp_meda_moy_age(sport: str):
                         nb_med_jeunes += 1
                 elif float(ligne[3]) >= age_moyen_sport:
                     if ligne[14] != 'NA':
-                        nb_med_vieux += 1
-    print(nb_med_jeunes, nb_med_vieux)
+                        nb_med_ages += 1
+    print(f"Pour le sport {sport} :")
+    print(f"Nombre de médailles pour les plus jeunes : {nb_med_jeunes}")
+    print(f"Nombre de médailles pour les plus agés : {nb_med_ages}")
 
 
 comp_meda_moy_age("Swimming")
