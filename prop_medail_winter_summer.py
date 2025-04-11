@@ -130,12 +130,16 @@ def plot_part_medaille_par_pays_dans_saison(saison, df, top_n=10):
 def plot_medaille_normalisee_pays(pays, df):
     df_medals = df[df["Medal"].notna()].copy()
 
-    # Groupe par année + saison pour connaître le total de médailles distribuées par édition
-    total_medals_by_game = df_medals.groupby(["Year", "Season"]).size().reset_index(name="Total_Medals")
+    # Groupe par année + saison pour connaître le total de médailles distribuées
+    # par édition
+    total_medals_by_game = (
+        df_medals.groupby(["Year", "Season"]).size().reset_index(name="Total_Medals"))
 
-    # Groupe par année + saison + pays pour savoir combien ce pays a gagné cette année-là
+    # Groupe par année + saison + pays pour savoir combien ce pays a gagné
+    # cette année-là
     country_medals = df_medals[df_medals["NOC"] == pays]
-    country_by_game = country_medals.groupby(["Year", "Season"]).size().reset_index(name="Country_Medals")
+    country_by_game = (country_medals.groupby(["Year", "Season"]).
+                       size().reset_index(name="Country_Medals"))
 
     # Merge des deux
     merged = pd.merge(country_by_game, total_medals_by_game, on=["Year", "Season"])
