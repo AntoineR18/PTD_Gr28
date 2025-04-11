@@ -25,7 +25,8 @@ def comp_meda_moy_age(sport: str):
         raise ValueError("Le sport rentré n'est pas dans la liste des sports")
     age_moyen_sport = moyenne_age_sport[sport]
     dta_h_sport = dta_h[dta_h['Sport'] == sport]
-    nb_med_jeunes = dta_h_sport['Age'] < age_moyen_sport['Medal'].notna().sum()
+    if dta_h_sport['Age'] < age_moyen_sport[sport]:
+        nb_med_jeunes = dta_h_sport
     nb_med_vieux = dta_h_sport['Age'] >= age_moyen_sport['Medal'].notna().sum()
 
     print(f"Pour le sport {sport} :")
