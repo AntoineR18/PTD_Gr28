@@ -9,6 +9,7 @@ nocs_path = "donnees_jeux_olympiques/noc_regions.csv"
 
 st.set_page_config(page_title="Médailles JO", layout="wide")
 
+
 # Chargement des données
 @st.cache_data
 def load_data():
