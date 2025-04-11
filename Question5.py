@@ -2,6 +2,8 @@
 # Quel est le pays avec le plus de participants, n'ayant obtenu aucune
 # médaille chaque année ? Dans l'histoire ?
 
+# Préparation des données
+
 from lecture_donnees import donnees_athlete_events, donnees_noc_regions
 
 entete = donnees_athlete_events[0]
@@ -12,10 +14,12 @@ idx_annee = entete.index("Year")
 idx_athlete = entete.index("Name")
 idx_sport = entete.index("Sport")
 
+# Pays non médaillé le plus réprésenté sur une année donnée
 
-def compte_participants_non_medailles_par_pays_par_annee(annee):
+
+def pays_non_medaille_max_annee(annee, sortie):
     pays_medaille = {ligne[0]: False for ligne in donnees_noc_regions}
-    pays_non_medaille_participants = {}
+    dico = {}
     for ligne in donnees:
         if ligne[idx_annee] != annee:
             continue
@@ -25,31 +29,21 @@ def compte_participants_non_medailles_par_pays_par_annee(annee):
         if ligne[-1] != "NA":
             pays_medaille[noc] = True
         if pays_medaille[noc]:
-            if noc in pays_non_medaille_participants:
-                del pays_non_medaille_participants[noc]
+            if noc in dico:
+                del dico[noc]
             continue
-        if noc not in pays_non_medaille_participants:
-            pays_non_medaille_participants[noc] = 0
-        pays_non_medaille_participants[noc] += 1
-    return pays_non_medaille_participants
+        if noc not in dico:
+            dico[noc] = 0
+        dico[noc] += 1
+    if sortie == "dico":
+        return dico
+    elif sortie == "pays":
+        return f"En {annee}, le pays non médaillé le plus représenté était : {max(dico, key=dico.get)}."
 
 
-def pays_non_medaille_plus_participants_annee(annee):
-    pays_non_medaille_participants_annee = (
-        compte_participants_non_medailles_par_pays_par_annee(annee)
-    )
-    pays_non_medailles = list(pays_non_medaille_participants_annee.keys())
-    n = len(pays_non_medaille_participants_annee)
-    pays_max = pays_non_medailles[0]
-    for i in range(0, n - 1):
-        pays = pays_non_medailles[i + 1]
-        if (
-            pays_non_medaille_participants_annee[pays]
-            > pays_non_medaille_participants_annee[pays_max]
-        ):
-            pays_max = pays
-    return pays_max
+print(pays_non_medaille_max_annee("2016", "pays"))
 
+# Liste des années vérifiée
 
 annees = [annee for annee in range(1896, 1993, 4)]
 annees.pop(annees.index(1916))
@@ -59,11 +53,24 @@ annees.append(1906)
 annees.extend([annee for annee in range(1994, 2017, 2)])
 annees.sort()
 
-print([pays_non_medaille_plus_participants_annee(str(annee)) for annee in annees])
+# Pays non médaillé le plus représenté dans l'histoire
 
 
-def pays_non_medaille_plus_participants_toujours():
-    pays_non_medailles_toujours = {ligne[0]: False for ligne in donnees_noc_regions}
-    pays_non_medaille_participants_toujours = {}
-    for ligne in donnees_athlete_events:
-        
+# def pays_non_medaille_plus_participants_toujours():
+#     pays_non_medailles_toujours = compte_participants_non_medailles_par_pays_par_annee(
+#         str(annees[0])
+#     )
+#     for annee in annees[1:]:
+#         print(annee)
+#         pays_non_medailles_annee = compte_participants_non_medailles_par_pays_par_annee(
+#             str(annee)
+#         )
+#         for noc in pays_non_medailles_toujours.keys():
+#             if noc not in pays_non_medailles_annee:
+#                 del pays_non_medailles_toujours[noc]
+#                 continue
+#             pays_non_medailles_toujours[noc] += pays_non_medailles_annee[noc]
+#     return pays_non_medailles_toujours
+
+
+# print(pays_non_medaille_plus_participants_toujours())
