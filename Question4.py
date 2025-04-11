@@ -53,7 +53,7 @@ print(f"Le sport avec la plus petite moyenne d'âge est {sport_min} avec une "
       f"moyenne de {age_min} ans.")
 
 # 4.3 : Déterminer quelques disciplines où les nageurs les plus jeunes obtiennent plus
-# de médailles que les plus vieux ?
+# de médailles que les plus agés ?
 
 
 def comp_meda_moy_age(sport: str):
