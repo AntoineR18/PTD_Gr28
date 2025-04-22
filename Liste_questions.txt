@@ -4,11 +4,11 @@ Question 1 : Claire
 Déterminez le nombre de médailles gagnées par Michael Phelps. Son nom complet est Michael
 Fred Phelps, II.
 
-Question 2 : Antoine
+Question 2 : Antoine / Maxime
 Trouvez des bornes inférieures et supérieures pour le nombre de médailles par nation pour les
 Jeux Olympiques de 2016.
 
-Question 3 :
+Question 3 : Maxime
 Combien de médailles de [Type] a obtenu [pays] en [année] ? (Traiter dans compte_medailles.py en python base)
 
 Question 4 : Claire
