@@ -35,7 +35,6 @@ def comp_meda_moy_age(sport: str):
     nb_med_ages = (
         (dta_h_sport["Age"] >= age_moyen_sport) & (dta_h_sport["Medal"].notna())
     ).sum()
-
     # Afficher le résultat
     print(f"Pour le sport {sport} :")
     print(f"Nombre de médailles pour les plus jeunes : {nb_med_jeunes}")

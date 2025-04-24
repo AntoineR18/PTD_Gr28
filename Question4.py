@@ -56,67 +56,39 @@ print(
 
 
 def comp_meda_moy_age(sport: str):
-    j = 0  # Mettre plutôt j = -1 pour signifier "pas trouvé"
+    # On cherche l'indice du sport dans la table des moyennes
+    j = -1  # on part du principe que le sport n'est pas trouvé
     for i in range(len(moy_ages_par_sport)):
         if moy_ages_par_sport[i][0] == sport:
-            j = j + i  # Je pense qu'il faut faire j = i par j = j + i
+            j = i
             break
-    if j == len(moy_ages_par_sport):
-        # Fausse Vérification, car finalement si tu ne rentre pas dans ton if d'avant,
-        # tu n'augment pas ton j donc si tu ne trouve pas ton sport vaut 0 mais 0 est
-        # un indice utilisé donc tu devrais surement
+    if j == -1:
         raise ValueError("Le sport rentré n'est pas dans la liste des sports")
+
+    # On récupère la moyenne d'âge du sport
     age_moyen_sport = moy_ages_par_sport[j][1]
+
+    # On initialise les compteurs de médailles
     nb_med_jeunes = 0
     nb_med_ages = 0
+
+    # On parcourt les données pour ce sport
     for ligne in donnees_athlete_events[1:]:
-        if ligne[3] != "NA":
-            if ligne[12] == sport:
-                if float(ligne[3]) < age_moyen_sport:
-                    if ligne[14] != "NA":
-                        nb_med_jeunes += 1
-                elif float(ligne[3]) >= age_moyen_sport:
-                    if ligne[14] != "NA":
-                        nb_med_ages += 1
+        age = ligne[3]
+        sport_ligne = ligne[12]
+        medal = ligne[14]
+        sexe = ligne[2]
+        if age != 'NA' and sport_ligne == sport and medal != 'NA' and sexe == 'M':
+            age = float(age)
+            if age < age_moyen_sport:
+                nb_med_jeunes += 1
+            else:
+                nb_med_ages += 1
+
+    # On affiche les résultats
     print(f"Pour le sport {sport} :")
     print(f"Nombre de médailles pour les plus jeunes : {nb_med_jeunes}")
-    print(f"Nombre de médailles pour les plus agés : {nb_med_ages}")
-
-
-# def comp_meda_moy_age(sport: str):
-#     # On cherche l'indice du sport dans la table des moyennes
-#     j = -1  # on part du principe que le sport n'est pas trouvé
-#     for i in range(len(moy_ages_par_sport)):
-#         if moy_ages_par_sport[i][0] == sport:
-#             j = i
-#             break
-#     if j == -1:
-#         raise ValueError("Le sport rentré n'est pas dans la liste des sports")
-
-#     # On récupère la moyenne d'âge du sport
-#     age_moyen_sport = moy_ages_par_sport[j][1]
-
-#     # On initialise les compteurs de médailles
-#     nb_med_jeunes = 0
-#     nb_med_ages = 0
-
-#     # On parcourt les données pour ce sport
-#     for ligne in donnees_athlete_events[1:]:
-#         age = ligne[3]
-#         sport_ligne = ligne[12]
-#         medal = ligne[14]
-
-#         if age != 'NA' and sport_ligne == sport and medal != 'NA':
-#             age = float(age)
-#             if age < age_moyen_sport:
-#                 nb_med_jeunes += 1
-#             else:
-#                 nb_med_ages += 1
-
-#     # On affiche les résultats
-#     print(f"Pour le sport {sport} :")
-#     print(f"Nombre de médailles pour les plus jeunes : {nb_med_jeunes}")
-#     print(f"Nombre de médailles pour les plus âgés : {nb_med_ages}")
+    print(f"Nombre de médailles pour les plus âgés : {nb_med_ages}")
 
 
 comp_meda_moy_age("Swimming")
