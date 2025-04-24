@@ -22,6 +22,7 @@ def pays_non_medailles_max_annee(annee):
 
 # print(pays_non_medailles_max_annee(2016))
 
+
 # Pays non médaillé le plus représenté dans l'histoire.
 
 

@@ -1,33 +1,36 @@
 Liste des questions :
 
-Question 1 : Claire
-Déterminez le nombre de médailles gagnées par Michael Phelps. Son nom complet est Michael
-Fred Phelps, II.
+1. Déterminer le nombre de médailles gagnées par Michael Phelps.
+(Claire, Python, Panda)
 
-Question 2 : Antoine
-Trouvez des bornes inférieures et supérieures pour le nombre de médailles par nation pour les
-Jeux Olympiques de 2016.
+2. Trouver des bornes inférieures et supérieures pour le nombre de médailles par nation lors des Jeux
+Olympiques de 2016.
+(Maxime, Python, Panda)
 
-Question 3 :
-Combien de médailles de [Type] a obtenu [pays] en [année] ? (Traiter dans compte_medailles.py en python base)
+3. Détail et synthèse des médailles obtenues par un pays sur une année donnée.
+(Maxime, Python, Panda)
 
-Question 4 : Claire
-Quelle est la moyenne d'âge pour chaque sport ?
-Quel est le sport avec la plus petite moyenne d'âge ?
-Les nageurs les plus jeunes obtiennent-ils plus de médailles que les plus vieux ?
+4. Comparaison des performances des athlètes selon leur âge :
+(a) Moyenne d’âge pour chaque sport.
+(b) Sport avec la plus petite moyenne d’âge.
+(c) Les nageurs les plus jeunes obtiennent-ils plus de médailles que les plus âgés ?
+(Claire, Python, Panda)
 
-Question 5 :
-Quel est le pays avec le plus de participants, n'ayant obtenu aucune médaille en [annee] ?
-Sur toutes les éditions ?
+5. Parmi les pays n’ayant obtenu aucune médaille sur une édition donnée, identifier le pays ayant le
+plus de participants. Même question sur toutes les éditions.
+(Antoine, Python, Panda)
 
-Question 6 :
-Quel est l'athlète le plus médaillé ? Lors de quels jeux a-t-il obtenu le plus de médailles ?
+6. Donner, pour chaque pays, sa première participation aux Jeux Olympiques. (Frise)
+(Marceau, Python, Panda)
 
-Question 7 :
-Quel est l'athlète ayant reçu le plus de médailles sur une seule édition ?
+7. Dresser le tableau des médailles pour une édition donnée.
+(?, Panda)
 
-Question 8 :
-Dans quelles épreuves, les Etats-Unis ont-ils gagné une médaille en 2016 ?
+8. Proportion des médailles obtenues par chaque pays selon la saison.
+(?, Panda)
 
-Question 9 :
-Dans quelle discipline, chaque pays a-t-il gagné le plus de médailles ?
+9. Définir des profils type d’athlètes selon les disciplines.
+(?, Panda)
+
+10. Établir la liste des athlètes ayant changé de nationalité au cours de leur carrière.
+(?, Panda)
