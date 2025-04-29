@@ -15,7 +15,4 @@ athletes_changed_nationality = changed_nationality.index.tolist()
 print("Athlètes ayant changé de nationalité :")
 print(athletes_changed_nationality)
 
- 
-# for name in athletes_changed_nationality:
-#     nocs = df_unique[df_unique['Name'] == name]['NOC'].unique()
-#     print(f"{name} : {list(nocs)}")
+
