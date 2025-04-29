@@ -14,5 +14,3 @@ athletes_changed_nationality = changed_nationality.index.tolist()
 
 print("Athlètes ayant changé de nationalité :")
 print(athletes_changed_nationality)
-
-
