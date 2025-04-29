@@ -50,19 +50,6 @@ def mediane_ages(liste_ages: list):
     return mediane
 
 
-# # Bonus : Quel est le sport avec la plus petite moyenne d'âge ?
-# def sport_moyenne_age():
-#     age_min = moyenne_ages[0][1]
-#     for sport in moy_ages_par_sport:
-#         if sport[1] < age_min:
-#             age_min = sport[1]
-#             sport_min = sport[0]
-#     print(
-#         f"Le sport avec la plus petite moyenne d'âge est {sport_min} avec une "
-#         f"moyenne de {age_min} ans."
-#     )
-
-
 def comp_meda_age(sport: str, methode: str, genre: str):
     """
     Compare l'obtention des médailles des athlètes en fonction de leur âge et de leur
@@ -73,8 +60,8 @@ def comp_meda_age(sport: str, methode: str, genre: str):
         raise ValueError("Le genre doit être 'M' ou 'F'")
     if sport not in table_sport(genre):
         raise ValueError("Le sport n'est pas dans la liste des sports")
-    if methode != "moyenne" and methode != "médiane":
-        raise ValueError("La méthode doit être 'moyenne' ou 'médiane'")
+    if methode != "moyenne" and methode != "mediane":
+        raise ValueError("La méthode doit être 'moyenne' ou 'mediane'")
     liste_ages_sport = liste_ages_par_sport(donnees_athlete_events, genre, sport)
     if methode == "moyenne":
         borne = moyenne_ages(liste_ages_sport)

@@ -2,38 +2,78 @@ import pandas as pd
 
 # Importation des données et sélection des athlètes masculins
 dta = pd.read_csv("donnees_jeux_olympiques/athlete_events.csv")
-dta_h = dta[dta["Sex"] == "M"]
-
-# Sélection des colonnes Sport, Age, et médailles
-dta_h = dta_h[["Sport", "Age", "Medal"]]
-dta_h = dta_h.dropna(subset=["Age", "Medal"])
-
-# Calcul des moyennes d'âge par sport
-moyenne_age_sport = dta_h.groupby("Sport")["Age"].mean()
-
-# Recherche du sport avec la plus petite moyenne d'âge
-sport_min_age = moyenne_age_sport.idxmin()
-moyenne_min_age = moyenne_age_sport.min()
-print(
-    f"Le sport avec la plus petite moyenne d'âge est {sport_min_age} avec une moyenne"
-    f" de {moyenne_min_age:.1f} ans."
-)
 
 
-def comp_meda_moy_age(sport: str):
+# Sélection des colonnes Sport, Age, Sexe et médailles
+def table_sport(genre: str):
+    """
+    Retourne un tableau contenant les sports, ages et médailles des athlètes pour un
+    genre donné.
+    """
+    if genre != "M" and genre != "F":
+        raise ValueError("Le genre doit être 'M' ou 'F'")
+    table = dta[["Sport", "Age", "Medal"]]
+    table.dropna(subset=["Age", "Medal"])
+    return table
+
+
+# Calcul des moyennes d'age pour chaque sport selon le genre
+def moyenne_age_sport(genre: str):
+    """
+    Retourne un tableau contenant les moyennes d'age pour chaque sport selon le genre
+    donné.
+    """
+    if genre != "M" and genre != "F":
+        raise ValueError("Le genre doit être 'M' ou 'F'")
+    table = table_sport(genre)
+    return table.groupby("Sport")["Age"].mean()
+
+
+# Calcul des médianes des ages pour chaque sport sport selon le genre
+def mediane_age_sport(genre: str):
+    """
+    Retourne un tableau contenant les médianes d'age pour chaque sport selon le genre
+    donné.
+    """
+    if genre != "M" and genre != "F":
+        raise ValueError("Le genre doit être 'M' ou 'F'")
+    table = table_sport(genre)
+    return table.groupby("Sport")["Age"].median()
+
+
+# # Recherche du sport avec la plus petite moyenne d'âge
+# sport_min_age = moyenne_age_sport.idxmin()
+# moyenne_min_age = moyenne_age_sport.min()
+# print(
+#     f"Le sport avec la plus petite moyenne d'âge est {sport_min_age} avec une moyenne"
+#     f" de {moyenne_min_age:.1f} ans."
+# )
+
+
+def comp_meda_moy_age(sport: str, methode: str, genre: str):
+    """
+    Compare l'obtention des médailles des athlètes en fonction de leur âge et de leur
+    sexe."""
     # Vérifier si le sport est dans la liste des sports
-    if sport not in moyenne_age_sport.index:
+    table = table_sport(genre)
+    if sport not in table["Sport"].values:
         raise ValueError("Le sport rentré n'est pas dans la liste des sports")
-
-    age_moyen_sport = moyenne_age_sport[sport]
-    dta_h_sport = dta_h[dta_h["Sport"] == sport]
-
+    if methode != "moyenne" and methode != "mediane":
+        raise ValueError("La méthode doit être 'moyenne' ou 'mediane'")
+    if genre != "M" and genre != "F":
+        raise ValueError("Le genre doit être 'M' ou 'F'")
+    if methode == "moyenne":
+        borne = moyenne_age_sport(genre)[sport]
+    elif methode == "mediane":
+        borne = mediane_age_sport(genre)[sport]
     # Compter les médailles pour les plus jeunes et les plus âgés
+    # On créé d'abord la table pr le sport donné
+    table_s = table[table["Sport"] == sport].dropna(subset=["Age", "Medal"])
     nb_med_jeunes = (
-        (dta_h_sport["Age"] < age_moyen_sport) & (dta_h_sport["Medal"].notna())
+        (table_s["Age"] < borne)
     ).sum()
     nb_med_ages = (
-        (dta_h_sport["Age"] >= age_moyen_sport) & (dta_h_sport["Medal"].notna())
+        (table_s["Age"] >= borne)
     ).sum()
     # Afficher le résultat
     print(f"Pour le sport {sport} :")
@@ -42,6 +82,6 @@ def comp_meda_moy_age(sport: str):
 
 
 # Test des fonctions avec les sports spécifiés
-comp_meda_moy_age("Swimming")
-comp_meda_moy_age("Trampolining")
-comp_meda_moy_age("Gymnastics")
+comp_meda_moy_age("Swimming", "moyenne", "M")
+comp_meda_moy_age("Trampolining", "moyenne", "M")
+comp_meda_moy_age("Gymnastics", "moyenne", "M")
