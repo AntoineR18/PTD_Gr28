@@ -39,4 +39,5 @@ for pays in pays_final:
                 nom_pays = ligne[2]
             break
     pays_final_toutes_lettres.append([nom_pays, val])
-print(pays_final_toutes_lettres)
+
+# print(pays_final_toutes_lettres)
