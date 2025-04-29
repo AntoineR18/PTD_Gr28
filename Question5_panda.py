@@ -17,8 +17,11 @@ def pays_non_medailles_max_annee(annee):
         if not dta_pays["Medal"].isna().all():
             continue
         dico[noc] = dta_pays["ID"].nunique()
-    return (f"En {annee}, le pays non médaillé le plus représenté était :"
-            f" {max(dico, key=dico.get)}.")
+    pays = max(dico, key=dico.get)
+    return (
+        f"En {annee}, le pays non médaillé le plus représenté était"
+        f" {pays} avec {dico[pays]} participants."
+    )
 
 
 print(pays_non_medailles_max_annee(2016))
@@ -34,9 +37,12 @@ def pays_non_medailles_max_histoire():
         if not dta_pays["Medal"].isna().all():
             continue
         else:
-            dico[noc] = dta_pays.shape[0]
-    return (f"Dans toute l'histoire, le pays non médaillé le plus représenté"
-            f" est : {max(dico, key=dico.get)}.")
+            dico[noc] = dta_pays[["ID", "Year"]].drop_duplicates().shape[0]
+    pays = max(dico, key=dico.get)
+    return (
+        f"Dans toute l'histoire, le pays non médaillé le plus représenté"
+        f" est {pays} avec {dico[pays]} particpants."
+    )
 
 
 print(pays_non_medailles_max_histoire())

@@ -12,8 +12,9 @@ def table_sport(genre: str):
     """
     if genre != "M" and genre != "F":
         raise ValueError("Le genre doit être 'M' ou 'F'")
-    table = dta[["Sport", "Age", "Medal"]]
-    table.dropna(subset=["Age", "Medal"])
+    table = dta[["Sport", "Age", "Sex", "Medal"]]
+    table = table[table["Sex"] == genre]
+    table = table.dropna(subset=["Age", "Medal"])
     return table
 
 
@@ -25,8 +26,8 @@ def moyenne_age_sport(genre: str):
     """
     if genre != "M" and genre != "F":
         raise ValueError("Le genre doit être 'M' ou 'F'")
-    table = table_sport(genre)
-    return table.groupby("Sport")["Age"].mean()
+    table = dta[dta["Sex"] == genre]
+    return table.dropna(subset=['Age']).groupby("Sport")["Age"].mean()
 
 
 # Calcul des médianes des ages pour chaque sport sport selon le genre
@@ -68,12 +69,12 @@ def comp_meda_moy_age(sport: str, methode: str, genre: str):
         borne = mediane_age_sport(genre)[sport]
     # Compter les médailles pour les plus jeunes et les plus âgés
     # On créé d'abord la table pr le sport donné
-    table_s = table[table["Sport"] == sport].dropna(subset=["Age", "Medal"])
+    table_s = table[table["Sport"] == sport].dropna(subset=["Age"])
     nb_med_jeunes = (
-        (table_s["Age"] < borne)
+        (table_s["Age"] < borne) & (table_s["Medal"].notna())
     ).sum()
     nb_med_ages = (
-        (table_s["Age"] >= borne)
+        (table_s["Age"] >= borne) & (table_s["Medal"].notna())
     ).sum()
     # Afficher le résultat
     print(f"Pour le sport {sport} :")

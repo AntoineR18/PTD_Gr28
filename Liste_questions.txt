@@ -23,8 +23,8 @@ plus de participants. Même question sur toutes les éditions.
 6. Donner, pour chaque pays, sa première participation aux Jeux Olympiques. (Frise)
 (Marceau, Python, Panda)
 
-7. Dresser le tableau des médailles pour une édition donnée.
-(?, Panda)
+7. Déterminer le nombre de participants par pays pour chaque édition, au total.
+(Antoine, Panda)
 
 8. Proportion des médailles obtenues par chaque pays selon la saison.
 (?, Panda)
