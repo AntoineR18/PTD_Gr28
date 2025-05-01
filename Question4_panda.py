@@ -38,17 +38,8 @@ def mediane_age_sport(genre: str):
     """
     if genre != "M" and genre != "F":
         raise ValueError("Le genre doit être 'M' ou 'F'")
-    table = table_sport(genre)
+    table = dta[dta["Sex"] == genre]
     return table.groupby("Sport")["Age"].median()
-
-
-# # Recherche du sport avec la plus petite moyenne d'âge
-# sport_min_age = moyenne_age_sport.idxmin()
-# moyenne_min_age = moyenne_age_sport.min()
-# print(
-#     f"Le sport avec la plus petite moyenne d'âge est {sport_min_age} avec une moyenne"
-#     f" de {moyenne_min_age:.1f} ans."
-# )
 
 
 def comp_meda_moy_age(sport: str, methode: str, genre: str):
@@ -84,5 +75,5 @@ def comp_meda_moy_age(sport: str, methode: str, genre: str):
 
 # Test des fonctions avec les sports spécifiés
 comp_meda_moy_age("Swimming", "moyenne", "M")
-comp_meda_moy_age("Trampolining", "moyenne", "M")
-comp_meda_moy_age("Gymnastics", "moyenne", "M")
+comp_meda_moy_age("Trampolining", "mediane", "F")
+comp_meda_moy_age("Gymnastics", "mediane", "M")

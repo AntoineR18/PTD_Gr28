@@ -65,7 +65,7 @@ def comp_meda_age(sport: str, methode: str, genre: str):
     liste_ages_sport = liste_ages_par_sport(donnees_athlete_events, genre, sport)
     if methode == "moyenne":
         borne = moyenne_ages(liste_ages_sport)
-    if methode == "médiane":
+    if methode == "mediane":
         borne = mediane_ages(liste_ages_sport)
     # On initialise les compteurs de médailles
     nb_med_jeunes = 0
@@ -89,6 +89,7 @@ def comp_meda_age(sport: str, methode: str, genre: str):
     print(f"Nombre de médailles pour les plus âgés : {nb_med_ages}")
 
 
+# Test des fonctions avec les sports spécifiés
 comp_meda_age("Swimming", "moyenne", "M")
-comp_meda_age("Trampolining", "moyenne", "M")
-comp_meda_age("Gymnastics", "moyenne", "M")
+comp_meda_age("Trampolining", "mediane", "F")
+comp_meda_age("Gymnastics", "mediane", "M")
