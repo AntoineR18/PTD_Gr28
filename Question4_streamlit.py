@@ -7,7 +7,7 @@ import streamlit as st
 from Question4_panda import comp_meda_moy_age
 
 
-st.title(":red[Question 4 : Faut-il être jeune pour gagner une médaille ?]")
+st.title(":rainbow[Question 4 : Faut-il être jeune pour gagner une médaille ?]")
 st.write(
     "Cette application permet de comparer l'obtention des médailles des athlètes "
     "en fonction de leur âge et de leur sexe."
