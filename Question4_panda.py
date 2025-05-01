@@ -68,9 +68,13 @@ def comp_meda_moy_age(sport: str, methode: str, genre: str):
         (table_s["Age"] >= borne) & (table_s["Medal"].notna())
     ).sum()
     # Afficher le résultat
-    print(f"Pour le sport {sport} :")
-    print(f"Nombre de médailles pour les plus jeunes : {nb_med_jeunes}")
-    print(f"Nombre de médailles pour les plus agés : {nb_med_ages}")
+    resultat = (
+        f"Pour le sport {sport} :  \n"
+        f"Nombre de médailles pour les plus jeunes : {nb_med_jeunes}  \n"
+        f"Nombre de médailles pour les plus âgés : {nb_med_ages}"
+    )
+    print(resultat)
+    return resultat
 
 
 # Test des fonctions avec les sports spécifiés
