@@ -29,8 +29,11 @@ plus de participants. Même question sur toutes les éditions.
 8. Proportion des médailles obtenues par chaque pays selon la saison.
 (?, Panda)
 
-9. Définir des profils type d’athlètes selon les disciplines.
+9. Evolution de la proportion de femmes participant au JO.
 (?, Panda)
 
 10. Établir la liste des athlètes ayant changé de nationalité au cours de leur carrière.
 (Claire, Panda)
+
+App non sup. Définir des profils type d’athlètes selon les disciplines.
+(?, Panda)
