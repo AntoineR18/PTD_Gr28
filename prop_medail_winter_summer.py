@@ -160,5 +160,6 @@ def plot_medaille_normalisee_pays(pays, df):
     plt.show()
 
 
-# plot_medaille_global_ete_vs_hiver(df)
-# plot_medaille_pays_selon_saison("USA", df)  # Pour la France
+plot_medaille_global_ete_vs_hiver(df)
+plot_medaille_pays_selon_saison("USA", df)  # Pour la France
+
