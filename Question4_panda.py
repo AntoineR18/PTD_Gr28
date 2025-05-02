@@ -4,11 +4,21 @@ import pandas as pd
 dta = pd.read_csv("donnees_jeux_olympiques/athlete_events.csv")
 
 
-# Sélection des colonnes Sport, Age, Sexe et médailles
 def table_sport(genre: str):
     """
     Retourne un tableau contenant les sports, ages et médailles des athlètes pour un
     genre donné.
+
+    parameters :
+    -------------
+    genre : str
+        Le genre des athlètes (M ou F).
+
+    returns :
+    -------------
+    table : DataFrame
+        Un tableau contenant les sports, ages et médailles des athlètes pour un genre
+        donné.
     """
     if genre != "M" and genre != "F":
         raise ValueError("Le genre doit être 'M' ou 'F'")
@@ -18,11 +28,21 @@ def table_sport(genre: str):
     return table
 
 
-# Calcul des moyennes d'age pour chaque sport selon le genre
 def moyenne_age_sport(genre: str):
     """
     Retourne un tableau contenant les moyennes d'age pour chaque sport selon le genre
     donné.
+
+    parameters :
+    -------------
+    genre : str
+        Le genre des athlètes (M ou F).
+
+    returns :
+    -------------
+    table : DataFrame
+        Un tableau contenant les moyennes d'age pour chaque sport selon le genre
+        donné.
     """
     if genre != "M" and genre != "F":
         raise ValueError("Le genre doit être 'M' ou 'F'")
@@ -35,6 +55,17 @@ def mediane_age_sport(genre: str):
     """
     Retourne un tableau contenant les médianes d'age pour chaque sport selon le genre
     donné.
+
+    parameters :
+    -------------
+    genre : str
+        Le genre des athlètes (M ou F).
+
+    returns :
+    -------------
+    table : DataFrame
+        Un tableau contenant les médianes d'age pour chaque sport selon le genre
+        donné.
     """
     if genre != "M" and genre != "F":
         raise ValueError("Le genre doit être 'M' ou 'F'")
@@ -45,8 +76,25 @@ def mediane_age_sport(genre: str):
 def comp_meda_moy_age(sport: str, methode: str, genre: str):
     """
     Compare l'obtention des médailles des athlètes en fonction de leur âge et de leur
-    sexe."""
-    # Vérifier si le sport est dans la liste des sports
+    sexe.
+
+    parameters :
+    -------------
+    sport : str
+        Le sport étudié.
+    methode : str
+        La méthode utilisée pour séparer les athlètes en deux groupes : 'moyenne' ou
+        'mediane'.
+    genre : str
+        Le genre des athlètes (M ou F).
+
+    returns :
+    -------------
+    resultat : str
+        Un message indiquant le nombre de médailles pour les plus jeunes et les plus
+        âgés.
+    """
+    # On vérifie qu'il y a pas d'erreurs dans les paramètres
     table = table_sport(genre)
     if sport not in table["Sport"].values:
         raise ValueError("Le sport rentré n'est pas dans la liste des sports")
@@ -54,13 +102,16 @@ def comp_meda_moy_age(sport: str, methode: str, genre: str):
         raise ValueError("La méthode doit être 'moyenne' ou 'mediane'")
     if genre != "M" and genre != "F":
         raise ValueError("Le genre doit être 'M' ou 'F'")
+    # on définit la borne selon la méthode choisie
     if methode == "moyenne":
         borne = moyenne_age_sport(genre)[sport]
     elif methode == "mediane":
         borne = mediane_age_sport(genre)[sport]
     # Compter les médailles pour les plus jeunes et les plus âgés
-    # On créé d'abord la table pr le sport donné
+    # On créé d'abord la table pour le sport donné
     table_s = table[table["Sport"] == sport].dropna(subset=["Age"])
+    # ensuite on fait la somme des médailles (not NA) pour ceux dont l'age est inférieur
+    # ou supérieur à la borne
     nb_med_jeunes = (
         (table_s["Age"] < borne) & (table_s["Medal"].notna())
     ).sum()
@@ -72,9 +123,10 @@ def comp_meda_moy_age(sport: str, methode: str, genre: str):
         f"Pour le sport {sport} :  \n"
         f"Nombre de médailles pour les plus jeunes : {nb_med_jeunes}  \n"
         f"Nombre de médailles pour les plus âgés : {nb_med_ages}"
-    )
+    )  # important d'avoir les espaces avant le \n pour le retour à la ligne (surtout
+    # pour streamlit)
     print(resultat)
-    return resultat
+    return resultat  # important sinon streamlit sort rien
 
 
 # Test des fonctions avec les sports spécifiés
