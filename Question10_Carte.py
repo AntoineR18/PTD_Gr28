@@ -10,7 +10,7 @@ from Question10 import athletes_changed_nationality
 df = pd.read_csv("donnees_jeux_olympiques/athlete_events.csv")
 # d'abord je vais vérifier que la liste des NOCS correspond bien à la liste des pays
 # ISO-3.
-# J'utilise pycontry pour récupérer la liste des pays et leurs codes ISO-3.
+# J'utilise pycontry pour  récupérer la liste des pays et leurs codes ISO-3.
 iso3_list = [country.alpha_3 for country in pycountry.countries]
 noc_list = df['NOC'].unique()  # Liste des NOC uniques dans le DataFrame
 
@@ -150,22 +150,34 @@ def get_new_nationalities(df, athlete_names):
     """
     Pour chaque athlète ayant changé de nationalité, retourne la liste des nouveaux pays
     qu'il a représentés après sa première participation.
+
+    parameters:
+    df : DataFrame contenant les données des athlètes
+    athlete_names : liste de noms d'athlètes ayant changé de nationalité
+
+    returns:
+    athlete_transfers : liste des nouveaux pays représentés par les athlètes
     """
     athlete_transfers = []
 
     for name in athlete_names:
-        # Extraire les participations de l'athlète avec année et NOC
-        athlete_data = df[(df['Name'] == name) & (df['Year'] >= 1993)][['NOC',
-                                                                        df.columns[9]]].drop_duplicates()
-
-        # Trouver l'année de première participation
+        # Extraire les participations pour chaque athlète avec année et NOC.
+        # On sélectionne les années à partir de 1993 pour éviter les complications avec
+        # la fin de L'URSS.
+        athlete_data = df[(df['Name'] == name) &
+                          (df['Year'] >= 1993)][['NOC',
+                                                 df.columns[9]]].drop_duplicates()
+        # On sélectionne pour chaque athlète la première année de participation
         first_year = athlete_data[df.columns[9]].min()
 
-        # Nationalité(s) lors de la première participation
+        # On définit le premier NOC comme celui de la première participation. On
+        # sélectionne pour chaque athlète le NOC de sa première participation.
         first_nocs = athlete_data[athlete_data[df.columns[9]]
                                   == first_year]['NOC'].unique()
 
-        # Toutes les autres nationalités ensuite
+        # à partir de la première participation, on créé une liste des changements de
+        # nationalité. On sélectionne les NOC qui ne sont pas la première nationalité
+        # pour chaque athlète.
         new_nocs = [noc for noc in athlete_data['NOC'].unique()
                     if noc not in first_nocs]
 
@@ -183,14 +195,15 @@ noc_counts = pd.Series(new_noc_list).value_counts().reset_index()
 noc_counts.columns = ['NOC', 'Nb_Athletes']
 
 # Afficher la carte
-fig = px.choropleth(
+carte = px.choropleth(
     noc_counts,
     locations="NOC",
     color="Nb_Athletes",
     hover_name="NOC",
     color_continuous_scale="Purples",
     projection="natural earth",
-    title="Pays ayant reçu des athlètes après changement de nationalité"
+    title="Pays ayant reçu des athlètes après changement de nationalité à partir"
+    " de 1993",
 )
 
-fig.show()
+carte.show()
