@@ -44,4 +44,4 @@ def affichage_medaille_pays_JO(country, year, season):
 
 
 # Exemple :
-affichage_medaille_pays_JO("France", 2016, "Summer")
+# affichage_medaille_pays_JO("France", 2016, "Summer")
