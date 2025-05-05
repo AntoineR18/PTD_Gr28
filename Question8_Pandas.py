@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 df = pd.read_csv("donnees_jeux_olympiques/athlete_events.csv")
 
 
-def plot_medaille_pays_selon_saison(pays, df):
+def plot_medaille_pays_selon_saison(pays):
     """
     Affiche un graphique montrant la répartition des médailles entre les JO d'été et
     d'hiver pour un pays donné.
@@ -49,7 +49,7 @@ def plot_medaille_pays_selon_saison(pays, df):
     plt.show()
 
 
-def plot_medaille_global_ete_vs_hiver(df):
+def plot_medaille_global_ete_vs_hiver():
     """
     Affiche la répartition globale des médailles entre les JO d'été et d'hiver.
 
@@ -83,7 +83,7 @@ def plot_medaille_global_ete_vs_hiver(df):
     plt.show()
 
 
-def plot_part_medaille_par_pays_dans_saison(saison, df, top_n=10):
+def plot_part_medaille_par_pays_dans_saison(saison, top_n=10):
     """
     Affiche la proportion des médailles gagnées par chaque pays pour une saison donnée,
     relativement au total des médailles distribuées dans cette saison (été ou hiver).
@@ -127,7 +127,7 @@ def plot_part_medaille_par_pays_dans_saison(saison, df, top_n=10):
     plt.show()
 
 
-def plot_medaille_normalisee_pays(pays, df):
+def plot_medaille_normalisee_pays(pays):
     df_medals = df[df["Medal"].notna()].copy()
 
     # Groupe par année + saison pour connaître le total de médailles distribuées
@@ -160,5 +160,5 @@ def plot_medaille_normalisee_pays(pays, df):
     plt.show()
 
 
-plot_medaille_normalisee_pays("USA", df)
-plot_medaille_pays_selon_saison("USA", df)  # Pour la France
+plot_medaille_normalisee_pays("USA")
+plot_medaille_pays_selon_saison("USA")
