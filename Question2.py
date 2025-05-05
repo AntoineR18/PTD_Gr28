@@ -22,4 +22,15 @@ def bornes_medailles_par_nation_v2(annee):
     return (min(totaux), max(totaux))
 
 
-print(bornes_medailles_par_nation_v2(2016))
+def afficher_bornes_medailles(annee: int):
+    """
+    Demande à l'utilisateur une année, calcule et affiche les bornes
+    du nombre total de médailles gagnées par pays cette année-là.
+    """
+
+    try:
+        bornes = bornes_medailles_par_nation_v2(annee)
+        print(f"En {annee}, le nombre de médailles par pays varie de {bornes[0]}"
+              f" à {bornes[1]}.")
+    except Exception as e:
+        print(f"Erreur lors du calcul des bornes : {e}")

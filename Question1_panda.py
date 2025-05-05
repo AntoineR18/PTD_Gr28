@@ -16,4 +16,8 @@ medals_count = df_phelps["Medal"].value_counts()
 medals_count["Total"] = medals_count.sum()
 
 # Afficher le résultat
-print(medals_count)
+print(
+    f"Michael Phelps a obtenu {medals_count['Total']} médailles aux Jeux Olympiques.\n"
+    f"Dont {medals_count['Gold']} en or, {medals_count['Silver']} en argent "
+    f"et {medals_count['Bronze']} en bronze."
+    )
