@@ -40,4 +40,19 @@ for pays in pays_final:
             break
     pays_final_toutes_lettres.append([nom_pays, val])
 
-# print(pays_final_toutes_lettres)
+
+def afficher_annee_adhesion_depuis_tableau(pays_nom: str):
+    """
+    Affiche l'année de première participation aux JO pour un pays donné,
+    à partir du tableau pays_final_toutes_lettres.
+
+    :param pays_nom: Nom du pays (ex: "France")
+    """
+    pays_nom = pays_nom.strip().title()
+
+    for nom, annee in pays_final_toutes_lettres:
+        if nom.strip().title() == pays_nom:
+            print(f"Le pay : '{pays_nom}', a participé pour la première fois aux JO en {annee}.")
+            return
+
+    print(f"❌ Le pays '{pays_nom}' n’a pas été trouvé dans le tableau.")
