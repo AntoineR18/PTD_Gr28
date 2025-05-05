@@ -6,7 +6,7 @@ from lecture_donnees import (
 
 pays = []
 pays_final = []
-for ligne in donnees_athlete_events[1 : len(donnees_athlete_events)]:
+for ligne in donnees_athlete_events[1: len(donnees_athlete_events)]:
     L = 0
     if ligne[7] == "SGP":
         noc = "SIN"
@@ -24,7 +24,7 @@ for ligne in donnees_athlete_events[1 : len(donnees_athlete_events)]:
 
 
 for pays_i in pays:
-    pays_final.append([pays_i[0], min(pays_i[1 : len(pays_i)])])
+    pays_final.append([pays_i[0], min(pays_i[1: len(pays_i)])])
 
 
 pays_final_toutes_lettres = []
@@ -52,7 +52,8 @@ def afficher_annee_adhesion_depuis_tableau(pays_nom: str):
 
     for nom, annee in pays_final_toutes_lettres:
         if nom.strip().title() == pays_nom:
-            print(f"Le pay : '{pays_nom}', a participé pour la première fois aux JO en {annee}.")
+            print(f"Le pay : '{pays_nom}', a participé pour"
+                  f" la première fois aux JO en {annee}.")
             return
 
     print(f"❌ Le pays '{pays_nom}' n’a pas été trouvé dans le tableau.")
