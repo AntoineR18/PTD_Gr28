@@ -16,12 +16,12 @@ def nb_participants(annee=None, pays=None, sexe=None, medaille=None):
     if sexe is not None:
         df = df[df["Sex"] == sexe]
 
-    if medaille == True:
+    if medaille is True:
         df = df[df["Medal"].notna()]
-    elif medaille == False:
+    elif medaille is False:
         df = df[df["Medal"].isna()]
+    df = df.drop_duplicates(subset=["ID", "Year"])
+    return df.shape[0]
 
-    return df[["ID", "Year"]].drop_duplicates().shape[0]
 
-
-print(nb_participants(pays="EGY", medaille=False))
+# print(nb_participants(pays="EGY", medaille=False))

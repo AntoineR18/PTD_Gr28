@@ -1,0 +1,196 @@
+# L'objectif est de créer une carte permettant de visualiser les pays qui ont recu le
+# plus d'athlètes ayant changé de nationalité.
+
+import pandas as pd
+import plotly.express as px
+import pycountry
+from Question10 import athletes_changed_nationality
+
+
+df = pd.read_csv("donnees_jeux_olympiques/athlete_events.csv")
+# d'abord je vais vérifier que la liste des NOCS correspond bien à la liste des pays
+# ISO-3.
+# J'utilise pycontry pour récupérer la liste des pays et leurs codes ISO-3.
+iso3_list = [country.alpha_3 for country in pycountry.countries]
+noc_list = df['NOC'].unique()  # Liste des NOC uniques dans le DataFrame
+
+# Je vais créer un set pour les NOC et les ISO3 pour faciliter la comparaison
+noc_set = set(noc_list)
+iso3_set = set(iso3_list)
+
+# Trouver les codes NOC qui ne sont pas des ISO3 valides
+invalid_nocs = noc_set - iso3_set
+
+# Nombre de dissimilarités
+print(f"Nombre de NOC non valides : {len(invalid_nocs)}")
+print("NOC non reconnus comme ISO-3 :", invalid_nocs)
+
+# Je vais maintenant remplacer les NOC non valides par des codes ISO-3 valides. On fait
+# un dictionnaire de correspondance entre les NOC non valides et les ISO-3 valides.
+noc_to_iso3 = {
+    'MRI': 'MUS',  # Maurice
+    'EUN': 'RUS',  # Équipe unifiée (ancienne URSS)
+    'TCH': 'CZE',  # Tchécoslovaquie -> République tchèque
+    'BRU': 'BRN',  # Brunei
+    'URU': 'URY',  # Uruguay
+    'MTN': 'MNT',  # Monténégro
+    'IOA': 'IOC',  # Comité International Olympique (pas un pays)
+    'BIZ': 'BIZ',  # Bizerte (pas reconnu comme un pays)
+    'BAH': 'BHS',  # Bahreïn
+    'CAM': 'KHM',  # Cambodge
+    'UNK': 'UNK',  # Inconnu ou non spécifié
+    'MAS': 'MYS',  # Malaisie
+    'LBA': 'LBY',  # Libye
+    'MON': 'MCO',  # Monaco
+    'MAW': 'MWI',  # Malawi
+    'VIN': 'VCT',  # Saint-Vincent-et-les-Grenadines
+    'BUR': 'MMR',  # Birmanie
+    'SUD': 'SDN',  # Soudan
+    'KOS': 'KOS',  # Kosovo (reconnu partiellement)
+    'ANT': 'NLD',  # Antilles néerlandaises -> Pays-Bas
+    'YMD': 'YMD',  # Yéménite ou entité non définie
+    'NIG': 'NGA',  # Nigéria
+    'INA': 'IDN',  # Indonésie
+    'BER': 'BMU',  # Bermudes
+    'CAY': 'CYM',  # Îles Caïmans
+    'TAN': 'TAN',  # Tanzanie
+    'NCA': 'NIC',  # Nicaragua
+    'OMA': 'OMN',  # Oman
+    'RSA': 'ZAF',  # Afrique du Sud
+    'VAN': 'VUT',  # Vanuatu
+    'NED': 'NLD',  # Pays-Bas
+    'PHI': 'PHL',  # Philippines
+    'AHO': 'ABW',  # Aruba
+    'NGR': 'NGA',  # Nigéria
+    'CHI': 'CHL',  # Chili
+    'SCG': 'SRB',  # Serbie-et-Monténégro -> Serbie
+    'IRI': 'IRN',  # Iran
+    'ANG': 'AGO',  # Angola
+    'BUL': 'BGR',  # Bulgarie
+    'TOG': 'TGO',  # Togo
+    'YUG': 'SRB',  # Yougoslavie -> Serbie
+    'GER': 'DEU',  # Allemagne
+    'HON': 'HND',  # Honduras
+    'KSA': 'SAU',  # Arabie Saoudite
+    'YAR': 'YAR',  # Yémen arabe (historique)
+    'KUW': 'KWT',  # Koweït
+    'DEN': 'DNK',  # Danemark
+    'CGO': 'COG',  # République du Congo
+    'ISV': 'ISV',  # Îles Vierges des États-Unis
+    'LIB': 'LBY',  # Libye
+    'GEQ': 'GNQ',  # Guinée équatoriale
+    'ARU': 'ABW',  # Aruba
+    'ZIM': 'ZWE',  # Zimbabwe
+    'BHU': 'BTN',  # Bhoutan
+    'LES': 'LSO',  # Lesotho
+    'GUI': 'GIN',  # Guinée
+    'ANZ': 'AUS',  # Australie (ancien code pour l'équipe olympique)
+    'BAR': 'BRB',  # Barbade
+    'BOT': 'BWA',  # Botswana
+    'WIF': 'FIJ',  # Fidji
+    'TPE': 'TPE',  # Taïwan
+    'POR': 'PRT',  # Portugal
+    'ESA': 'ESA',  # Salvador (historique)
+    'RHO': 'ZWE',  # Zimbabwe (anciennement Rhodésie)
+    'ROT': 'ROU',  # Roumanie
+    'IVB': 'VGB',  # Îles Vierges britanniques
+    'MGL': 'MNG',  # Mongolie
+    'BOH': 'CZE',  # Bohême (historique, maintenant République tchèque)
+    'SLO': 'SVN',  # Slovénie
+    'ASA': 'ASM',  # Samoa américaines
+    'FIJ': 'FJI',  # Fidji
+    'PLE': 'PLE',  # Palestine (reconnu partiellement)
+    'NFL': 'NFL',  # National Football League (pas un pays)
+    'SUI': 'CHE',  # Suisse
+    'PAR': 'PRY',  # Paraguay
+    'VIE': 'AUT',  # Autriche (Vienne est une ville)
+    'CRT': 'CRI',  # Costa Rica
+    'FRG': 'DEU',  # Allemagne de l'Ouest (avant la réunification)
+    'ALG': 'DZA',  # Algérie
+    'NEP': 'NPL',  # Népal
+    'NBO': 'KEN',  # Kenya
+    'MYA': 'MMR',  # Myanmar (Birmanie)
+    'SAA': 'SAU',  # Arabie Saoudite
+    'CHA': 'CHN',  # Chine
+    'TGA': 'TON',  # Tonga
+    'ZAM': 'ZMB',  # Zambie
+    'GUA': 'GTM',  # Guatemala
+    'PUR': 'PUR',  # Porto Rico
+    'GRN': 'GRD',  # Grenade
+    'SKN': 'KNA',  # Saint-Christophe-et-Niévès
+    'CRC': 'CRI',  # Costa Rica
+    'MAD': 'MDG',  # Madagascar
+    'GRE': 'GRC',  # Grèce
+    'BAN': 'BGD',  # Bangladesh
+    'HAI': 'HTI',  # Haïti
+    'SRI': 'LKA',  # Sri Lanka
+    'SEY': 'SYC',  # Seychelles
+    'SOL': 'SLB',  # Îles Salomon
+    'GDR': 'DEU',  # Allemagne de l'Est (avant la réunification)
+    'URS': 'RUS',  # Union soviétique (ancienne URSS)
+    'SAM': 'WSM',  # Samoa
+    'UAR': 'ARE',  # Émirats arabes unis
+    'UAE': 'ARE',  # Émirats arabes unis
+    'GAM': 'GMB',  # Gambie
+    'CRO': 'HRV',  # Croatie
+    'GBS': 'GNB'   # Guinée-Bissau
+}
+
+# On remplace les NOC non valides par les ISO-3 valides dans le DataFrame :
+df['NOC'] = df['NOC'].replace(noc_to_iso3)
+
+# L'objectif est ensuite de créer une liste contenant le nombre de pays vers lesquels
+# les athlètes ont changé de nationalité.
+# Pour cela, nous récupérons la liste des pays pour lesquels chaque athlète a participé,
+# et nous retirons le pays de sa première participation pour ne compter que les
+# changements.
+
+
+def get_new_nationalities(df, athlete_names):
+    """
+    Pour chaque athlète ayant changé de nationalité, retourne la liste des nouveaux pays
+    qu'il a représentés après sa première participation.
+    """
+    athlete_transfers = []
+
+    for name in athlete_names:
+        # Extraire les participations de l'athlète avec année et NOC
+        athlete_data = df[(df['Name'] == name) & (df['Year'] >= 1993)][['NOC',
+                                                                        df.columns[9]]].drop_duplicates()
+
+        # Trouver l'année de première participation
+        first_year = athlete_data[df.columns[9]].min()
+
+        # Nationalité(s) lors de la première participation
+        first_nocs = athlete_data[athlete_data[df.columns[9]]
+                                  == first_year]['NOC'].unique()
+
+        # Toutes les autres nationalités ensuite
+        new_nocs = [noc for noc in athlete_data['NOC'].unique()
+                    if noc not in first_nocs]
+
+        # Ajouter les nouveaux NOC à la liste finale
+        athlete_transfers.extend(new_nocs)
+
+    return athlete_transfers
+
+
+# Récupérer la liste de tous les pays "d'arrivée" après changement de nationalité
+new_noc_list = get_new_nationalities(df, athletes_changed_nationality)
+
+# Compter le nombre d'athlètes reçus par pays
+noc_counts = pd.Series(new_noc_list).value_counts().reset_index()
+noc_counts.columns = ['NOC', 'Nb_Athletes']
+
+# Afficher la carte
+fig = px.choropleth(
+    noc_counts,
+    locations="NOC",
+    color="Nb_Athletes",
+    hover_name="NOC",
+    color_continuous_scale="Purples",
+    projection="natural earth",
+    title="Pays ayant reçu des athlètes après changement de nationalité"
+)
+
+fig.show()
