@@ -129,6 +129,23 @@ def comp_meda_moy_age(sport: str, methode: str, genre: str):
     return resultat  # important sinon streamlit sort rien
 
 
+def affichage_comparaison_medailles_age(sport: str, methode: str, genre: str):
+    """
+    Affiche la comparaison du nombre de médailles entre les athlètes plus jeunes
+    et plus âgés pour un sport donné, selon la méthode choisie.
+
+    :param sport: nom du sport (ex: "Swimming")
+    :param methode: 'moyenne' ou 'mediane'
+    :param genre: 'M' ou 'F'
+    """
+    try:
+        resultat = comp_meda_moy_age(sport, methode, genre)
+        print("\n--- Résultat ---")
+        print(resultat)
+    except ValueError as e:
+        print(f"Erreur : {e}")
+
+
 # Test des fonctions avec les sports spécifiés
 comp_meda_moy_age("Swimming", "moyenne", "M")
 comp_meda_moy_age("Trampolining", "mediane", "F")

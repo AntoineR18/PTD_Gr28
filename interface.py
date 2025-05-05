@@ -1,8 +1,12 @@
 import importlib
 import sys
+import os
+import subprocess
 
 
 def main():
+    streamlit_process = None
+
     while True:
         print("=== Menu PTD Groupe 28 ===")
         print("1. Question 1 : Déterminer le nombre de médailles gagnées par"
@@ -11,50 +15,76 @@ def main():
         print("3. Question 2 : Calculer les bornes de médailles par pays pour"
               " une année donnée.")
         print("4. Question 2 (pandas) : Idem avec pandas.")
-         print("5. Question 3 : Synthèse des médailles obtenues par un pays sur une"
+        print("5. Question 3 : Synthèse des médailles obtenues par un pays sur une"
                " année donnée.")
+        print("6. Question 3 (pandas) : Synthèse des médailles obtenues par un pays sur"
+              "une année donnée.")
+        print("7. Question 3 bonnus (streamlit)  : Application"
+              " interactive des médailles.")
+        print("Streamlit_Close. Fermer  Streamlit")
         print("0. Quitter")
 
         choix = input("Votre choix : ")
 
-        if choix == "1":
-            try:
+        try:
+            if choix == "1":
                 import Question1
-            except Exception as e:
-                print(f"❌ Erreur lors de l'exécution de Question1 : {e}")
-        elif choix == "2":
-            try:
-                import Question1_Pandas
-            except Exception as e:
-                print(f"❌ Erreur lors de l'exécution de Question1_panda : {e}")
-        elif choix == "3":
-            try:
-                annee = input("Entrez l'année des JO souhaité : ")
-                annee = int(annee)
-                module_q2 = importlib.import_module("Question2")
-                module_q2.afficher_bornes_medailles(annee)
-            except Exception as e:
-                print(f"❌ Erreur lors de l'exécution de Question2 : {e}")
-        elif choix == "4":
-            try:
-                annee = int(input("Entrez l'année des JO souhaité : "))
-                module_q2p = importlib.import_module("Question2_panda")
-                module_q2p.afficher_bornes_medailles_par_nation_pandas(annee)
-            except Exception as e:
-                print(f"❌ Erreur lors de l'exécution de Question2_panda : {e}")
-        elif choix == "5":
-            try:
+            elif choix == "2":
+                import Question1_panda
+            elif choix == "3":
+                annee = int(input("Entrez l'année des JO : "))
+                import Question2
+                Question2.afficher_bornes_medailles(annee)
+            elif choix == "4":
+                annee = int(input("Entrez l'année des JO : "))
+                import Question2_panda
+                Question2_panda.afficher_bornes_medailles_par_nation_pandas(annee)
+            elif choix == "5":
                 pays = input("Entrez le nom du pays : ")
                 annee = input("Entrez l'année des JO : ")
-                module_q3 = importlib.import_module("Question3")
-                module_q3.affichage_medaille_pays_JO(pays, annee)
-            except Exception as e:
-                print(f"❌ Erreur lors de l'exécution de Question3 : {e}")
-        elif choix == "0":
-            print("À bientôt !")
-            break
-        else:
-            print("Choix invalide. Réessayez.")
+                import Question3
+                Question3.affichage_medaille_pays_JO(pays, annee)
+            elif choix == "6":
+                pays = input("Entrez le nom du pays : ")
+                annee = int(input("Entrez l'année des JO : "))
+                saison = input("Entrez la saison (Summer/Winter) : ")
+                import Question3_Pandas
+                Question3_Pandas.affichage_medaille_pays_JO(pays, annee, saison)
+            elif choix == "7":
+                try:
+                    import streamlit
+                except ModuleNotFoundError:
+                    installer = input("⚠️ Streamlit n'est pas installé. Voulez-vous l'installer ? (o/n) : ").lower()
+                    if installer == "o":
+                        subprocess.call(["pip", "install", "streamlit"])
+                        import streamlit
+                    else:
+                        print("Streamlit non installé.")
+                        continue
+
+                if streamlit_process is None or streamlit_process.poll() is not None:
+                    print("Lancement de l'application Streamlit...")
+                    streamlit_process = subprocess.Popen(["streamlit", "run", "Question3_Pandas_Streamlit.py"])
+                else:
+                    print("Streamlit est déjà en cours.")
+            elif choix == "8":
+                if streamlit_process is not None and streamlit_process.poll() is None:
+                    print("Fermeture de Streamlit...")
+                    streamlit_process.terminate()
+                    streamlit_process = None
+                else:
+                    print("Aucune application Streamlit en cours.")
+            elif choix == "0":
+                if streamlit_process is not None and streamlit_process.poll() is None:
+                    print("Fermeture de Streamlit avant de quitter...")
+                    streamlit_process.terminate()
+                print("À bientôt !")
+                break
+            else:
+                print("Choix invalide. Réessayez.")
+        except Exception as e:
+            print(f"❌ Erreur : {e}")
+
 
         input("\nAppuyez sur Entrée pour continuer...")
 
