@@ -24,7 +24,7 @@ def main():
                 print(f"❌ Erreur lors de l'exécution de Question1 : {e}")
         elif choix == "2":
             try:
-                import Question1_panda
+                import Question1_Pandas
             except Exception as e:
                 print(f"❌ Erreur lors de l'exécution de Question1_panda : {e}")
         elif choix == "3":

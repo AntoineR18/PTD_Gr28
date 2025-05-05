@@ -4,7 +4,7 @@
 import pandas as pd
 import plotly.express as px
 import pycountry
-from Question10 import athletes_changed_nationality
+from Question10_Pandas import athletes_changed_nationality
 
 
 df = pd.read_csv("donnees_jeux_olympiques/athlete_events.csv")

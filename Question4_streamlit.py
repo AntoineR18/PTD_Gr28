@@ -4,7 +4,7 @@
 # pour lancer l'application :
 
 import streamlit as st
-from Question4_panda import comp_meda_moy_age
+from Question4_Pandas import comp_meda_moy_age
 from Question4 import table_sport
 
 
