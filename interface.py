@@ -75,7 +75,7 @@ def main():
                         "scikit-learn",
                         "streamlit",
                         "plotly",
-                        "pycountry"
+                        "pycountry",
                     ]
 
                     print("🔍 Vérification des dépendances...\n")
@@ -96,18 +96,17 @@ def main():
 
                     print("\n📦 Packages manquants à installer :")
                     print(", ".join(to_install))
-                    confirmer = input("Souhaitez-vous installer les packages"
-                                      " manquants ? (o/n) : ").lower()
+                    confirmer = input(
+                        "Souhaitez-vous installer les packages" " manquants ? (o/n) : "
+                    ).lower()
 
                     if confirmer == "o":
                         python_exec = sys.executable
                         for pkg in to_install:
                             print(f"🔧 Installation de {pkg}...")
-                            subprocess.check_call([python_exec,
-                                                   "-m",
-                                                   "pip",
-                                                   "install",
-                                                   pkg])
+                            subprocess.check_call(
+                                [python_exec, "-m", "pip", "install", pkg]
+                            )
                         print("\n✅ Installation terminée.")
                     else:
                         print("⛔ Installation annulée par l'utilisateur.")
@@ -116,10 +115,12 @@ def main():
                     print(f"❌ Une erreur est survenue pendant l'installation : {e}")
             elif choix == "1":
                 import Question1
+
                 # L'import suffit à exécuter
                 Question1.afficher_resultat()
             elif choix == "2":
                 import Question1_Pandas
+
                 # L'import suffit à exécuter le graphique.
                 Question1_Pandas.afficher_resultat()
             elif choix == "3":
@@ -194,28 +195,29 @@ def main():
                 Question6.afficher_annee_adhesion_depuis_tableau(pays)
             elif choix == "14":
                 import Question6_Pandas
+
                 # L'import suffit à exécuter la question et le graphique.
                 Question6_Pandas.plot_frise_participations_jo()
             elif choix == "15":
                 pays = input("Entrez le code NOC du pays (ex: FRA, USA, CHN) : ")
-                import Question7_Pandas
+                import Question8_Pandas
 
-                Question7_Pandas.plot_medaille_pays_selon_saison(pays)
+                Question8_Pandas.plot_medaille_pays_selon_saison(pays)
             elif choix == "16":
-                import Question7_Pandas
+                import Question8_Pandas
 
-                Question7_Pandas.plot_medaille_global_ete_vs_hiver()
+                Question8_Pandas.plot_medaille_global_ete_vs_hiver()
             elif choix == "17":
                 saison = input("Saison (Summer/Winter) : ")
                 top_n = int(input("Nombre de pays à afficher (ex: 10) : "))
-                import Question7_Pandas
+                import Question8_Pandas
 
-                Question7_Pandas.plot_part_medaille_par_pays_dans_saison(saison, top_n)
+                Question8_Pandas.plot_part_medaille_par_pays_dans_saison(saison, top_n)
             elif choix == "18":
                 pays = input("Entrez le code NOC du pays (ex: FRA, USA) : ")
-                import Question7_Pandas
+                import Question8_Pandas
 
-                Question7_Pandas.plot_medaille_normalisee_pays(pays)
+                Question8_Pandas.plot_medaille_normalisee_pays(pays)
 
             elif choix == "Streamlit_Fermeture":
                 if streamlit_process is not None and streamlit_process.poll() is None:
