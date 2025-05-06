@@ -13,8 +13,10 @@ nat_ch = df_unique.groupby('Name')['NOC'].nunique()
 changed_nationality = nat_ch[nat_ch > 1]
 athletes_changed_nationality = changed_nationality.index.tolist()
 
-print("Athlètes ayant changé de nationalité :")
-print(athletes_changed_nationality)
+
+def afficher_list():
+    print("Athlètes ayant changé de nationalité :")
+    print(athletes_changed_nationality)
 
 # Commentaire :
 # il est impsosible de distinguer les athlètes qui étaient déjà porteurs d'une double

@@ -21,9 +21,12 @@ iso3_set = set(iso3_list)
 # Trouver les codes NOC qui ne sont pas des ISO3 valides
 invalid_nocs = noc_set - iso3_set
 
+
 # Nombre de dissimilarités
-print(f"Nombre de NOC non valides : {len(invalid_nocs)}")
-print("NOC non reconnus comme ISO-3 :", invalid_nocs)
+def afficher_noc_invalide():
+    print(f"Nombre de NOC non valides : {len(invalid_nocs)}")
+    print("NOC non reconnus comme ISO-3 :", invalid_nocs)
+
 
 # Je vais maintenant remplacer les NOC non valides par des codes ISO-3 valides. On fait
 # un dictionnaire de correspondance entre les NOC non valides et les ISO-3 valides.
