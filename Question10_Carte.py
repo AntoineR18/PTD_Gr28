@@ -258,4 +258,7 @@ def afficher_carte():
         " de 1993",
     )
 
+    # Sauvegarde en PNG
+    carte.write_html("resultat/carte_transferts_nationalite.html")
+
     carte.show()
