@@ -66,6 +66,10 @@ for i, year in enumerate(years):
     ax.text(year, 0.3, label, ha="center", va="bottom", fontsize=9, rotation=45)
     ax.text(year, -0.3, str(year), ha="center", va="top", fontsize=8, rotation=315)
 
+# Affichage du dictionnaire des groupes
+for label, countries in groupe_labels.items():
+    print(f"{label} : {', '.join(countries)}")
+
 # Ajustements visuels
 ax.set_ylim(-1, 1)
 ax.set_xlim(data.min() - 4, data.max() + 4)
@@ -75,7 +79,3 @@ ax.set_title("Les premières participations aux JO des pays (regroupés)")
 
 plt.tight_layout()
 plt.show()
-
-# Affichage du dictionnaire des groupes
-for label, countries in groupe_labels.items():
-    print(f"{label} : {', '.join(countries)}")

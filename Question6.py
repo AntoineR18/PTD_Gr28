@@ -52,7 +52,7 @@ def afficher_annee_adhesion_depuis_tableau(pays_nom: str):
 
     for nom, annee in pays_final_toutes_lettres:
         if nom.strip().title() == pays_nom:
-            print(f"Le pay : '{pays_nom}', a participé pour"
+            print(f"Le pays : '{pays_nom}', a participé pour"
                   f" la première fois aux JO en {annee}.")
             return
 
