@@ -19,7 +19,7 @@ def afficher_resultat():
     print(texte)
 
     # Chemin vers le fichier à créer dans le sous-dossier
-    chemin_fichier = os.path.join("Resultat", "Q1.txt")
+    chemin_fichier = os.path.join("Resultat", "Question1.txt")
 
     # Écriture dans le fichier
     with open(chemin_fichier, "w", encoding="utf-8") as fichier:

@@ -30,5 +30,5 @@ def afficher_resultat():
     print(texte)
 
     # Écriture dans le fichier texte
-    with open("Resultat/Q1_pandas.txt", "w", encoding="utf-8") as f:
+    with open("Resultat/Question1_pandas.txt", "w", encoding="utf-8") as f:
         f.write(texte + "\n")
