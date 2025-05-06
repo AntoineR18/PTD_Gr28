@@ -60,17 +60,10 @@ def pays_non_medaille_max_annee(annee):
         else:
             pays_medaille[noc] = len(pays_medaille[noc][0])
 
-<<<<<<< HEAD
     noc = max(pays_medaille, key=pays_medaille.get)
     return (
         f"En {annee}, avec {pays_medaille[noc]} participants, le pays non médaillé"
         f" le plus représenté était : {noc}."
-=======
-    code_noc = max(dico, key=dico.get)
-    texte = (
-        f"En {annee}, avec {dico[code_noc]} participants, le pays non médaillé"
-        f" le plus représenté était : {noc_to_country[code_noc]}."
->>>>>>> 1c512ae99dd18123abdf32e09b58cd90aba546e4
     )
     print(texte)
 
@@ -78,8 +71,5 @@ def pays_non_medaille_max_annee(annee):
     with open("Resultat/Question5.txt", "w", encoding="utf-8") as f:
         f.write(texte + "\n")
 
-<<<<<<< HEAD
+
 # print(pays_non_medaille_max_annee(1904))
-=======
-    return texte
->>>>>>> 1c512ae99dd18123abdf32e09b58cd90aba546e4

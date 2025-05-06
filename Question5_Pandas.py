@@ -121,11 +121,7 @@ def diagramme_histoire():
     # Conversion en dataframe
     df = pd.DataFrame(list(dico.items()), columns=["Pays", "Nombre_participants"])
 
-<<<<<<< HEAD
     # # Tri décroissant
-=======
-    # Tri décroissant
->>>>>>> 1c512ae99dd18123abdf32e09b58cd90aba546e4
     # df = df.sort_values(by="Nombre_participants", ascending=False)
 
     df.plot.bar(
