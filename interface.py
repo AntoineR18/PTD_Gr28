@@ -2,6 +2,10 @@ import importlib
 import sys
 import subprocess
 import time
+import os
+
+# Créer le dossier 'resultat' s'il n'existe pas
+os.makedirs("Resultat", exist_ok=True)
 
 
 def main():
@@ -56,10 +60,6 @@ def main():
             " aux Jeux Olympiques"
         )
         print("6p - Question 6 (pandas + matplotlib) : Avec une frise chronologique")
-        print("5p1 - Q5 (pandas) : Histogramme des pays non médaillés"
-              " pour une année donnée.")
-        print("5p2 - Q5 (pandas) : Histogramme historique des pays non"
-              " médaillés les + représentés.")
         print(
             "8a - Question 8.a : Répartition des médailles par"
             " saison pour un pays donné."

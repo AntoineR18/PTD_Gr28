@@ -8,6 +8,16 @@ dta_noc = pd.read_csv("donnees_jeux_olympiques/noc_regions.csv")
 dta_utile = dta[["ID", "NOC", "Year", "Medal"]]
 
 
+# Création de la liste exhaustive des années olympiques
+
+annees = [annee for annee in range(1896, 1993, 4)]
+annees.pop(annees.index(1916))
+annees.pop(annees.index(1940))
+annees.pop(annees.index(1944))
+annees.append(1906)
+annees.extend([annee for annee in range(1994, 2017, 2)])
+annees.sort()
+
 # Pays non médaillé le plus représenté sur une année donnée.
 
 
@@ -29,15 +39,14 @@ def pays_non_medaille_max_annee_panda(annee):
             continue
         dico[noc] = dta_pays["ID"].nunique()
 
-    code_noc = max(dico, key=dico.get)
+    noc = max(dico, key=dico.get)
     return (
-        f"En {annee}, avec {dico[code_noc]} participants, le pays non"
-        f" médaillé le plus représenté était :"
-        f" {dta_noc[dta_noc["NOC"] == "BOH"]["region"].values[0]}."
+        f"En {annee}, avec {dico[noc]} participants, le pays non médaillé"
+        f" le plus représenté était : {noc}."
     )
 
 
-print(pays_non_medaille_max_annee_panda(1912))
+# print(pays_non_medaille_max_annee_panda(1904))
 
 
 # Diagramme en barres des pays non médaillés sur une année
@@ -79,6 +88,7 @@ def diagramme_annee(annee):
     plt.ylabel("Nombre d'athlètes")
     plt.xticks(rotation=90)
     plt.tight_layout()
+    plt.savefig("Question5b.png")
     plt.show()
 
 
@@ -89,15 +99,6 @@ def diagramme_annee(annee):
 
 
 def diagramme_histoire():
-
-    # Création de la liste exhaustive des années olympiques
-    annees = [annee for annee in range(1896, 1993, 4)]
-    annees.pop(annees.index(1916))
-    annees.pop(annees.index(1940))
-    annees.pop(annees.index(1944))
-    annees.append(1906)
-    annees.extend([annee for annee in range(1994, 2017, 2)])
-    annees.sort()
 
     # Création du dictionnaire résultat.
     # Il contient, pour chaque année,
@@ -121,7 +122,7 @@ def diagramme_histoire():
     # Conversion en dataframe
     df = pd.DataFrame(list(dico.items()), columns=["Pays", "Nombre_participants"])
 
-    # Tri décroissant
+    # # Tri décroissant
     # df = df.sort_values(by="Nombre_participants", ascending=False)
 
     df.plot.bar(
@@ -137,6 +138,7 @@ def diagramme_histoire():
     plt.ylabel("Nombre d'athlètes")
     plt.xticks(rotation=90)
     plt.tight_layout()
+    plt.savefig("Question5c.png")
     plt.show()
 
 

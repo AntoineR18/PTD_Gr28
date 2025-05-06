@@ -52,8 +52,16 @@ def afficher_annee_adhesion_depuis_tableau(pays_nom: str):
 
     for nom, annee in pays_final_toutes_lettres:
         if nom.strip().title() == pays_nom:
-            print(f"Le pays : '{pays_nom}', a participé pour"
-                  f" la première fois aux JO en {annee}.")
-            return
+            texte = (
+                f"Le pays : '{pays_nom}', a participé pour"
+                f" la première fois aux JO en {annee}."
+                )
+            break
+        else:
+            texte = f"❌ Le pays '{pays_nom}' n’a pas été trouvé dans le tableau."
 
-    print(f"❌ Le pays '{pays_nom}' n’a pas été trouvé dans le tableau.")
+    print(texte)
+
+    # Création du fichier de sortie
+    with open("Resultat/Question6.txt", "w", encoding="utf-8") as f:
+        f.write(texte + "\n")

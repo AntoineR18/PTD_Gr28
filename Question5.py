@@ -27,17 +27,11 @@ def pays_non_medaille_max_annee(annee):
     # On transforme annee d'un int en une str.
     annee = str(annee)
 
-    # On initialise un dictionnaire des pays pour marquer s'ils
-    # sont médaillés ou non.
-    pays_medaille = {ligne[0]: False for ligne in donnees_noc_regions}
-
-    # On utilise une liste pour marquer si un athlète a déjà été vu ou non.
-    athletes = [False for i in range(0, int(donnees[-1][0]) + 1)]
-
-    # On initialise le dictionnaire résultat. Il contiendra les couples
-    # pays: nombre d'athlètes pour tous les pays non médaillés
-    # l'année demandée.
-    dico = {}
+    # Initialisation du dictionnaire final.
+    # Les clés sont les pays issus de noc_regions et les valeurs sont des
+    # listes contenant un ensemble qui contiendra les différents athlètes et
+    # un booléen qui retient si un pays est médaillé ou non
+    pays_medaille = {ligne[0]: [set(), False] for ligne in donnees_noc_regions[1:]}
 
     for ligne in donnees:
 
@@ -45,38 +39,36 @@ def pays_non_medaille_max_annee(annee):
         if ligne[idx_annee] != annee:
             continue
 
-        # On ne compte pas deux fois le même athlète
-        if athletes[int(ligne[idx_athlete])]:
-            continue
-        athletes[int(ligne[idx_athlete])] = True
-
         noc = ligne[idx_noc]
         if noc == "SGP":
             noc = "SIN"
 
         # Si l'athlète est médaillé, on actualise son pays.
         if ligne[-1] != "NA":
-            pays_medaille[noc] = True
+            pays_medaille[noc][1] = True
 
-        # Si le pays est médaillé et s'il est dans le dictionnaire final,
-        # on le supprime.
-        if pays_medaille[noc]:
-            if noc in dico:
-                del dico[noc]
+        # On ajoute l'athlète à l'ensemble d'athlètes du pays.
+        pays_medaille[noc][0].add(ligne[0])
 
-        # Si le pays n'est pas médaillé, on initialise son nombre d'athlètes
-        # à 0 s'il n'est pas déjà dans le dictionnaire final, puis on
-        # incrémente le nombre d'athlètes.
+    # On parcourt à nouveau le dictionnaire pour obtenir des couples clés
+    # valeurs de la forme noc: nombre d'athlètes.
+    for noc in pays_medaille.keys():
+
+        if pays_medaille[noc][1]:
+            pays_medaille[noc] = 0
+
         else:
-            if noc not in dico:
-                dico[noc] = 0
-            dico[noc] += 1
+            pays_medaille[noc] = len(pays_medaille[noc][0])
 
-    code_noc = max(dico, key=dico.get)
-    return (
-        f"En {annee}, avec {dico[code_noc]} participants, le pays non médaillé"
-        f" le plus représenté était : {noc_to_country[code_noc]}."
+    noc = max(pays_medaille, key=pays_medaille.get)
+    texte = (
+        f"En {annee}, avec {pays_medaille[noc]} participants, le pays non médaillé"
+        f" le plus représenté était : {noc}."
+
     )
+    print(texte)
 
-
-print(pays_non_medaille_max_annee(1912))
+    # Sauvegarde dans un fichier texte
+    with open("Resultat/Question5.txt", "w", encoding="utf-8") as f:
+        f.write(texte + "\n")
+    return texte

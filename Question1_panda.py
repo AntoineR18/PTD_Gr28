@@ -17,11 +17,18 @@ medals_count = df_phelps["Medal"].value_counts()
 medals_count["Total"] = medals_count.sum()
 
 
-# Afficher le résultat
+# Afficher le résultat et le sauvegarder
 def afficher_resultat():
-    print(
+    texte = (
         f"Michael Phelps a obtenu {medals_count['Total']} médailles aux"
         " Jeux Olympiques.\n"
         f"Dont {medals_count['Gold']} en or, {medals_count['Silver']} en argent "
         f"et {medals_count['Bronze']} en bronze."
-        )
+    )
+
+    # Affichage console (facultatif)
+    print(texte)
+
+    # Écriture dans le fichier texte
+    with open("Resultat/Question1_pandas.txt", "w", encoding="utf-8") as f:
+        f.write(texte + "\n")
