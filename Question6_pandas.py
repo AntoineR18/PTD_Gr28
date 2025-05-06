@@ -79,8 +79,10 @@ def plot_frise_participations_jo():
 
     def list_groupe():
         # Affichage du dictionnaire des groupes
-        for label, countries in groupe_labels.items():
-            print(f"{label} : {', '.join(countries)}")
+        with open("resultat/Question6_Pandas.txt", "w", encoding="utf-8") as f:
+            for label, countries in groupe_labels.items():
+                f.write(f"{label} : {', '.join(countries)}\n")
+
     print("Clicker sur un point de la frise pour afficher les pays qui ont rejoint"
           " cette année")
 
@@ -103,6 +105,7 @@ def plot_frise_participations_jo():
         print(f"\nPays ayant débuté en {int(x)} : {', '.join(countries)}")
 
     fig.canvas.mpl_connect("pick_event", on_pick)
-
+    list_groupe()
     plt.tight_layout()
+    plt.savefig("Resultat/Question6_Pandas.png")
     plt.show()

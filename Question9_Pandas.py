@@ -53,9 +53,5 @@ def plot_proportion_femmes(saison=None):
     plt.grid(True, linestyle='--', alpha=0.6)
     plt.xticks(rotation=45)
     plt.tight_layout()
+    plt.savefig("Resultat/Question9.png")
     plt.show()
-
-
-plot_proportion_femmes()          # été + hiver
-plot_proportion_femmes("summer")  # seulement été
-plot_proportion_femmes("winter")  # seulement hiver
