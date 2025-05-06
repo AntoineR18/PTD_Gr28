@@ -88,6 +88,7 @@ def diagramme_annee(annee):
     plt.ylabel("Nombre d'athlètes")
     plt.xticks(rotation=90)
     plt.tight_layout()
+    plt.savefig("Question5b.png")
     plt.show()
 
 
@@ -137,7 +138,7 @@ def diagramme_histoire():
     plt.ylabel("Nombre d'athlètes")
     plt.xticks(rotation=90)
     plt.tight_layout()
-    plt.savefig("Pays_non_medaille_max_histoire.png")
+    plt.savefig("Question5c.png")
     plt.show()
 
 
