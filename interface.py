@@ -47,15 +47,19 @@ def main():
             "11. Question 5 : Parmi les pays n’ayant obtenu aucune médaille sur une"
             " édition donnée, identifier le pays ayant le plus de participants."
         )
-        print("Streamlit_Fermeture. Fermer  Streamlit")
         print("12. Question 5 (pandas)")
+        print(
+            "13. Question 6 : Donner, pour chaque pays, sa première participation"
+            " aux Jeux Olympiques"
+        )
+        print("14. Question 6 (pandas + matplotlib) : Avec une frise chronologique")
         print(
             "15. Question 8.1 : Répartition des médailles par saison pour un pays donné."
         )
         print("16. Question 8.2 : Répartition globale des médailles - Été vs Hiver.")
         print("17. Question 8.3 : Top pays médaillés pour une saison donnée.")
         print("18. Question 8.4 : Part moyenne des médailles pour un pays.")
-
+        print("Streamlit_Fermeture. Fermer  Streamlit")
         print("0. Quitter")
 
         choix = input("Votre choix : ")
@@ -64,7 +68,7 @@ def main():
             if choix == "1":
                 import Question1
             elif choix == "2":
-                import Question1_panda
+                import Question1_pandas
             elif choix == "3":
                 annee = int(input("Entrez l'année des JO : "))
                 import Question2
@@ -72,9 +76,9 @@ def main():
                 Question2.afficher_bornes_medailles(annee)
             elif choix == "4":
                 annee = int(input("Entrez l'année des JO : "))
-                import Question2_panda
+                import Question2_Pandas
 
-                Question2_panda.afficher_bornes_medailles_par_nation_pandas(annee)
+                Question2_pandas.afficher_bornes_medailles_par_nation_pandas(annee)
             elif choix == "5":
                 pays = input("Entrez le nom du pays : ")
                 annee = input("Entrez l'année des JO : ")
@@ -154,35 +158,38 @@ def main():
                 print(resultat)
             elif choix == "12":
                 annee = int(input("Entrez l'année des JO : "))
-                import Question5_panda
+                import Question5_pandas
 
-                resultat = Question5_panda.pays_non_medaille_max_annee_panda(annee)
+                resultat = Question5_pandas.pays_non_medaille_max_annee_pandas(annee)
                 print(resultat)
             elif choix == "13":
                 pays = input("Entrez le nom du pays (ex: France) : ")
                 import Question6
 
                 Question6.afficher_annee_adhesion_depuis_tableau(pays)
+            elif choix == "14":
+                import Question6_pandas
+                # L'import suffit à exécuter le graphique.
             elif choix == "15":
                 pays = input("Entrez le code NOC du pays (ex: FRA, USA, CHN) : ")
-                import Question7_panda
+                import Question7_pandas
 
-                Question7_panda.plot_medaille_pays_selon_saison(pays)
+                Question7_pandas.plot_medaille_pays_selon_saison(pays)
             elif choix == "16":
-                import Question7_panda
+                import Question7_pandas
 
-                Question7_panda.plot_medaille_global_ete_vs_hiver()
+                Question7_pandas.plot_medaille_global_ete_vs_hiver()
             elif choix == "17":
                 saison = input("Saison (Summer/Winter) : ")
                 top_n = int(input("Nombre de pays à afficher (ex: 10) : "))
-                import Question7_panda
+                import Question7_pandas
 
-                Question7_panda.plot_part_medaille_par_pays_dans_saison(saison, top_n)
+                Question7_pandas.plot_part_medaille_par_pays_dans_saison(saison, top_n)
             elif choix == "18":
                 pays = input("Entrez le code NOC du pays (ex: FRA, USA) : ")
-                import Question7_panda
+                import Question7_pandas
 
-                Question7_panda.plot_medaille_normalisee_pays(pays)
+                Question7_pandas.plot_medaille_normalisee_pays(pays)
 
             elif choix == "Streamlit_Fermeture":
                 if streamlit_process is not None and streamlit_process.poll() is None:
