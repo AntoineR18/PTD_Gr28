@@ -4,7 +4,7 @@ import subprocess
 import time
 import os
 
-# Créer le dossier 'resultat' s'il n'existe pas
+# Créer le dossier 'Resultat' s'il n'existe pas (afin de sauvegarder les résultats)
 os.makedirs("Resultat", exist_ok=True)
 
 
@@ -60,6 +60,7 @@ def main():
             " aux Jeux Olympiques"
         )
         print("6p - Question 6 (pandas + matplotlib) : Avec une frise chronologique")
+        print("7 - Question 7 : Nombre de participants selon certains filtres.")
         print(
             "8a - Question 8.a : Répartition des médailles par"
             " saison pour un pays donné."
@@ -86,7 +87,8 @@ def main():
                         "scikit-learn",
                         "streamlit",
                         "plotly",
-                        "pycountry"
+                        "pycountry",
+                        "seaborn"
                     ]
 
                     print("🔍 Vérification des dépendances...\n")
@@ -128,7 +130,6 @@ def main():
             elif choix == "1":
                 t0 = time.time()
                 import Question1
-                # L'import suffit à exécuter
                 Question1.afficher_resultat()
                 t1 = time.time()
                 print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
@@ -136,7 +137,6 @@ def main():
             elif choix == "1p":
                 t0 = time.time()
                 import Question1_Pandas
-                # L'import suffit à exécuter le graphique.
                 Question1_Pandas.afficher_resultat()
                 t1 = time.time()
                 print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
@@ -247,6 +247,31 @@ def main():
                 Question6_Pandas.plot_frise_participations_jo()
                 t1 = time.time()
                 print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
+            elif choix == "7":
+                import Question7_Pandas
+
+                annee_input = input("Filtrer par année ? (ex: 2016 ou vide) : ").strip()
+                annee = int(annee_input) if annee_input else None
+
+                pays_input = input("Filtrer par pays (code NOC, ex: FRA)"
+                                   " ou vide : ").strip().upper()
+                pays = pays_input if pays_input else None
+
+                sexe_input = input("Filtrer par sexe (M/F) ou vide : ").strip().upper()
+                sexe = sexe_input if sexe_input in ("M", "F") else None
+
+                medaille_input = input("Filtrer par médaillé ? (o = oui, n = non, "
+                                       "vide = tous) : ").strip().lower()
+                if medaille_input == "o":
+                    medaille = True
+                elif medaille_input == "n":
+                    medaille = False
+                else:
+                    medaille = None
+
+                Question7_Pandas.nb_participants(annee=annee, pays=pays, sexe=sexe,
+                                                 medaille=medaille)
+
             elif choix == "8a":
                 pays = input("Entrez le code NOC du pays (ex: FRA, USA, CHN) : ")
                 import Question8_Pandas
