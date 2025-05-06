@@ -8,7 +8,7 @@ __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
-*.py~ 
+*.py~
 
 # Fichiers de log / debug
 *.log
@@ -40,3 +40,6 @@ htmlcov/
 .mypy_cache/
 .black/
 .flake8/
+
+# Répertoire personnel à ignorer
+Resultat/

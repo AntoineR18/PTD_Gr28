@@ -84,9 +84,16 @@ def comp_meda_age(sport: str, methode: str, genre: str):
                 nb_med_ages += 1
 
     # On affiche les résultats
-    print(f"Pour le sport {sport} :")
-    print(f"Nombre de médailles pour les plus jeunes : {nb_med_jeunes}")
-    print(f"Nombre de médailles pour les plus âgés : {nb_med_ages}")
+    texte = (
+        f"Pour le sport {sport} ({genre}, méthode : {methode}) :\n"
+        f"Nombre de médailles pour les plus jeunes : {nb_med_jeunes}\n"
+        f"Nombre de médailles pour les plus âgés : {nb_med_ages}"
+    )
+
+    print(texte)
+
+    with open("Resultat/Question4.txt", "w", encoding="utf-8") as f:
+        f.write(texte + "\n")
 
 
 # Test des fonctions avec les sports spécifiés
