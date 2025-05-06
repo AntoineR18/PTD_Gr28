@@ -37,7 +37,7 @@ def pays_non_medaille_max_annee_panda(annee):
     )
 
 
-print(pays_non_medaille_max_annee_panda(1912))
+# print(pays_non_medaille_max_annee_panda(1912))
 
 
 # Diagramme en barres des pays non médaillés sur une année
@@ -121,8 +121,8 @@ def diagramme_histoire():
     # Conversion en dataframe
     df = pd.DataFrame(list(dico.items()), columns=["Pays", "Nombre_participants"])
 
-    # Tri décroissant
-    df = df.sort_values(by="Nombre_participants", ascending=False)
+    # # Tri décroissant
+    # df = df.sort_values(by="Nombre_participants", ascending=False)
 
     df.plot.bar(
         x="Pays",
@@ -137,7 +137,8 @@ def diagramme_histoire():
     plt.ylabel("Nombre d'athlètes")
     plt.xticks(rotation=90)
     plt.tight_layout()
+    plt.savefig("Pays_non_medaille_max_histoire.png")
     plt.show()
 
 
-# diagramme_histoire()
+diagramme_histoire()
