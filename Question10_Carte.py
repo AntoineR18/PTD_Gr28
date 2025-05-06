@@ -234,22 +234,25 @@ def get_new_nationalities_opti(df):
 
 
 # Récupérer la liste de tous les pays "d'arrivée" après changement de nationalité
-new_noc_list = get_new_nationalities_opti(df, athletes_changed_nationality)
+new_noc_list = get_new_nationalities(df, athletes_changed_nationality)
+# new_noc_list = get_new_nationalities_opti(df)
 
 # Compter le nombre d'athlètes reçus par pays
 noc_counts = pd.Series(new_noc_list).value_counts().reset_index()
 noc_counts.columns = ['NOC', 'Nb_Athletes']
 
-# Afficher la carte
-carte = px.choropleth(
-    noc_counts,
-    locations="NOC",
-    color="Nb_Athletes",
-    hover_name="NOC",
-    color_continuous_scale="Purples",
-    projection="natural earth",
-    title="Pays ayant reçu des athlètes après changement de nationalité à partir"
-    " de 1993",
-)
 
-carte.show()
+# Afficher la carte
+def afficher_carte():
+    carte = px.choropleth(
+        noc_counts,
+        locations="NOC",
+        color="Nb_Athletes",
+        hover_name="NOC",
+        color_continuous_scale="Purples",
+        projection="natural earth",
+        title="Pays ayant reçu des athlètes après changement de nationalité à partir"
+        " de 1993",
+    )
+
+    carte.show()
