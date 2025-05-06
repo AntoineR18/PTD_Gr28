@@ -21,7 +21,26 @@ def nb_participants(annee=None, pays=None, sexe=None, medaille=None):
     elif medaille is False:
         df = df[df["Medal"].isna()]
     df = df.drop_duplicates(subset=["ID", "Year"])
+
+    count = df.shape[0]
+
+    texte = (
+        f"📊 Nombre de participants"
+        f"{' en ' + str(annee) if annee else ''}"
+        f"{' du pays ' + pays if pays else ''}"
+        f"{' de sexe ' + sexe if sexe else ''}"
+        f"{' avec médaille' if medaille is True else ''}"
+        f"{' sans médaille' if medaille is False else ''} : {count}"
+    )
+
+    print(texte)
+
+    with open("Resultat/Question7.txt", "w", encoding="utf-8") as f:
+        f.write(texte + "\n")
+
     return df.shape[0]
+
+
 
 
 # print(nb_participants(pays="EGY", medaille=False))
