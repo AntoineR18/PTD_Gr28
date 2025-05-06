@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 # Charger le fichier CSV
 df_athletes = pd.read_csv("donnees_jeux_olympiques/athlete_events.csv")
 
@@ -15,9 +16,12 @@ medals_count = df_phelps["Medal"].value_counts()
 # Ajouter une ligne "Total"
 medals_count["Total"] = medals_count.sum()
 
+
 # Afficher le résultat
-print(
-    f"Michael Phelps a obtenu {medals_count['Total']} médailles aux Jeux Olympiques.\n"
-    f"Dont {medals_count['Gold']} en or, {medals_count['Silver']} en argent "
-    f"et {medals_count['Bronze']} en bronze."
-    )
+def afficher_resultat():
+    print(
+        f"Michael Phelps a obtenu {medals_count['Total']} médailles aux"
+        " Jeux Olympiques.\n"
+        f"Dont {medals_count['Gold']} en or, {medals_count['Silver']} en argent "
+        f"et {medals_count['Bronze']} en bronze."
+        )

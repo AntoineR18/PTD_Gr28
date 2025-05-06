@@ -10,4 +10,7 @@ for ligne in donnees_athlete_events:
         if ligne[-1] != "NA":
             nombre_medailles += 1
 
-print(f"Michael Phelps a obtenu {nombre_medailles} médailles aux Jeux Olympiques.")
+
+# Afficher le résultat
+def afficher_resultat():
+    print(f"Michael Phelps a obtenu {nombre_medailles} médailles aux Jeux Olympiques.")

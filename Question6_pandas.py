@@ -40,68 +40,69 @@ grouped = data.groupby(data.values)
 years = sorted(grouped.groups.keys())
 num_years = len(years)
 
-# On choisit la couleur de notre frise (colormap)
-colormap = cm.plasma
 
-# Normaliser les années pour qu'elles correspondent à la colormap (entre 0 et 1)
-normalize = plt.Normalize(vmin=min(years), vmax=max(years))
-scalarMap = cm.ScalarMappable(norm=normalize, cmap=colormap)
+def plot_frise_participations_jo():
+    """
+    Affiche une frise chronologique des premières participations aux JO
+    par groupe de pays.
+    """
+    # On choisit la couleur de notre frise (colormap)
+    colormap = cm.plasma
 
-# Initialisation de la figure
-fig, ax = plt.subplots(figsize=(14, 4))
+    # Normaliser les années pour qu'elles correspondent à la colormap (entre 0 et 1)
+    normalize = plt.Normalize(vmin=min(years), vmax=max(years))
+    scalarMap = cm.ScalarMappable(norm=normalize, cmap=colormap)
 
-# Frise centrale
-ax.hlines(0, data.min() - 4, data.max() + 4, color="black", linewidth=2)
+    # Initialisation de la figure
+    fig, ax = plt.subplots(figsize=(14, 4))
 
-# Création ésdes groupes de pays nom : "Groupe 1", "Groupe 2", etc.
-groupe_labels = {}
-for i, year in enumerate(years):
-    countries = grouped.get_group(year).index.tolist()
-    label = f"Groupe {i+1}"
-    groupe_labels[label] = list(countries)
-    color = scalarMap.to_rgba(year)  # Obtenir la couleur correspondante à l'année
-    ax.plot(year, 0, "o", color=color, markersize=8)  # Appliquer la couleur au point
-    ax.text(year, 0.3, label, ha="center", va="bottom", fontsize=9, rotation=45)
-    ax.text(year, -0.3, str(year), ha="center", va="top", fontsize=8, rotation=315)
+    # Frise centrale
+    ax.hlines(0, data.min() - 4, data.max() + 4, color="black", linewidth=2)
 
-# Ajustements visuels
-ax.set_ylim(-1, 1)
-ax.set_xlim(data.min() - 4, data.max() + 4)
-ax.set_yticks([])
-ax.set_xlabel("Année")
-ax.set_title("Les premières participations aux JO des pays (regroupés)")
+    # Création ésdes groupes de pays nom : "Groupe 1", "Groupe 2", etc.
+    groupe_labels = {}
+    for i, year in enumerate(years):
+        countries = grouped.get_group(year).index.tolist()
+        label = f"Groupe {i+1}"
+        groupe_labels[label] = list(countries)
+        color = scalarMap.to_rgba(year)  # Obtenir la couleur correspondante à l'année
+        ax.plot(year, 0, "o", color=color, markersize=8)  # Applique la couleur au point
+        ax.text(year, 0.3, label, ha="center", va="bottom", fontsize=9, rotation=45)
+        ax.text(year, -0.3, str(year), ha="center", va="top", fontsize=8, rotation=315)
 
+    # Ajustements visuels
+    ax.set_ylim(-1, 1)
+    ax.set_xlim(data.min() - 4, data.max() + 4)
+    ax.set_yticks([])
+    ax.set_xlabel("Année")
+    ax.set_title("Les premières participations aux JO des pays (regroupés)")
 
-def list_groupe():
-    # Affichage du dictionnaire des groupes
-    for label, countries in groupe_labels.items():
-        print(f"{label} : {', '.join(countries)}")
+    def list_groupe():
+        # Affichage du dictionnaire des groupes
+        for label, countries in groupe_labels.items():
+            print(f"{label} : {', '.join(countries)}")
+    print("Clicker sur un point de la frise pour afficher les pays qui ont rejoint"
+          " cette année")
 
+    # Dictionnaire pour retrouver les pays par point (x, y)
+    points = {}
+    scatters = []
 
-print("Clicker sur un point de la frise pour afficher les pays qui ont rejoint"
-      " cette année")
+    for i, year in enumerate(years):
+        countries = grouped.get_group(year).index.tolist()
+        color = scalarMap.to_rgba(year)
+        sc = ax.plot(year, 0, "o", color=color, markersize=8, picker=5)  # active : clic
+        points[(year, 0)] = countries
+        scatters.append(sc[0])  # on stocke les objets graphiques
 
-# Dictionnaire pour retrouver les pays par point (x, y)
-points = {}
-scatters = []
+    def on_pick(event):
+        artist = event.artist
+        x = artist.get_xdata()[0]
+        y = artist.get_ydata()[0]
+        countries = points.get((x, y), [])
+        print(f"\nPays ayant débuté en {int(x)} : {', '.join(countries)}")
 
-for i, year in enumerate(years):
-    countries = grouped.get_group(year).index.tolist()
-    color = scalarMap.to_rgba(year)
-    sc = ax.plot(year, 0, "o", color=color, markersize=8, picker=5)  # active le clic
-    points[(year, 0)] = countries
-    scatters.append(sc[0])  # on stocke les objets graphiques
+    fig.canvas.mpl_connect("pick_event", on_pick)
 
-
-def on_pick(event):
-    artist = event.artist
-    x = artist.get_xdata()[0]
-    y = artist.get_ydata()[0]
-    countries = points.get((x, y), [])
-    print(f"\nPays ayant débuté en {int(x)} : {', '.join(countries)}")
-
-
-fig.canvas.mpl_connect("pick_event", on_pick)
-
-plt.tight_layout()
-plt.show()
+    plt.tight_layout()
+    plt.show()

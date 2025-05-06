@@ -1,6 +1,5 @@
 import importlib
 import sys
-import os
 import subprocess
 
 
@@ -9,6 +8,7 @@ def main():
 
     while True:
         print("=== Menu PTD Groupe 28 ===")
+        print("Install. Installer les dépendances nécessaires au projet.")
         print(
             "1. Question 1 : Déterminer le nombre de médailles gagnées par"
             " Michael Phelps."
@@ -54,7 +54,8 @@ def main():
         )
         print("14. Question 6 (pandas + matplotlib) : Avec une frise chronologique")
         print(
-            "15. Question 8.1 : Répartition des médailles par saison pour un pays donné."
+            "15. Question 8.1 : Répartition des médailles par"
+            " saison pour un pays donné."
         )
         print("16. Question 8.2 : Répartition globale des médailles - Été vs Hiver.")
         print("17. Question 8.3 : Top pays médaillés pour une saison donnée.")
@@ -65,10 +66,62 @@ def main():
         choix = input("Votre choix : ")
 
         try:
-            if choix == "1":
+            if choix == "Install":
+                try:
+                    packages = [
+                        "pandas",
+                        "matplotlib",
+                        "numpy",
+                        "scikit-learn",
+                        "streamlit",
+                        "plotly",
+                        "pycountry"
+                    ]
+
+                    print("🔍 Vérification des dépendances...\n")
+
+                    to_install = []
+
+                    for pkg in packages:
+                        try:
+                            importlib.import_module(pkg)
+                            print(f"✅ {pkg} est déjà installé.")
+                        except ImportError:
+                            print(f"❌ {pkg} n'est pas installé.")
+                            to_install.append(pkg)
+
+                    if not to_install:
+                        print("\n🎉 Tous les packages nécessaires sont déjà installés.")
+                        return
+
+                    print("\n📦 Packages manquants à installer :")
+                    print(", ".join(to_install))
+                    confirmer = input("Souhaitez-vous installer les packages"
+                                      " manquants ? (o/n) : ").lower()
+
+                    if confirmer == "o":
+                        python_exec = sys.executable
+                        for pkg in to_install:
+                            print(f"🔧 Installation de {pkg}...")
+                            subprocess.check_call([python_exec,
+                                                   "-m",
+                                                   "pip",
+                                                   "install",
+                                                   pkg])
+                        print("\n✅ Installation terminée.")
+                    else:
+                        print("⛔ Installation annulée par l'utilisateur.")
+
+                except Exception as e:
+                    print(f"❌ Une erreur est survenue pendant l'installation : {e}")
+            elif choix == "1":
                 import Question1
+                # L'import suffit à exécuter
+                Question1.afficher_resultat()
             elif choix == "2":
-                import Question1_pandas
+                import Question1_Pandas
+                # L'import suffit à exécuter le graphique.
+                Question1_Pandas.afficher_resultat()
             elif choix == "3":
                 annee = int(input("Entrez l'année des JO : "))
                 import Question2
@@ -78,7 +131,7 @@ def main():
                 annee = int(input("Entrez l'année des JO : "))
                 import Question2_Pandas
 
-                Question2_pandas.afficher_bornes_medailles_par_nation_pandas(annee)
+                Question2_Pandas.afficher_bornes_medailles_par_nation_pandas(annee)
             elif choix == "5":
                 pays = input("Entrez le nom du pays : ")
                 annee = input("Entrez l'année des JO : ")
@@ -93,20 +146,6 @@ def main():
 
                 Question3_Pandas.affichage_medaille_pays_JO(pays, annee, saison)
             elif choix == "7":
-                try:
-                    import streamlit
-                except ModuleNotFoundError:
-                    installer = input(
-                        "⚠️ Streamlit n'est pas installé."
-                        " Voulez-vous l'installer ? (o/n) : "
-                    ).lower()
-                    if installer == "o":
-                        subprocess.call(["pip", "install", "streamlit"])
-                        import streamlit
-                    else:
-                        print("Streamlit non installé.")
-                        continue
-
                 if streamlit_process is None or streamlit_process.poll() is not None:
                     print("Lancement de l'application Streamlit...")
                     streamlit_process = subprocess.Popen(
@@ -129,20 +168,6 @@ def main():
 
                 Question4_Pandas.comp_meda_moy_age(sport, methode, genre)
             elif choix == "10":
-                try:
-                    import streamlit
-                except ModuleNotFoundError:
-                    installer = input(
-                        "⚠️ Streamlit n'est pas installé."
-                        " Voulez-vous l'installer ? (o/n) : "
-                    ).lower()
-                    if installer == "o":
-                        subprocess.call(["pip", "install", "streamlit"])
-                        import streamlit
-                    else:
-                        print("Streamlit non installé.")
-                        continue
-
                 if streamlit_process is None or streamlit_process.poll() is not None:
                     print("Lancement de l'application Streamlit...")
                     streamlit_process = subprocess.Popen(
@@ -158,9 +183,9 @@ def main():
                 print(resultat)
             elif choix == "12":
                 annee = int(input("Entrez l'année des JO : "))
-                import Question5_pandas
+                import Question5_Pandas
 
-                resultat = Question5_pandas.pays_non_medaille_max_annee_pandas(annee)
+                resultat = Question5_Pandas.pays_non_medaille_max_annee_panda(annee)
                 print(resultat)
             elif choix == "13":
                 pays = input("Entrez le nom du pays (ex: France) : ")
@@ -168,28 +193,29 @@ def main():
 
                 Question6.afficher_annee_adhesion_depuis_tableau(pays)
             elif choix == "14":
-                import Question6_pandas
-                # L'import suffit à exécuter le graphique.
+                import Question6_Pandas
+                # L'import suffit à exécuter la question et le graphique.
+                Question6_Pandas.plot_frise_participations_jo()
             elif choix == "15":
                 pays = input("Entrez le code NOC du pays (ex: FRA, USA, CHN) : ")
-                import Question7_pandas
+                import Question7_Pandas
 
-                Question7_pandas.plot_medaille_pays_selon_saison(pays)
+                Question7_Pandas.plot_medaille_pays_selon_saison(pays)
             elif choix == "16":
-                import Question7_pandas
+                import Question7_Pandas
 
-                Question7_pandas.plot_medaille_global_ete_vs_hiver()
+                Question7_Pandas.plot_medaille_global_ete_vs_hiver()
             elif choix == "17":
                 saison = input("Saison (Summer/Winter) : ")
                 top_n = int(input("Nombre de pays à afficher (ex: 10) : "))
-                import Question7_pandas
+                import Question7_Pandas
 
-                Question7_pandas.plot_part_medaille_par_pays_dans_saison(saison, top_n)
+                Question7_Pandas.plot_part_medaille_par_pays_dans_saison(saison, top_n)
             elif choix == "18":
                 pays = input("Entrez le code NOC du pays (ex: FRA, USA) : ")
-                import Question7_pandas
+                import Question7_Pandas
 
-                Question7_pandas.plot_medaille_normalisee_pays(pays)
+                Question7_Pandas.plot_medaille_normalisee_pays(pays)
 
             elif choix == "Streamlit_Fermeture":
                 if streamlit_process is not None and streamlit_process.poll() is None:
