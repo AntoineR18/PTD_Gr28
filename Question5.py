@@ -73,10 +73,14 @@ def pays_non_medaille_max_annee(annee):
             dico[noc] += 1
 
     code_noc = max(dico, key=dico.get)
-    return (
+    texte = (
         f"En {annee}, avec {dico[code_noc]} participants, le pays non médaillé"
         f" le plus représenté était : {noc_to_country[code_noc]}."
     )
+    print(texte)
 
+    # Sauvegarde dans un fichier texte
+    with open("Resultat/Question5.txt", "w", encoding="utf-8") as f:
+        f.write(texte + "\n")
 
-print(pays_non_medaille_max_annee(1912))
+    return texte

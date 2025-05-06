@@ -45,8 +45,7 @@ def affichage_medaille_pays_JO(country, year, season):
 
     print(texte)
 
-    nom_fichier = "Resultat/Question3_Pandas.txt"
-    with open(nom_fichier, "w", encoding="utf-8") as f:
+    with open("Resultat/Question3_Pandas.txt", "w", encoding="utf-8") as f:
         f.write(texte + "\n")
 
 
