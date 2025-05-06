@@ -2,6 +2,10 @@ import importlib
 import sys
 import subprocess
 import time
+import os
+
+# Créer le dossier 'resultat' s'il n'existe pas
+os.makedirs("Resultat", exist_ok=True)
 
 
 def main():
