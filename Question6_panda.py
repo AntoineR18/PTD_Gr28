@@ -78,6 +78,9 @@ def list_groupe():
         print(f"{label} : {', '.join(countries)}")
 
 
+print("Clicker sur un point de la frise pour afficher les pays qui ont rejoint"
+      " cette année")
+
 # Dictionnaire pour retrouver les pays par point (x, y)
 points = {}
 scatters = []
