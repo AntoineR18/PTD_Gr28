@@ -5,6 +5,19 @@ from lecture_donnees import donnees_athlete_events
 
 
 def table_sport(genre: str):
+    """
+    Renvoie la liste des sports pour un genre donné.
+
+    parameters:
+    ----------
+    genre : str
+        Le genre de l'athlète ('M' ou 'F').
+
+    returns:
+    ----------
+    table_sport : list
+        La liste des sports pour le genre donné.
+    """
     if genre != "M" and genre != "F":
         raise ValueError("Le genre doit être 'M' ou 'F'")
     table_sport = []
@@ -15,7 +28,22 @@ def table_sport(genre: str):
     return table_sport
 
 
-def liste_ages_par_sport(donnees_athlete_events: list, genre: str, sport: str):
+def liste_ages_par_sport(genre: str, sport: str):
+    """
+    Renvoie la liste des âges des athlètes pour un sport donné et un genre donné.
+
+    parameters:
+    ----------
+    genre : str
+        Le genre étudié.
+    sport : str
+        Le sport choisi.
+
+    returns:
+    ----------
+    liste_ages : list
+        La liste des âges des athlètes pour le sport et le genre donnés.
+    """
     if genre != "M" and genre != "F":
         raise ValueError("Le genre doit être 'M' ou 'F'")
     if sport not in table_sport(genre):
@@ -62,7 +90,7 @@ def comp_meda_age(sport: str, methode: str, genre: str):
         raise ValueError("Le sport n'est pas dans la liste des sports")
     if methode != "moyenne" and methode != "mediane":
         raise ValueError("La méthode doit être 'moyenne' ou 'mediane'")
-    liste_ages_sport = liste_ages_par_sport(donnees_athlete_events, genre, sport)
+    liste_ages_sport = liste_ages_par_sport(genre, sport)
     if methode == "moyenne":
         borne = moyenne_ages(liste_ages_sport)
     if methode == "mediane":
@@ -90,6 +118,6 @@ def comp_meda_age(sport: str, methode: str, genre: str):
 
 
 # Test des fonctions avec les sports spécifiés
-# comp_meda_age("Swimming", "moyenne", "M")
-# comp_meda_age("Trampolining", "mediane", "F")
-# comp_meda_age("Gymnastics", "mediane", "M")
+comp_meda_age("Swimming", "moyenne", "M")
+comp_meda_age("Trampolining", "mediane", "F")
+comp_meda_age("Gymnastics", "mediane", "M")

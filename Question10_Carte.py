@@ -259,3 +259,6 @@ def afficher_carte():
     )
 
     carte.show()
+
+
+afficher_carte()
