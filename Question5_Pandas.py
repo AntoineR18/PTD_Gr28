@@ -61,6 +61,9 @@ def diagramme_annee(annee):
     df = pd.DataFrame(list(dico.items()), columns=["Pays", "Nombre_participants"])
     df = df[df["Nombre_participants"] > 9]
 
+    # Tri décroissant
+    df = df.sort_values(by="Nombre_participants", ascending=False)
+
     # Création du graphe
     df.plot.bar(
         x="Pays",
@@ -117,6 +120,9 @@ def diagramme_histoire():
 
     # Conversion en dataframe
     df = pd.DataFrame(list(dico.items()), columns=["Pays", "Nombre_participants"])
+
+    # Tri décroissant
+    df = df.sort_values(by="Nombre_participants", ascending=False)
 
     df.plot.bar(
         x="Pays",

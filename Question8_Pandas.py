@@ -158,7 +158,3 @@ def plot_medaille_normalisee_pays(pays):
     plt.grid(axis='y', linestyle='--', alpha=0.6)
     plt.tight_layout()
     plt.show()
-
-
-plot_medaille_normalisee_pays("USA")
-plot_medaille_pays_selon_saison("USA")
