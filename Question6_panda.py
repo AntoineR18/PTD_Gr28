@@ -1,6 +1,4 @@
 import pandas as pd
-import numpy as np
-import seaborn as sbn
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
@@ -42,7 +40,7 @@ grouped = data.groupby(data.values)
 years = sorted(grouped.groups.keys())
 num_years = len(years)
 
-# Choisir une colormap (vous pouvez en essayer d'autres comme 'viridis', 'plasma', 'magma', etc.)
+# On choisit la couleur de notre frise (colormap)
 colormap = cm.plasma
 
 # Normaliser les années pour qu'elles correspondent à la colormap (entre 0 et 1)
@@ -55,7 +53,7 @@ fig, ax = plt.subplots(figsize=(14, 4))
 # Frise centrale
 ax.hlines(0, data.min() - 4, data.max() + 4, color="black", linewidth=2)
 
-# Création des groupes nommés "Groupe 1", "Groupe 2", etc.
+# Création ésdes groupes de pays nom : "Groupe 1", "Groupe 2", etc.
 groupe_labels = {}
 for i, year in enumerate(years):
     countries = grouped.get_group(year).index.tolist()
@@ -66,16 +64,41 @@ for i, year in enumerate(years):
     ax.text(year, 0.3, label, ha="center", va="bottom", fontsize=9, rotation=45)
     ax.text(year, -0.3, str(year), ha="center", va="top", fontsize=8, rotation=315)
 
-# Affichage du dictionnaire des groupes
-for label, countries in groupe_labels.items():
-    print(f"{label} : {', '.join(countries)}")
-
 # Ajustements visuels
 ax.set_ylim(-1, 1)
 ax.set_xlim(data.min() - 4, data.max() + 4)
 ax.set_yticks([])
 ax.set_xlabel("Année")
 ax.set_title("Les premières participations aux JO des pays (regroupés)")
+
+
+def list_groupe():
+    # Affichage du dictionnaire des groupes
+    for label, countries in groupe_labels.items():
+        print(f"{label} : {', '.join(countries)}")
+
+
+# Dictionnaire pour retrouver les pays par point (x, y)
+points = {}
+scatters = []
+
+for i, year in enumerate(years):
+    countries = grouped.get_group(year).index.tolist()
+    color = scalarMap.to_rgba(year)
+    sc = ax.plot(year, 0, "o", color=color, markersize=8, picker=5)  # active le clic
+    points[(year, 0)] = countries
+    scatters.append(sc[0])  # on stocke les objets graphiques
+
+
+def on_pick(event):
+    artist = event.artist
+    x = artist.get_xdata()[0]
+    y = artist.get_ydata()[0]
+    countries = points.get((x, y), [])
+    print(f"\nPays ayant débuté en {int(x)} : {', '.join(countries)}")
+
+
+fig.canvas.mpl_connect("pick_event", on_pick)
 
 plt.tight_layout()
 plt.show()
