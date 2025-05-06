@@ -121,12 +121,12 @@ def diagramme_histoire():
     df = pd.DataFrame(list(dico.items()), columns=["Pays", "Nombre_participants"])
 
     # Tri décroissant
-    df = df.sort_values(by="Nombre_participants", ascending=False)
+    # df = df.sort_values(by="Nombre_participants", ascending=False)
 
     df.plot.bar(
         x="Pays",
         y="Nombre_participants",
-        color="hotpink",
+        color="chartreuse",
         edgecolor="black",
         legend=False,
     )

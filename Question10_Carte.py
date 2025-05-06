@@ -187,8 +187,54 @@ def get_new_nationalities(df, athlete_names):
     return athlete_transfers
 
 
+def get_new_nationalities_opti(df):
+    """
+    Détecte les athlètes ayant changé de nationalité et retourne les nouveaux pays.
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        Le DataFrame complet des données olympiques.
+
+    Returns
+    -------
+    list of str
+        Codes ISO des nouveaux pays d’accueil.
+    """
+    # Ne garder que les colonnes utiles, années récentes et médaillés
+    df_recent = df[df["Year"] >= 1993][["Name", "NOC", "Year"]].drop_duplicates()
+
+    # Grouper par nom d'athlète
+    grouped = df_recent.groupby("Name")["NOC"].nunique()
+
+    # Ne garder que ceux ayant eu plusieurs NOC
+    noms_ayant_change = grouped[grouped > 1].index
+
+    # Extraire les lignes correspondantes
+    transferts = df_recent[df_recent["Name"].isin(noms_ayant_change)]
+
+    # Dernière année de participation pour chaque athlète
+    transferts = transferts.sort_values("Year").drop_duplicates("Name", keep="last")
+
+    # Extraction des NOC finaux
+    nocs_finaux = transferts["NOC"].tolist()
+
+    # Mapper les NOC vers les codes ISO3
+    import pycountry
+    iso_countries = []
+    for noc in nocs_finaux:
+        try:
+            country = pycountry.countries.get(alpha_3=noc)
+            if country:
+                iso_countries.append(noc)
+        except Exception:
+            continue
+
+    return iso_countries
+
+
 # Récupérer la liste de tous les pays "d'arrivée" après changement de nationalité
-new_noc_list = get_new_nationalities(df, athletes_changed_nationality)
+new_noc_list = get_new_nationalities_opti(df, athletes_changed_nationality)
 
 # Compter le nombre d'athlètes reçus par pays
 noc_counts = pd.Series(new_noc_list).value_counts().reset_index()
