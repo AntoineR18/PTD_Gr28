@@ -3,8 +3,6 @@
 
 from lecture_donnees import donnees_athlete_events, donnees_noc_regions
 
-# import Question5_panda as Q5
-
 
 entete = donnees_athlete_events[0]
 donnees = donnees_athlete_events[1:]
@@ -14,23 +12,12 @@ idx_annee = entete.index("Year")
 idx_athlete = entete.index("ID")
 idx_sport = entete.index("Sport")
 
-
-# Liste des années vérifiée
-
-
-# def liste_annees():
-#     liste = [annee for annee in range(1896, 1993, 4)]
-#     liste.pop(liste.index(1916))
-#     liste.pop(liste.index(1940))
-#     liste.pop(liste.index(1944))
-#     liste.append(1906)
-#     liste.extend([annee for annee in range(1994, 2017, 2)])
-#     liste.sort()
-#     return liste
-
-
-# annees = liste_annees()
-# print(annees)
+# Dictionnaire code NOC → nom de pays
+noc_to_country = {}
+for ligne in donnees_noc_regions[1:]:  # on saute l'en-tête
+    code_noc = ligne[0]
+    nom_pays = ligne[1]
+    noc_to_country[code_noc] = nom_pays
 
 # Pays non médaillé le plus réprésenté sur une année donnée
 
@@ -85,17 +72,11 @@ def pays_non_medaille_max_annee(annee):
                 dico[noc] = 0
             dico[noc] += 1
 
-    pays = max(dico, key=dico.get)
+    code_noc = max(dico, key=dico.get)
     return (
-        f"En {annee}, le pays non médaillé le plus représenté était"
-        f" {pays} avec {dico[pays]} participants."
+        f"En {annee}, avec {dico[code_noc]} participants, le pays non médaillé"
+        f" le plus représenté était : {noc_to_country[code_noc]}."
     )
 
 
-# print(pays_non_medaille_max_annee(1912))
-
-# for annee in annees:
-#     if (pays_non_medaille_max_annee(annee) !=
-#           Q5.pays_non_medaille_max_annee_panda(annee)):
-#         print(pays_non_medaille_max_annee(annee))
-#         print(Q5.pays_non_medaille_max_annee_panda(annee))
+print(pays_non_medaille_max_annee(1912))

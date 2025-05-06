@@ -29,10 +29,11 @@ def pays_non_medaille_max_annee_panda(annee):
             continue
         dico[noc] = dta_pays["ID"].nunique()
 
-    pays = max(dico, key=dico.get)
+    code_noc = max(dico, key=dico.get)
     return (
-        f"En {annee}, le pays non médaillé le plus représenté était"
-        f" {pays} avec {dico[pays]} participants."
+        f"En {annee}, avec {dico[code_noc]} participants, le pays non"
+        f" médaillé le plus représenté était :"
+        f" {dta_noc[dta_noc["NOC"] == "BOH"]["region"].values[0]}."
     )
 
 
@@ -81,7 +82,7 @@ def diagramme_annee(annee):
     plt.show()
 
 
-diagramme_annee(2016)
+# diagramme_annee(2016)
 
 
 # Diagramme en barres des pays non médaillés au cours de l'histoire
@@ -139,4 +140,4 @@ def diagramme_histoire():
     plt.show()
 
 
-diagramme_histoire()
+# diagramme_histoire()
