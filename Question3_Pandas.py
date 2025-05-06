@@ -35,12 +35,19 @@ def affichage_medaille_pays_JO(country, year, season):
     medal_counts = count_medals(data, country, year, season)
     total = medal_counts['Gold'] + medal_counts['Silver'] + medal_counts['Bronze']
 
-    # Affichage
-    print(f"Médailles {country} aux JO {season} de {year} :")
-    print(f"Or     : {medal_counts['Gold']}")
-    print(f"Argent : {medal_counts['Silver']}")
-    print(f"Bronze : {medal_counts['Bronze']}")
-    print(f"Total : {total}")
+    texte = (
+        f"Médailles {country} aux JO {season} de {year} :\n"
+        f"Or     : {medal_counts['Gold']}\n"
+        f"Argent : {medal_counts['Silver']}\n"
+        f"Bronze : {medal_counts['Bronze']}\n"
+        f"Total  : {total}"
+    )
+
+    print(texte)
+
+    nom_fichier = "Resultat/Question3_Pandas.txt"
+    with open(nom_fichier, "w", encoding="utf-8") as f:
+        f.write(texte + "\n")
 
 
 # Exemple :
