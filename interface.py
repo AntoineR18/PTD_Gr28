@@ -321,7 +321,8 @@ def main():
                 Question10_Carte.afficher_carte(option)
             elif choix.lower() == "noc":
                 from noc_country import noc_to_country, country_to_noc
-                sous_choix = input("Tapez 1 pour convertir NOC → pays, ou 2 pour pays → NOC : ")
+                sous_choix = input("Tapez 1 pour convertir NOC → pays,"
+                                   " ou 2 pour pays → NOC : ")
 
                 if sous_choix == "1":
                     code = input("Entrez le code NOC (ex : FRA, USA, CHN) : ").upper()
