@@ -178,8 +178,10 @@ def main():
             elif choix.lower() == "3s":
                 if streamlit_process is None or streamlit_process.poll() is not None:
                     print("Lancement de l'application Streamlit...")
+                    python_exec = sys.executable
                     streamlit_process = subprocess.Popen(
-                        ["streamlit", "run", "Question3_" "Pandas_Streamlit.py"]
+                        [python_exec, "-m", "streamlit", "run", "Question3_"
+                         "Pandas_Streamlit.py"]
                     )
                 else:
                     print("Streamlit est déjà en cours.")
@@ -205,9 +207,11 @@ def main():
                 print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
             elif choix.lower() == "4s":
                 if streamlit_process is None or streamlit_process.poll() is not None:
+                    python_exec = sys.executable
                     print("Lancement de l'application Streamlit...")
                     streamlit_process = subprocess.Popen(
-                        ["streamlit", "run", "Question4_streamlit.py"]
+                        [python_exec, "-m", "streamlit", "run",
+                         "Question4_streamlit.py"]
                     )
                 else:
                     print("Streamlit est déjà en cours.")
