@@ -28,27 +28,29 @@ def table_sport(genre: str):
     return table
 
 
-def moyenne_age_sport(genre: str, sport: str):
+def moyenne_age_sport(genre: str, sport: str) -> float:
     """
-    Retourne un tableau contenant les moyennes d'age selon le sport et le genre
-    donné.
+    Retourne la moyenne d'âge des athlètes pour un sport et un genre donné.
 
-    parameters :
-    -------------
+    Parameters:
+    -----------
     genre : str
         Le genre des athlètes (M ou F).
     sport : str
         Le sport étudié.
 
-    returns :
-    -------------
-    table : DataFrame
-        Un tableau contenant les moyennes d'age selon le sport et le genre donné.
+    Returns:
+    --------
+    float
+        La moyenne d'âge pour le sport et le genre donné.
     """
-    if genre != "M" and genre != "F":
+    if genre not in {"M", "F"}:
         raise ValueError("Le genre doit être 'M' ou 'F'")
-    table = dta[dta["Sex"] == genre]
-    return table.dropna(subset=['Age']).groupby("Sport")["Age"].mean()
+    # Filtrer les données directement
+    table = dta[(dta["Sex"] == genre) & (dta["Sport"] == sport)]
+    # Calculer la moyenne directement sur la colonne 'Age'
+    moyenne_age = table["Age"].mean()
+    return moyenne_age
 
 
 # Calcul des médianes des ages pour chaque sport sport selon le genre
@@ -69,7 +71,8 @@ def mediane_age_sport(genre: str, sport: str):
     if genre != "M" and genre != "F":
         raise ValueError("Le genre doit être 'M' ou 'F'")
     table = dta[(dta["Sex"] == genre) & (dta["Sport"] == sport)]
-    return table.dropna(subset=['Age']).groupby("Sport")["Age"].median()
+    mediane_age = table["Age"].median()
+    return mediane_age
 
 
 def comp_meda_moy_age(sport: str, methode: str, genre: str):
@@ -119,8 +122,8 @@ def comp_meda_moy_age(sport: str, methode: str, genre: str):
     ).sum()
     # Afficher le résultat
     resultat = (
-        f"Pour le sport {sport} ({genre}, méthode : {methode}) :\n"
-        f"Nombre de médailles pour les plus jeunes : {nb_med_jeunes}\n"
+        f"Pour le sport {sport} ({genre}, méthode : {methode}) :  \n"
+        f"Nombre de médailles pour les plus jeunes : {nb_med_jeunes}  \n"
         f"Nombre de médailles pour les plus âgés : {nb_med_ages}"
     )
 
@@ -129,9 +132,3 @@ def comp_meda_moy_age(sport: str, methode: str, genre: str):
     with open("Resultat/Question4_Pandas.txt", "w", encoding="utf-8") as f:
         f.write(resultat + "\n")
     return resultat  # important sinon streamlit sort rien
-
-
-# Test des fonctions avec les sports spécifiés
-# comp_meda_moy_age("Swimming", "moyenne", "M")
-# comp_meda_moy_age("Trampolining", "mediane", "F")
-# comp_meda_moy_age("Gymnastics", "mediane", "M")
