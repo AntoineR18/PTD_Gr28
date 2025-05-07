@@ -82,7 +82,7 @@ def main():
         choix = input("Votre choix : ")
 
         try:
-            if choix == "Install":
+            if choix.lower() == "Install":
                 try:
                     packages = [
                         "pandas",
@@ -340,7 +340,7 @@ def main():
                         print(f"❌ Aucun code trouvé pour le pays : {nom}")
                 else:
                     print("Choix invalide.")
-            elif choix == "Streamlit_Fermeture":
+            elif choix.lower() == "Streamlit_Fermeture":
                 if streamlit_process is not None and streamlit_process.poll() is None:
                     print("Fermeture de Streamlit...")
                     streamlit_process.terminate()
