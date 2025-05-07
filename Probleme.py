@@ -71,12 +71,12 @@ def plot_distributions(df, mode='pourcentage'):
     axes[1, 1].set_ylabel('%' if mode == 'pourcentage' else 'Effectif')
 
     plt.tight_layout()
-    plt.savefig(f"Resultat/Apprentissage_répartition/{df}/{mode}.png")
+    plt.savefig("Resultat/Apprentissage_répartition.png")
     plt.show()
 
 
 # Afficher en pourcentage
-# plot_distributions(df_sans_doublons, mode='pourcentage')
+# plot_distributions(df_avec_doublons, mode='pourcentage')
 
 
 # Créons une liste de tuples (variable_num, variable_cat)
@@ -89,7 +89,7 @@ tests = [(q, c) for q in quantitative_vars for c in categorical_vars]
 # Affichage de la liste des tests disponibles
 # tests
 
-
+# Analyse buvariée
 def plot_boxplot(df, variable_num, variable_qual):
     """
     Affiche un boxplot de variable_num (quantitative) en fonction de variable_qual
@@ -102,22 +102,23 @@ def plot_boxplot(df, variable_num, variable_qual):
     plt.ylabel(variable_num)
     plt.xticks(rotation=45)
     plt.tight_layout()
+    plt.savefig("Resultat/Apprentissage_Bivariée.png")
     plt.show()
 
 
 # Exemple d'appel de la fonction
-# plot_boxplot(df_without_duplicates, variable_num='Weight', variable_qual='Sex')
-# plot_boxplot(df_without_duplicates, variable_num='Weight', variable_qual='Sport')
+# plot_boxplot(df_sans_doublons, variable_num='Age', variable_qual='Sex')
+# plot_boxplot(df_sans_doublons, variable_num='Weight', variable_qual='Sport')
 
 # 1. Préparation des données
-df = df_without_duplicates.copy()
-caractéristiques = ['Age', 'Height', 'Weight']
+df = df_sans_doublons.copy()
+caractéristiques = ['Age', 'Height', 'Weight', 'Sex']
 scaler = StandardScaler()
 X_norm = scaler.fit_transform(df[caractéristiques])
 
 # 2. ACP
-acp_model = PCA(n_components=3)
-X_proj = acp_model.fit_transform(X_norm)
+acp_modele = PCA(n_components=3)
+X_proj = acp_modele.fit_transform(X_norm)
 df_acp = pd.DataFrame(X_proj, columns=['PC1', 'PC2', 'PC3'])
 df_acp['Sex'] = df['Sex'].values
 df_acp['Sport'] = df['Sport'].values
@@ -140,23 +141,62 @@ def filtrer_sports_avec_autre(df, nb_sports=10, mode='frequent'):
 
 
 # 4. Fonction d'affichage
-def plot_pca_individuals(pca_df, color_by=None):
+def plot_cercle_correlation(pca_model, carac):
+    pcs = pca_model.components_[:2, :]
+    corvars = pcs.T
+
+    var_PC1 = pca_model.explained_variance_ratio_[0] * 100
+    var_PC2 = pca_model.explained_variance_ratio_[1] * 100
+
+    fig, ax = plt.subplots(figsize=(8, 8))
+
+    for i in range(len(carac)):
+        x, y = corvars[i]
+        ax.arrow(0, 0, x, y, head_width=0.03, head_length=0.03, fc="red", ec="red")
+        ax.text(x * 1.15, y * 1.15, carac[i], fontsize=12, ha="center", va="center")
+
+    cercle = plt.Circle((0, 0), 1, color="blue", fill=False)
+    ax.add_artist(cercle)
+
+    ax.set_xlim(-1.1, 1.1)
+    ax.set_ylim(-1.1, 1.1)
+    ax.axhline(0, color="grey", linestyle="--")
+    ax.axvline(0, color="grey", linestyle="--")
+    ax.set_xlabel(f"PC1 ({var_PC1:.1f}%)")
+    ax.set_ylabel(f"PC2 ({var_PC2:.1f}%)")
+    ax.set_title("Cercle des corrélations")
+    ax.set_aspect("equal")
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig("Resultat/Apprentissage_ACP_cercle_correlation.png")
+    plt.show()
+
+
+def plot_pca_individuals(pca_df, pca_model, color_by=None):
+    var_PC1 = pca_model.explained_variance_ratio_[0] * 100
+    var_PC2 = pca_model.explained_variance_ratio_[1] * 100
+
     plt.figure(figsize=(10, 7))
     if color_by is None:
-        plt.scatter(pca_df['PC1'], pca_df['PC2'], alpha=0.5, s=10)
-        plt.title('Projection dans le plan des composantes principales (PC1 vs PC2)')
+        plt.scatter(pca_df["PC1"], pca_df["PC2"], alpha=0.5, s=10)
+        plt.title("Projection dans le plan des composantes principales (PC1 vs PC2)")
     else:
         groups = pca_df.groupby(color_by)
         for name, group in groups:
-            plt.scatter(group['PC1'], group['PC2'], alpha=0.5, s=10, label=name)
-        plt.title(f'Projection dans le plan (PC1 vs PC2) - Couleur : {color_by}')
-        plt.legend(loc='best', markerscale=2, fontsize=8)
-    plt.xlabel('PC1')
-    plt.ylabel('PC2')
+            plt.scatter(group["PC1"], group["PC2"], alpha=0.5, s=10, label=name)
+        plt.title(f"Projection dans le plan (PC1 vs PC2) - Couleur : {color_by}")
+        plt.legend(loc="best", markerscale=2, fontsize=8)
+
+    plt.xlabel(f"PC1 ({var_PC1:.1f}%)")
+    plt.ylabel(f"PC2 ({var_PC2:.1f}%)")
     plt.grid(True)
     plt.tight_layout()
+    plt.savefig("Resultat/Apprentissage_ACP.png")
     plt.show()
 
+
+plot_cercle_correlation(acp_modele, caractéristiques)
+plot_pca_individuals(df_acp, acp_modele)
 
 # 5. Application : sports les plus fréquents + "Autre"
 # df_acp_catégorise = filtrer_sports_avec_autre(df_acp, nb_sports=8, mode='frequent')
