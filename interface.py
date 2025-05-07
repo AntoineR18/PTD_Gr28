@@ -134,7 +134,7 @@ def main():
                 t1 = time.time()
                 print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
 
-            elif choix == "1p":
+            elif choix.lower() == "1p":
                 t0 = time.time()
                 import Question1_Pandas
                 Question1_Pandas.afficher_resultat()
@@ -147,7 +147,7 @@ def main():
                 Question2.afficher_bornes_medailles(annee)
                 t1 = time.time()
                 print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
-            elif choix == "2p":
+            elif choix.lower() == "2p":
                 annee = int(input("Entrez l'année des JO : "))
                 t0 = time.time()
                 import Question2_Pandas
@@ -162,7 +162,7 @@ def main():
                 Question3.affichage_medaille_pays_JO(pays, annee)
                 t1 = time.time()
                 print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
-            elif choix == "3p":
+            elif choix.lower() == "3p":
                 pays = input("Entrez le nom du pays : ")
                 annee = int(input("Entrez l'année des JO : "))
                 saison = input("Entrez la saison (Summer/Winter) : ")
@@ -171,7 +171,7 @@ def main():
                 Question3_Pandas.affichage_medaille_pays_JO(pays, annee, saison)
                 t1 = time.time()
                 print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
-            elif choix == "3s":
+            elif choix.lower() == "3s":
                 if streamlit_process is None or streamlit_process.poll() is not None:
                     print("Lancement de l'application Streamlit...")
                     streamlit_process = subprocess.Popen(
@@ -189,7 +189,7 @@ def main():
                 Question4.comp_meda_age(sport, methode, genre)
                 t1 = time.time()
                 print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
-            elif choix == "4p":
+            elif choix.lower() == "4p":
                 sport = input("Entrez le nom du sport en anglais (ex: Swimming) : ")
                 methode = input("Méthode (moyenne/mediane) : ").lower()
                 genre = input("Genre (M/F) : ").upper()
@@ -199,7 +199,7 @@ def main():
                 Question4_Pandas.comp_meda_moy_age(sport, methode, genre)
                 t1 = time.time()
                 print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
-            elif choix == "4s":
+            elif choix.lower() == "4s":
                 if streamlit_process is None or streamlit_process.poll() is not None:
                     print("Lancement de l'application Streamlit...")
                     streamlit_process = subprocess.Popen(
@@ -216,7 +216,7 @@ def main():
                 print(resultat)
                 t1 = time.time()
                 print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
-            elif choix == "5pa":
+            elif choix.lower() == "5pa":
                 annee = int(input("Entrez l'année des JO : "))
                 t0 = time.time()
                 import Question5_Pandas
@@ -225,11 +225,11 @@ def main():
                 print(resultat)
                 t1 = time.time()
                 print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
-            elif choix == "5pb":
+            elif choix.lower() == "5pb":
                 annee = int(input("Entrez l'année des JO : "))
                 import Question5_Pandas
                 Question5_Pandas.diagramme_annee(annee)
-            elif choix == "5pc":
+            elif choix.lower() == "5pc":
                 import Question5_Pandas
                 Question5_Pandas.diagramme_histoire()
             elif choix == "6":
@@ -240,7 +240,7 @@ def main():
                 Question6.afficher_annee_adhesion_depuis_tableau(pays)
                 t1 = time.time()
                 print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
-            elif choix == "6p":
+            elif choix.lower() == "6p":
                 t0 = time.time()
                 import Question6_Pandas
                 # L'import suffit à exécuter la question et le graphique.
@@ -272,26 +272,26 @@ def main():
                 Question7_Pandas.nb_participants(annee=annee, pays=pays, sexe=sexe,
                                                  medaille=medaille)
 
-            elif choix == "8a":
+            elif choix.lower() == "8a":
                 pays = input("Entrez le code NOC du pays (ex: FRA, USA, CHN) : ")
                 import Question8_Pandas
 
-                Question8_Pandas.plot_medaille_pays_selon_saison(pays)
-            elif choix == "8b":
+                Question8_Pandas.plot_medaille_pays_selon_saison(pays.upper())
+            elif choix.lower() == "8b":
                 import Question8_Pandas
 
                 Question8_Pandas.plot_medaille_global_ete_vs_hiver()
-            elif choix == "8c":
+            elif choix.lower() == "8c":
                 saison = input("Saison (Summer/Winter) : ")
                 top_n = int(input("Nombre de pays à afficher (ex: 10) : "))
                 import Question8_Pandas
 
                 Question8_Pandas.plot_part_medaille_par_pays_dans_saison(saison, top_n)
-            elif choix == "8d":
+            elif choix.lower() == "8d":
                 pays = input("Entrez le code NOC du pays (ex: FRA, USA) : ")
                 import Question8_Pandas
 
-                Question8_Pandas.plot_medaille_normalisee_pays(pays)
+                Question8_Pandas.plot_medaille_normalisee_pays(pays.upper())
             elif choix == "9":
                 saison = input("Saison (summer/winter) ou "
                                "vide pour les deux : ").strip().lower()
@@ -299,12 +299,17 @@ def main():
                     saison = None
                 import Question9_Pandas
                 Question9_Pandas.plot_proportion_femmes(saison)
-            elif choix == "10":
+            elif choix.lower() == "10":
                 import Question10_Pandas
                 Question10_Pandas.afficher_list()
-            elif choix == "10c":
+            elif choix.lower() == "10c":
                 import Question10_Carte
-                Question10_Carte.afficher_carte()
+                option = input("Voulez-vous compter les allées venues ? (o/n)")
+                if option.lower() == "o":
+                    option = True
+                else:
+                    option = False
+                Question10_Carte.afficher_carte(option)
             elif choix == "Streamlit_Fermeture":
                 if streamlit_process is not None and streamlit_process.poll() is None:
                     print("Fermeture de Streamlit...")
