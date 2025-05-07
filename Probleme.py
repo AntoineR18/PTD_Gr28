@@ -12,14 +12,14 @@ athletes_df = pd.read_csv("donnees_jeux_olympiques/athlete_events.csv")
 
 
 # Fonction pour filtrer les colonnes utiles et supprimer les doublons selon le choix
-def preprocess_athletes_data(df, drop_duplicates=True):
+def preprocess_donnees_athletes(df, drop_duplicates=True):
     df = df[['ID', 'Name', 'Sex', 'Age', 'Height', 'Weight', 'Sport']].copy()
 
     # Recodage du sexe : M → 0, F → 1
     df['Sex'] = df['Sex'].map({'M': 0, 'F': 1})
 
     # Supprimer les lignes où Age, Height ou Weight sont manquants
-    df = df.dropna(subset=['Age', 'Height', 'Weight'])
+    df = df.dropna(subset=['Age', 'Height', 'Weight', 'Sex'])
 
     # Supprimer les doublons d'athlètes si demandé
     if drop_duplicates:
@@ -29,8 +29,8 @@ def preprocess_athletes_data(df, drop_duplicates=True):
 
 
 # Création des deux versions pour affichage
-df_with_duplicates = preprocess_athletes_data(athletes_df, drop_duplicates=False)
-df_without_duplicates = preprocess_athletes_data(athletes_df, drop_duplicates=True)
+df_avec_doublons = preprocess_donnees_athletes(athletes_df, drop_duplicates=False)
+df_sans_doublons = preprocess_donnees_athletes(athletes_df, drop_duplicates=True)
 
 
 # Fonction pour tracer les distributions, avec option pour effectif ou pourcentage
@@ -38,26 +38,26 @@ def plot_distributions(df, mode='pourcentage'):
     fig, axes = plt.subplots(2, 2, figsize=(12, 10))
 
     # Définir les poids si on est en mode pourcentage
-    density = None
-    weights = None
-    if mode == 'pourcentage':
-        weights = [100 / len(df)] * len(df)
-        density = None
+    poids = None
+    if mode.lower() == 'pourcentage':
+        poids = [100 / len(df)] * len(df)
+    else:
+        mode = 'Effectif'
 
     # Âge
-    axes[0, 0].hist(df['Age'], bins=30, edgecolor='black', weights=weights)
+    axes[0, 0].hist(df['Age'], bins=30, edgecolor='black', weights=poids)
     axes[0, 0].set_title('Distribution de l\'Âge')
     axes[0, 0].set_xlabel('Âge')
     axes[0, 0].set_ylabel('%' if mode == 'pourcentage' else 'Effectif')
 
     # Taille
-    axes[0, 1].hist(df['Height'], bins=30, edgecolor='black', weights=weights)
+    axes[0, 1].hist(df['Height'], bins=30, edgecolor='black', weights=poids)
     axes[0, 1].set_title('Distribution de la Taille')
     axes[0, 1].set_xlabel('Taille (cm)')
     axes[0, 1].set_ylabel('%' if mode == 'pourcentage' else 'Effectif')
 
     # Poids
-    axes[1, 0].hist(df['Weight'], bins=30, edgecolor='black', weights=weights)
+    axes[1, 0].hist(df['Weight'], bins=30, edgecolor='black', weights=poids)
     axes[1, 0].set_title('Distribution du Poids')
     axes[1, 0].set_xlabel('Poids (kg)')
     axes[1, 0].set_ylabel('%' if mode == 'pourcentage' else 'Effectif')
@@ -71,11 +71,12 @@ def plot_distributions(df, mode='pourcentage'):
     axes[1, 1].set_ylabel('%' if mode == 'pourcentage' else 'Effectif')
 
     plt.tight_layout()
+    plt.savefig(f"Resultat/Apprentissage_répartition/{df}/{mode}.png")
     plt.show()
 
 
 # Afficher en pourcentage
-# plot_distributions(df_without_duplicates, mode='pourcentage')
+# plot_distributions(df_sans_doublons, mode='pourcentage')
 
 
 # Créons une liste de tuples (variable_num, variable_cat)
