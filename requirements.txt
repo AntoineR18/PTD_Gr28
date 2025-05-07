@@ -9,3 +9,12 @@ pathspec==0.12.1
 platformdirs==4.3.7
 pycodestyle==2.12.1
 pyflakes==3.2.0
+pandas
+matplotlib
+numpy
+scikit-learn
+streamlit
+plotly
+pycountry
+seaborn
+subprocess
