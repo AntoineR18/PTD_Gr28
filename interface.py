@@ -1,7 +1,11 @@
 import importlib
 import sys
-import os
 import subprocess
+import time
+import os
+
+# Créer le dossier 'Resultat' s'il n'existe pas (afin de sauvegarder les résultats)
+os.makedirs("Resultat", exist_ok=True)
 
 
 def main():
@@ -9,100 +13,165 @@ def main():
 
     while True:
         print("=== Menu PTD Groupe 28 ===")
+        print("Install - Installer les dépendances nécessaires au projet.")
         print(
-            "1. Question 1 : Déterminer le nombre de médailles gagnées par"
+            "1 - Question 1 : Déterminer le nombre de médailles gagnées par"
             " Michael Phelps."
         )
-        print("2. Question 1 (pandas) : Question 1 + Le type de médaille.")
+        print("1p - Question 1 (pandas) : Question 1 + Le type de médaille.")
         print(
-            "3. Question 2 : Calculer les bornes de médailles par pays pour"
+            "2 - Question 2 : Calculer les bornes de médailles par pays pour"
             " une année donnée."
         )
-        print("4. Question 2 (pandas) : Idem avec pandas.")
+        print("2p - Question 2 (pandas) : Idem avec pandas.")
         print(
-            "5. Question 3 : Synthèse des médailles obtenues par un pays sur une"
+            "3 - Question 3 : Synthèse des médailles obtenues par un pays sur une"
             " année donnée."
         )
         print(
-            "6. Question 3 (pandas) : Synthèse des médailles obtenues par un pays sur"
+            "3p - Question 3 (pandas) : Synthèse des médailles obtenues par un pays sur"
             "une année donnée."
         )
         print(
-            "7. Question 3 bonnus (streamlit)  : Application"
+            "3s - Question 3. Bonnus (streamlit)  : Application"
             " interactive des médailles."
         )
         print(
-            "8. Question 4 : Comparaison des performances des athlètes"
+            "4 - Question 4 : Comparaison des performances des athlètes"
             " selon leur âge"
         )
         print(
-            "9. Question 4 (pandas) : Comparaison des performances des athlètes"
+            "4p - Question 4 (pandas) : Comparaison des performances des athlètes"
             " selon leur âge"
         )
         print(
-            "10. Question 4 (streamlit) : Comparaison des performances des athlètes"
+            "4s - Question 4 (streamlit) : Comparaison des performances des athlètes"
             " selon leur âge"
         )
         print(
-            "11. Question 5 : Parmi les pays n’ayant obtenu aucune médaille sur une"
+            "5 - Question 5 : Parmi les pays n’ayant obtenu aucune médaille sur une"
             " édition donnée, identifier le pays ayant le plus de participants."
         )
-        print("Streamlit_Fermeture. Fermer  Streamlit")
-        print("12. Question 5 (pandas)")
+        print("5pa - Question 5.a (pandas)")
+        print("5pb - Question 5.b (pandas) : Histogramme pour une année")
+        print("5pc - Question 5.c (pandas) : Histogramme sur toute l'histoire")
         print(
-            "15. Question 8.1 : Répartition des médailles par saison pour un pays donné."
+            "6 - Question 6 : Donner, pour chaque pays, sa première participation"
+            " aux Jeux Olympiques"
         )
-        print("16. Question 8.2 : Répartition globale des médailles - Été vs Hiver.")
-        print("17. Question 8.3 : Top pays médaillés pour une saison donnée.")
-        print("18. Question 8.4 : Part moyenne des médailles pour un pays.")
-
+        print("6p - Question 6 (pandas + matplotlib) : Avec une frise chronologique")
+        print("7 - Question 7 : Nombre de participants selon certains filtres.")
+        print(
+            "8a - Question 8.a : Répartition des médailles par"
+            " saison pour un pays donné."
+        )
+        print("8b - Question 8.b : Répartition globale des médailles - Été vs Hiver.")
+        print("8c - Question 8.c : Top pays médaillés pour une saison donnée.")
+        print("8d - Question 8.d : Part moyenne des médailles pour un pays.")
+        print("9 - Question 9 : Proportion de femmes aux JO (par saison ou toutes).")
+        print("10 - Question 10 : Établir la liste des athlètes ayant changé de"
+              " nationalité au cours de leur carrière.")
+        print("10c - Question 10 : Version carte.")
+        print("Streamlit_Fermeture - Fermer  Streamlit")
         print("0. Quitter")
 
         choix = input("Votre choix : ")
 
         try:
-            if choix == "1":
+            if choix == "Install":
+                try:
+                    packages = [
+                        "pandas",
+                        "matplotlib",
+                        "numpy",
+                        "scikit-learn",
+                        "streamlit",
+                        "plotly",
+                        "pycountry",
+                        "seaborn"
+                    ]
+
+                    print("🔍 Vérification des dépendances...\n")
+
+                    to_install = []
+
+                    for pkg in packages:
+                        try:
+                            importlib.import_module(pkg)
+                            print(f"✅ {pkg} est déjà installé.")
+                        except ImportError:
+                            print(f"❌ {pkg} n'est pas installé.")
+                            to_install.append(pkg)
+
+                    if not to_install:
+                        print("\n🎉 Tous les packages nécessaires sont déjà installés.")
+                        return
+
+                    print("\n📦 Packages manquants à installer :")
+                    print(", ".join(to_install))
+                    confirmer = input("Souhaitez-vous installer les packages"
+                                      " manquants ? (o/n) : ").lower()
+
+                    if confirmer == "o":
+                        python_exec = sys.executable
+                        for pkg in to_install:
+                            print(f"🔧 Installation de {pkg}...")
+                            subprocess.check_call([python_exec,
+                                                   "-m",
+                                                   "pip",
+                                                   "install",
+                                                   pkg])
+                        print("\n✅ Installation terminée.")
+                    else:
+                        print("⛔ Installation annulée par l'utilisateur.")
+
+                except Exception as e:
+                    print(f"❌ Une erreur est survenue pendant l'installation : {e}")
+            elif choix == "1":
+                t0 = time.time()
                 import Question1
+                Question1.afficher_resultat()
+                t1 = time.time()
+                print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
+
+            elif choix.lower() == "1p":
+                t0 = time.time()
+                import Question1_Pandas
+                Question1_Pandas.afficher_resultat()
+                t1 = time.time()
+                print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
             elif choix == "2":
-                import Question1_panda
-            elif choix == "3":
                 annee = int(input("Entrez l'année des JO : "))
+                t0 = time.time()
                 import Question2
-
                 Question2.afficher_bornes_medailles(annee)
-            elif choix == "4":
+                t1 = time.time()
+                print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
+            elif choix.lower() == "2p":
                 annee = int(input("Entrez l'année des JO : "))
-                import Question2_panda
-
-                Question2_panda.afficher_bornes_medailles_par_nation_pandas(annee)
-            elif choix == "5":
+                t0 = time.time()
+                import Question2_Pandas
+                Question2_Pandas.afficher_bornes_medailles_par_nation_pandas(annee)
+                t1 = time.time()
+                print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
+            elif choix == "3":
                 pays = input("Entrez le nom du pays : ")
                 annee = input("Entrez l'année des JO : ")
+                t0 = time.time()
                 import Question3
-
                 Question3.affichage_medaille_pays_JO(pays, annee)
-            elif choix == "6":
+                t1 = time.time()
+                print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
+            elif choix.lower() == "3p":
                 pays = input("Entrez le nom du pays : ")
                 annee = int(input("Entrez l'année des JO : "))
                 saison = input("Entrez la saison (Summer/Winter) : ")
                 import Question3_Pandas
 
                 Question3_Pandas.affichage_medaille_pays_JO(pays, annee, saison)
-            elif choix == "7":
-                try:
-                    import streamlit
-                except ModuleNotFoundError:
-                    installer = input(
-                        "⚠️ Streamlit n'est pas installé."
-                        " Voulez-vous l'installer ? (o/n) : "
-                    ).lower()
-                    if installer == "o":
-                        subprocess.call(["pip", "install", "streamlit"])
-                        import streamlit
-                    else:
-                        print("Streamlit non installé.")
-                        continue
-
+                t1 = time.time()
+                print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
+            elif choix.lower() == "3s":
                 if streamlit_process is None or streamlit_process.poll() is not None:
                     print("Lancement de l'application Streamlit...")
                     streamlit_process = subprocess.Popen(
@@ -110,80 +179,137 @@ def main():
                     )
                 else:
                     print("Streamlit est déjà en cours.")
-            elif choix == "8":
+            elif choix == "4":
                 sport = input("Entrez le nom du sport en anglais (ex: Swimming) : ")
                 methode = input("Méthode (moyenne/mediane) : ").lower()
                 genre = input("Genre (M/F) : ").upper()
+                t0 = time.time()
                 import Question4
 
                 Question4.comp_meda_age(sport, methode, genre)
-            elif choix == "9":
+                t1 = time.time()
+                print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
+            elif choix.lower() == "4p":
                 sport = input("Entrez le nom du sport en anglais (ex: Swimming) : ")
                 methode = input("Méthode (moyenne/mediane) : ").lower()
                 genre = input("Genre (M/F) : ").upper()
+                t0 = time.time()
                 import Question4_Pandas
 
                 Question4_Pandas.comp_meda_moy_age(sport, methode, genre)
-            elif choix == "10":
-                try:
-                    import streamlit
-                except ModuleNotFoundError:
-                    installer = input(
-                        "⚠️ Streamlit n'est pas installé."
-                        " Voulez-vous l'installer ? (o/n) : "
-                    ).lower()
-                    if installer == "o":
-                        subprocess.call(["pip", "install", "streamlit"])
-                        import streamlit
-                    else:
-                        print("Streamlit non installé.")
-                        continue
-
+                t1 = time.time()
+                print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
+            elif choix.lower() == "4s":
                 if streamlit_process is None or streamlit_process.poll() is not None:
                     print("Lancement de l'application Streamlit...")
                     streamlit_process = subprocess.Popen(
-                        ["streamlit", "run", "Question4_Pandas.py"]
+                        ["streamlit", "run", "Question4_streamlit.py"]
                     )
                 else:
                     print("Streamlit est déjà en cours.")
-            elif choix == "11":
+            elif choix == "5":
                 annee = int(input("Entrez l'année des JO : "))
+                t0 = time.time()
                 import Question5
 
                 resultat = Question5.pays_non_medaille_max_annee(annee)
                 print(resultat)
-            elif choix == "12":
+                t1 = time.time()
+                print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
+            elif choix.lower() == "5pa":
                 annee = int(input("Entrez l'année des JO : "))
-                import Question5_panda
+                t0 = time.time()
+                import Question5_Pandas
 
-                resultat = Question5_panda.pays_non_medaille_max_annee_panda(annee)
+                resultat = Question5_Pandas.pays_non_medaille_max_annee_panda(annee)
                 print(resultat)
-            elif choix == "13":
+                t1 = time.time()
+                print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
+            elif choix.lower() == "5pb":
+                annee = int(input("Entrez l'année des JO : "))
+                import Question5_Pandas
+                Question5_Pandas.diagramme_annee(annee)
+            elif choix.lower() == "5pc":
+                import Question5_Pandas
+                Question5_Pandas.diagramme_histoire()
+            elif choix == "6":
                 pays = input("Entrez le nom du pays (ex: France) : ")
+                t0 = time.time()
                 import Question6
 
                 Question6.afficher_annee_adhesion_depuis_tableau(pays)
-            elif choix == "15":
+                t1 = time.time()
+                print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
+            elif choix.lower() == "6p":
+                t0 = time.time()
+                import Question6_Pandas
+                # L'import suffit à exécuter la question et le graphique.
+                Question6_Pandas.plot_frise_participations_jo()
+                t1 = time.time()
+                print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
+            elif choix == "7":
+                import Question7_Pandas
+
+                annee_input = input("Filtrer par année ? (ex: 2016 ou vide) : ").strip()
+                annee = int(annee_input) if annee_input else None
+
+                pays_input = input("Filtrer par pays (code NOC, ex: FRA)"
+                                   " ou vide : ").strip().upper()
+                pays = pays_input if pays_input else None
+
+                sexe_input = input("Filtrer par sexe (M/F) ou vide : ").strip().upper()
+                sexe = sexe_input if sexe_input in ("M", "F") else None
+
+                medaille_input = input("Filtrer par médaillé ? (o = oui, n = non, "
+                                       "vide = tous) : ").strip().lower()
+                if medaille_input == "o":
+                    medaille = True
+                elif medaille_input == "n":
+                    medaille = False
+                else:
+                    medaille = None
+
+                Question7_Pandas.nb_participants(annee=annee, pays=pays, sexe=sexe,
+                                                 medaille=medaille)
+
+            elif choix.lower() == "8a":
                 pays = input("Entrez le code NOC du pays (ex: FRA, USA, CHN) : ")
-                import Question7_panda
+                import Question8_Pandas
 
-                Question7_panda.plot_medaille_pays_selon_saison(pays)
-            elif choix == "16":
-                import Question7_panda
+                Question8_Pandas.plot_medaille_pays_selon_saison(pays.upper())
+            elif choix.lower() == "8b":
+                import Question8_Pandas
 
-                Question7_panda.plot_medaille_global_ete_vs_hiver()
-            elif choix == "17":
+                Question8_Pandas.plot_medaille_global_ete_vs_hiver()
+            elif choix.lower() == "8c":
                 saison = input("Saison (Summer/Winter) : ")
                 top_n = int(input("Nombre de pays à afficher (ex: 10) : "))
-                import Question7_panda
+                import Question8_Pandas
 
-                Question7_panda.plot_part_medaille_par_pays_dans_saison(saison, top_n)
-            elif choix == "18":
+                Question8_Pandas.plot_part_medaille_par_pays_dans_saison(saison, top_n)
+            elif choix.lower() == "8d":
                 pays = input("Entrez le code NOC du pays (ex: FRA, USA) : ")
-                import Question7_panda
+                import Question8_Pandas
 
-                Question7_panda.plot_medaille_normalisee_pays(pays)
-
+                Question8_Pandas.plot_medaille_normalisee_pays(pays.upper())
+            elif choix == "9":
+                saison = input("Saison (summer/winter) ou "
+                               "vide pour les deux : ").strip().lower()
+                if saison == "":
+                    saison = None
+                import Question9_Pandas
+                Question9_Pandas.plot_proportion_femmes(saison)
+            elif choix.lower() == "10":
+                import Question10_Pandas
+                Question10_Pandas.afficher_list()
+            elif choix.lower() == "10c":
+                import Question10_Carte
+                option = input("Voulez-vous compter les allées venues ? (o/n)")
+                if option.lower() == "o":
+                    option = True
+                else:
+                    option = False
+                Question10_Carte.afficher_carte(option)
             elif choix == "Streamlit_Fermeture":
                 if streamlit_process is not None and streamlit_process.poll() is None:
                     print("Fermeture de Streamlit...")

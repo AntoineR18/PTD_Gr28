@@ -46,6 +46,7 @@ def plot_medaille_pays_selon_saison(pays):
     plt.ylim(0, 100)
     plt.grid(axis='y', linestyle='--', alpha=0.6)
     plt.tight_layout()
+    plt.savefig("Resultat/Question8a.png")
     plt.show()
 
 
@@ -80,6 +81,7 @@ def plot_medaille_global_ete_vs_hiver():
     plt.ylim(0, 100)
     plt.grid(axis="y", linestyle="--", alpha=0.6)
     plt.tight_layout()
+    plt.savefig("Resultat/Question8b.png")
     plt.show()
 
 
@@ -124,6 +126,7 @@ def plot_part_medaille_par_pays_dans_saison(saison, top_n=10):
     plt.ylim(0, 100)
     plt.grid(axis='y', linestyle='--', alpha=0.6)
     plt.tight_layout()
+    plt.savefig("Resultat/Question8c.png")
     plt.show()
 
 
@@ -157,8 +160,5 @@ def plot_medaille_normalisee_pays(pays):
     plt.ylim(0, season_avg.max() * 1.2)
     plt.grid(axis='y', linestyle='--', alpha=0.6)
     plt.tight_layout()
+    plt.savefig("Resultat/Question8d.png")
     plt.show()
-
-
-plot_medaille_normalisee_pays("USA")
-plot_medaille_pays_selon_saison("USA")

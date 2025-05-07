@@ -4,18 +4,28 @@ import matplotlib.pyplot as plt
 # Importation et sélection des données utiles
 
 dta = pd.read_csv("donnees_jeux_olympiques/athlete_events.csv")
-dta_noc = pd.read_csv("données_jeux_olympiques/noc_regions.csv")
+dta_noc = pd.read_csv("donnees_jeux_olympiques/noc_regions.csv")
 dta_utile = dta[["ID", "NOC", "Year", "Medal"]]
 
+
+# Création de la liste exhaustive des années olympiques
+
+annees = [annee for annee in range(1896, 1993, 4)]
+annees.pop(annees.index(1916))
+annees.pop(annees.index(1940))
+annees.pop(annees.index(1944))
+annees.append(1906)
+annees.extend([annee for annee in range(1994, 2017, 2)])
+annees.sort()
 
 # Pays non médaillé le plus représenté sur une année donnée.
 
 
 def pays_non_medaille_max_annee_panda(annee):
 
-    # On initialise le dictionnaire résultat. Il contiendra les couples
-    # pays: nombre d'athlètes pour tous les pays non médaillés
-    # l'année demandée.
+    # Initialisation du dictionnaire résultat.
+    # Il contiendra les couples pays: nombre d'athlètes pour tous les
+    # pays non médaillés l'année demandée.
     dico = {}
 
     # On ne s'intéresse qu'à l'année demandée.
@@ -29,20 +39,23 @@ def pays_non_medaille_max_annee_panda(annee):
             continue
         dico[noc] = dta_pays["ID"].nunique()
 
-    pays = max(dico, key=dico.get)
+    noc = max(dico, key=dico.get)
     return (
-        f"En {annee}, le pays non médaillé le plus représenté était"
-        f" {pays} avec {dico[pays]} participants."
+        f"En {annee}, avec {dico[noc]} participants, le pays non médaillé"
+        f" le plus représenté était : {noc}."
     )
 
 
-print(pays_non_medaille_max_annee_panda(1912))
+# print(pays_non_medaille_max_annee_panda(1904))
 
 
 # Diagramme en barres des pays non médaillés sur une année
 
 
 def diagramme_annee(annee):
+
+    # On récupère le dictionnaire des pays non médaillés et leur nombre
+    # de participants.
     dico = {}
     dta_annee = dta_utile[dta_utile["Year"] == annee]
 
@@ -52,10 +65,16 @@ def diagramme_annee(annee):
             continue
         dico[noc] = dta_pays["ID"].nunique()
 
+    # On transforme le dictionnaire en dataframe et on ne conserve que les pays
+    # avec au moins 10 participants pour ne pas surcharger le graphe.
     df = pd.DataFrame(list(dico.items()), columns=["Pays", "Nombre_participants"])
     df = df[df["Nombre_participants"] > 9]
 
-    df.sort_values("Nombre_participants", ascending=False).plot.bar(
+    # Tri décroissant
+    df = df.sort_values(by="Nombre_participants", ascending=False)
+
+    # Création du graphe
+    df.plot.bar(
         x="Pays",
         y="Nombre_participants",
         color="hotpink",
@@ -63,11 +82,13 @@ def diagramme_annee(annee):
         legend=False,
     )
 
+    # Personnalisation du graphe
     plt.title("Nombre d'athlètes par pays non médaillés en 2016")
     plt.xlabel("Pays")
     plt.ylabel("Nombre d'athlètes")
     plt.xticks(rotation=90)
     plt.tight_layout()
+    plt.savefig("Question5b.png")
     plt.show()
 
 
@@ -79,14 +100,8 @@ def diagramme_annee(annee):
 
 def diagramme_histoire():
 
-    annees = [annee for annee in range(1896, 1993, 4)]
-    annees.pop(annees.index(1916))
-    annees.pop(annees.index(1940))
-    annees.pop(annees.index(1944))
-    annees.append(1906)
-    annees.extend([annee for annee in range(1994, 2017, 2)])
-    annees.sort()
-
+    # Création du dictionnaire résultat.
+    # Il contient, pour chaque année,
     dico = {}
 
     for annee in annees:
@@ -102,14 +117,18 @@ def diagramme_histoire():
 
         pays = max(dico_annee, key=dico_annee.get)
 
-        dico[pays] = dico_annee[pays]
+        dico[(annee, pays)] = dico_annee[pays]
 
+    # Conversion en dataframe
     df = pd.DataFrame(list(dico.items()), columns=["Pays", "Nombre_participants"])
+
+    # # Tri décroissant
+    # df = df.sort_values(by="Nombre_participants", ascending=False)
 
     df.plot.bar(
         x="Pays",
         y="Nombre_participants",
-        color="hotpink",
+        color="chartreuse",
         edgecolor="black",
         legend=False,
     )
@@ -119,6 +138,7 @@ def diagramme_histoire():
     plt.ylabel("Nombre d'athlètes")
     plt.xticks(rotation=90)
     plt.tight_layout()
+    plt.savefig("Question5c.png")
     plt.show()
 
 

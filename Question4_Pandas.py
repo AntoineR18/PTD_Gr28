@@ -120,12 +120,15 @@ def comp_meda_moy_age(sport: str, methode: str, genre: str):
     ).sum()
     # Afficher le résultat
     resultat = (
-        f"Pour le sport {sport} :  \n"
-        f"Nombre de médailles pour les plus jeunes : {nb_med_jeunes}  \n"
+        f"Pour le sport {sport} ({genre}, méthode : {methode}) :\n"
+        f"Nombre de médailles pour les plus jeunes : {nb_med_jeunes}\n"
         f"Nombre de médailles pour les plus âgés : {nb_med_ages}"
-    )  # important d'avoir les espaces avant le \n pour le retour à la ligne (surtout
-    # pour streamlit)
+    )
+
     print(resultat)
+
+    with open("Resultat/Question4_Pandas.txt", "w", encoding="utf-8") as f:
+        f.write(resultat + "\n")
     return resultat  # important sinon streamlit sort rien
 
 

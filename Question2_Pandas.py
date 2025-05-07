@@ -57,14 +57,22 @@ def calculer_bornes_medailles_par_nation_pandas(annee):
 
 def afficher_bornes_medailles_par_nation_pandas(annee):
     """
-    Affiche les bornes inférieure et supérieure du nombre total de médailles
-    par pays pour une année donnée (en utilisant la version pandas).
-
-    :param annee: int ou str
+    Affiche et sauvegarde les bornes inférieure et supérieure du nombre total de
+    médailles par pays pour une année donnée (en utilisant la version pandas).
     """
     try:
         borne_min, borne_max = calculer_bornes_medailles_par_nation_pandas(annee)
-        print(f"En {annee}, le nombre de médailles par pays varie de {borne_min}"
-              f" à {borne_max}.")
+        texte = (f"En {annee}, le nombre de médailles par pays varie "
+                 f"de {borne_min} à {borne_max}.")
+        print(texte)
+
+        # Sauvegarde dans un fichier texte spécifique à l'année
+        with open("Resultat/Question2_Pandas.txt", "w", encoding="utf-8") as f:
+            f.write(texte + "\n")
+
     except Exception as e:
-        print(f"Erreur lors du traitement de l'année {annee} : {e}")
+        message_erreur = f"Erreur lors du traitement de l'année {annee} : {e}"
+        print(message_erreur)
+
+        with open("Resultat/Questions2_Pandas.txt", "w", encoding="utf-8") as f:
+            f.write(message_erreur + "\n")
