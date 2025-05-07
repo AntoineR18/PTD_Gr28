@@ -369,13 +369,14 @@ def repartition_sport_par_cluster(sport_cible):
     repartition = df_sport['Cluster'].value_counts().sort_index()
     pourcentages = (repartition / total * 100).round(1)
 
-    print(f"\nRépartition du sport '{sport_cible}' dans les clusters (total = {total}) :\n")
+    print(f"\nRépartition du sport '{sport_cible}' dans"
+          f"les clusters (total = {total}) :\n")
     for cluster in repartition.index:
         count = repartition[cluster]
-        pct = pourcentages.get(cluster, 0.0)  # ✔️ plus sûr
+        pct = pourcentages.get(cluster, 0.0)  # plus sûr (sinon ça bug)
         print(f"Cluster {cluster} : {count} athlètes ({pct}%)")
 
-    # Optionnel : visualisation
+    # visualisation
     plt.figure(figsize=(8, 5))
     sns.barplot(x=repartition.index, y=pourcentages.values)
     plt.title(f"Répartition de '{sport_cible}' dans les clusters")
