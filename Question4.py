@@ -122,9 +122,3 @@ def comp_meda_age(sport: str, methode: str, genre: str):
 
     with open("Resultat/Question4.txt", "w", encoding="utf-8") as f:
         f.write(texte + "\n")
-
-
-# Test des fonctions avec les sports spécifiés
-comp_meda_age("Swimming", "moyenne", "M")
-comp_meda_age("Trampolining", "mediane", "F")
-comp_meda_age("Gymnastics", "mediane", "M")

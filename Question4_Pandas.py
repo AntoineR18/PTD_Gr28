@@ -28,21 +28,22 @@ def table_sport(genre: str):
     return table
 
 
-def moyenne_age_sport(genre: str):
+def moyenne_age_sport(genre: str, sport: str):
     """
-    Retourne un tableau contenant les moyennes d'age pour chaque sport selon le genre
+    Retourne un tableau contenant les moyennes d'age selon le sport et le genre
     donné.
 
     parameters :
     -------------
     genre : str
         Le genre des athlètes (M ou F).
+    sport : str
+        Le sport étudié.
 
     returns :
     -------------
     table : DataFrame
-        Un tableau contenant les moyennes d'age pour chaque sport selon le genre
-        donné.
+        Un tableau contenant les moyennes d'age selon le sport et le genre donné.
     """
     if genre != "M" and genre != "F":
         raise ValueError("Le genre doit être 'M' ou 'F'")
@@ -51,10 +52,9 @@ def moyenne_age_sport(genre: str):
 
 
 # Calcul des médianes des ages pour chaque sport sport selon le genre
-def mediane_age_sport(genre: str):
+def mediane_age_sport(genre: str, sport: str):
     """
-    Retourne un tableau contenant les médianes d'age pour chaque sport selon le genre
-    donné.
+    Retourne un tableau contenant les médianes d'age selon le sport et le genre donné.
 
     parameters :
     -------------
@@ -64,13 +64,12 @@ def mediane_age_sport(genre: str):
     returns :
     -------------
     table : DataFrame
-        Un tableau contenant les médianes d'age pour chaque sport selon le genre
-        donné.
+        Un tableau contenant les médianes d'age pour un sport et genre donné.
     """
     if genre != "M" and genre != "F":
         raise ValueError("Le genre doit être 'M' ou 'F'")
-    table = dta[dta["Sex"] == genre]
-    return table.groupby("Sport")["Age"].median()
+    table = dta[(dta["Sex"] == genre) & (dta["Sport"] == sport)]
+    return table.dropna(subset=['Age']).groupby("Sport")["Age"].median()
 
 
 def comp_meda_moy_age(sport: str, methode: str, genre: str):
@@ -104,9 +103,9 @@ def comp_meda_moy_age(sport: str, methode: str, genre: str):
         raise ValueError("Le genre doit être 'M' ou 'F'")
     # on définit la borne selon la méthode choisie
     if methode == "moyenne":
-        borne = moyenne_age_sport(genre)[sport]
+        borne = moyenne_age_sport(genre, sport)
     elif methode == "mediane":
-        borne = mediane_age_sport(genre)[sport]
+        borne = mediane_age_sport(genre, sport)
     # Compter les médailles pour les plus jeunes et les plus âgés
     # On créé d'abord la table pour le sport donné
     table_s = table[table["Sport"] == sport].dropna(subset=["Age"])
