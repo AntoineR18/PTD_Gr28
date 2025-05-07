@@ -72,6 +72,7 @@ def main():
         print("10 - Question 10 : Établir la liste des athlètes ayant changé de"
               " nationalité au cours de leur carrière.")
         print("10c - Question 10 : Version carte.")
+        print("noc - Conversion entre code NOC et pays")
         print("Streamlit_Fermeture - Fermer  Streamlit")
         print("--- Partie problème ---")
         print("AppNonSup - Accéder au résultat de la partie apprentissage"
@@ -318,6 +319,26 @@ def main():
                 else:
                     option = False
                 Question10_Carte.afficher_carte(option)
+            elif choix.lower() == "noc":
+                from noc_country import noc_to_country, country_to_noc
+                sous_choix = input("Tapez 1 pour convertir NOC → pays, ou 2 pour pays → NOC : ")
+
+                if sous_choix == "1":
+                    code = input("Entrez le code NOC (ex : FRA, USA, CHN) : ").upper()
+                    pays = noc_to_country(code)
+                    if pays:
+                        print(f"✅ Le code {code} correspond à : {pays}")
+                    else:
+                        print(f"❌ Aucun pays trouvé pour le code : {code}")
+                elif sous_choix == "2":
+                    nom = input("Entrez le nom du pays (ex : France, China) : ")
+                    noc = country_to_noc(nom)
+                    if noc:
+                        print(f"✅ Le pays {nom} a pour code : {noc}")
+                    else:
+                        print(f"❌ Aucun code trouvé pour le pays : {nom}")
+                else:
+                    print("Choix invalide.")
             elif choix == "Streamlit_Fermeture":
                 if streamlit_process is not None and streamlit_process.poll() is None:
                     print("Fermeture de Streamlit...")
