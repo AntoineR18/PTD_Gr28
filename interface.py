@@ -335,7 +335,24 @@ def main():
                     Probleme.plot_distributions()
                 elif choix_app == "2":
                     var1 = input("Choix de la première variable (Age, Height, Weight):")
-                    Probleme.plot_boxplot()
+                    var2 = input("Choix de la seconde variable (Sex, Sport)")
+                    Probleme.plot_boxplot(var1, var2)
+                elif choix_app == "3":
+                    Probleme.plot_cercle_correlation()
+                    Probleme.plot_pca_individuals()
+                elif choix_app == "4":
+                    Probleme.plot_cercle_correlation()
+                    Probleme.highlight_one_sport(
+                        input("Donner le sport (Archery, Gymnastics, Basketball,...):"))
+                elif choix_app == "5":
+                    print("k est fixé à 4")
+                    Probleme.plot_methode_coude()
+                    Probleme.plot_kmeans_clusters()
+                elif choix_app == "6":
+                    Probleme.repartition_sport_par_cluster(
+                        input("Donner le sport (Archery, Gymnastics, Basketball,...):"))
+                else:
+                    print("Erreur dans ton choix !")
             elif choix == "0":
                 if streamlit_process is not None and streamlit_process.poll() is None:
                     print("Fermeture de Streamlit avant de quitter...")

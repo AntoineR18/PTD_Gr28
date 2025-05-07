@@ -32,8 +32,8 @@ def preprocess_donnees_athletes(df, drop_duplicates=True):
 df_avec_doublons = preprocess_donnees_athletes(athletes_df, drop_duplicates=False)
 df_sans_doublons = preprocess_donnees_athletes(athletes_df, drop_duplicates=True)
 
-df = input("Utiliser les doublons ou non ? (o/n) :").lower()
-if df == "o":
+choix_df = input("Utiliser les doublons ou non ? (o/n) :").lower()
+if choix_df == "o":
     df = df_avec_doublons
 else:
     df = df_sans_doublons
@@ -141,9 +141,9 @@ def appliquer_acp(X_norm, df, n_components=3):
 
 
 # Choix : inclure ou non la variable 'Sex' dans l'ACP
-utiliser_sex = input("Utiliser le sex ? (o/n)")  # mettre True pour inclure 'Sex'
+utiliser_sex_choix = input("Utiliser le sex ? (o/n)")  # mettre True pour inclure 'Sex'
 
-if utiliser_sex.lower() == "o":
+if utiliser_sex_choix.lower() == "o":
     utiliser_sex = True
 else:
     utiliser_sex = False
@@ -169,19 +169,20 @@ def filtrer_sports_avec_autre(nb_sports=10, mode='frequence'):
 
 
 # 4. Fonction d'affichage
-def plot_cercle_correlation(pca_modele, carac):
-    pcs = pca_modele.components_[:2, :]
+def plot_cercle_correlation():
+    pcs = acp_modele.components_[:2, :]
     corvars = pcs.T
 
-    var_PC1 = pca_modele.explained_variance_ratio_[0] * 100
-    var_PC2 = pca_modele.explained_variance_ratio_[1] * 100
+    var_PC1 = acp_modele.explained_variance_ratio_[0] * 100
+    var_PC2 = acp_modele.explained_variance_ratio_[1] * 100
 
     fig, ax = plt.subplots(figsize=(8, 8))
 
-    for i in range(len(carac)):
+    for i in range(len(carac_utilisees)):
         x, y = corvars[i]
         ax.arrow(0, 0, x, y, head_width=0.03, head_length=0.03, fc="red", ec="red")
-        ax.text(x * 1.15, y * 1.15, carac[i], fontsize=12, ha="center", va="center")
+        ax.text(x * 1.15, y * 1.15, carac_utilisees[i], fontsize=12,
+                ha="center", va="center")
 
     cercle = plt.Circle((0, 0), 1, color="blue", fill=False)
     ax.add_artist(cercle)
@@ -200,9 +201,9 @@ def plot_cercle_correlation(pca_modele, carac):
     plt.show()
 
 
-def plot_pca_individuals(pca_modele, color_by=None):
-    var_PC1 = pca_modele.explained_variance_ratio_[0] * 100
-    var_PC2 = pca_modele.explained_variance_ratio_[1] * 100
+def plot_pca_individuals(color_by=None):
+    var_PC1 = acp_modele.explained_variance_ratio_[0] * 100
+    var_PC2 = acp_modele.explained_variance_ratio_[1] * 100
 
     plt.figure(figsize=(10, 7))
     if color_by is None:
@@ -224,7 +225,7 @@ def plot_pca_individuals(pca_modele, color_by=None):
 
 
 # plot_cercle_correlation(acp_modele, caractéristiques)
-plot_pca_individuals(acp_modele)
+# plot_pca_individuals(acp_modele)
 
 # 5. Application : sports les plus fréquents + "Autre"
 # df_acp_catégorise = filtrer_sports_avec_autre(df_acp, nb_sports=8, mode='frequent')
@@ -241,11 +242,11 @@ def highlight_one_sport(sport_cible):
     """
     plt.figure(figsize=(10, 7))
 
-    df_autres = df[df['Sport'] != sport_cible]
+    df_autres = df_acp[df_acp['Sport'] != sport_cible]
     plt.scatter(df_autres['PC1'], df_autres['PC2'], color='lightgray',
                 alpha=0.3, s=10, label='Autres sports')
 
-    df_s = df[df['Sport'] == sport_cible]
+    df_s = df_acp[df_acp['Sport'] == sport_cible]
     plt.scatter(df_s['PC1'], df_s['PC2'], alpha=0.7, s=20, label=sport_cible)
 
     plt.title(f'ACP - Sport mis en évidence : {sport_cible}')
@@ -280,13 +281,13 @@ df_acp['Cluster'] = kmeans.fit_predict(X_kmeans)
 
 
 # Méthode du coude :
-def plot_methode_coude(X, k_max=10):
+def plot_methode_coude(k_max=10):
     inerties = []
     ks = range(1, k_max + 1)
 
     for k in ks:
         kmeans = KMeans(n_clusters=k, random_state=42)
-        kmeans.fit(X)
+        kmeans.fit(X_kmeans)
         inerties.append(kmeans.inertia_)
 
     plt.figure(figsize=(8, 5))
@@ -303,7 +304,7 @@ def plot_methode_coude(X, k_max=10):
 
 
 # 3. Visualisation des clusters
-def plot_kmeans_clusters(k):
+def plot_kmeans_clusters(k=k):
     plt.figure(figsize=(10, 7))
     for i in range(k):
         cluster_data = df_acp[df_acp['Cluster'] == i]
@@ -317,10 +318,6 @@ def plot_kmeans_clusters(k):
     plt.tight_layout()
     plt.savefig("Resultat/Apprentissage_Kmeans.png")
     plt.show()
-
-
-# 4. Affichage
-plot_kmeans_clusters(k)
 
 
 # 5. Analyse des sports par cluster
@@ -373,8 +370,9 @@ def repartition_sport_par_cluster(sport_cible):
     pourcentages = (repartition / total * 100).round(1)
 
     print(f"\nRépartition du sport '{sport_cible}' dans les clusters (total = {total}) :\n")
-    for cluster, count in repartition.items():
-        pct = pourcentages[cluster]
+    for cluster in repartition.index:
+        count = repartition[cluster]
+        pct = pourcentages.get(cluster, 0.0)  # ✔️ plus sûr
         print(f"Cluster {cluster} : {count} athlètes ({pct}%)")
 
     # Optionnel : visualisation
