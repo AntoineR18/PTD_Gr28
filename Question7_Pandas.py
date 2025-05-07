@@ -40,7 +40,4 @@ def nb_participants(annee=None, pays=None, sexe=None, medaille=None):
 
     return df.shape[0]
 
-
-
-
 # print(nb_participants(pays="EGY", medaille=False))
