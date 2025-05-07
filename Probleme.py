@@ -89,17 +89,18 @@ tests = [(q, c) for q in quantitative_vars for c in categorical_vars]
 # Affichage de la liste des tests disponibles
 # tests
 
+
 # Analyse buvariée
-def plot_boxplot(df, variable_num, variable_qual):
+def plot_boxplot(df, variable_quant, variable_qual):
     """
-    Affiche un boxplot de variable_num (quantitative) en fonction de variable_qual
+    Affiche un boxplot de variable_quant (quantitative) en fonction de variable_qual
       (qualitative).
     """
     plt.figure(figsize=(12, 6))
-    sns.boxplot(data=df, x=variable_qual, y=variable_num)
-    plt.title(f'{variable_num} selon {variable_qual}')
+    sns.boxplot(data=df, x=variable_qual, y=variable_quant)
+    plt.title(f'{variable_quant} selon {variable_qual}')
     plt.xlabel(variable_qual)
-    plt.ylabel(variable_num)
+    plt.ylabel(variable_quant)
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.savefig("Resultat/Apprentissage_Bivariée.png")
@@ -110,30 +111,45 @@ def plot_boxplot(df, variable_num, variable_qual):
 # plot_boxplot(df_sans_doublons, variable_num='Age', variable_qual='Sex')
 # plot_boxplot(df_sans_doublons, variable_num='Weight', variable_qual='Sport')
 
-# 1. Préparation des données
-df = df_sans_doublons.copy()
-caractéristiques = ['Age', 'Height', 'Weight', 'Sex']
-scaler = StandardScaler()
-X_norm = scaler.fit_transform(df[caractéristiques])
+# 1. Préparation des données avec option pour inclure ou non "Sex"
+def preparer_donnees(df_source, utiliser_sex=True):
+    df = df_source.copy()
+    if utiliser_sex:
+        caractéristiques = ['Age', 'Height', 'Weight', 'Sex']
+    else:
+        caractéristiques = ['Age', 'Height', 'Weight']
+    scaler = StandardScaler()
+    X_norm = scaler.fit_transform(df[caractéristiques])
+    return X_norm, caractéristiques, df
+
 
 # 2. ACP
-acp_modele = PCA(n_components=3)
-X_proj = acp_modele.fit_transform(X_norm)
-df_acp = pd.DataFrame(X_proj, columns=['PC1', 'PC2', 'PC3'])
-df_acp['Sex'] = df['Sex'].values
-df_acp['Sport'] = df['Sport'].values
+def appliquer_acp(X_norm, df, n_components=3):
+    acp_modele = PCA(n_components=n_components)
+    X_proj = acp_modele.fit_transform(X_norm)
+    df_acp = pd.DataFrame(X_proj, columns=[f'PC{i+1}' for i in range(n_components)])
+    df_acp['Sex'] = df['Sex'].values
+    df_acp['Sport'] = df['Sport'].values
+    return acp_modele, df_acp
+
+
+# Choix : inclure ou non la variable 'Sex' dans l'ACP
+utiliser_sex = False  # mettre True pour inclure 'Sex'
+
+X_norm, carac_utilisees, df = preparer_donnees(df_sans_doublons, utiliser_sex)
+acp_modele, df_acp = appliquer_acp(X_norm, df)
 
 
 # 3. Fonction : filtrer les sports + catégorie Autre
-def filtrer_sports_avec_autre(df, nb_sports=10, mode='frequent'):
+def filtrer_sports_avec_autre(df, nb_sports=10, mode='frequence'):
     sports_uniques = df['Sport'].value_counts()
-    if mode == 'frequent':
+    if mode == 'frequence':
         sports_choisis = sports_uniques.head(nb_sports).index
     elif mode == 'random':
         sports_choisis = np.random.choice(sports_uniques.index, size=nb_sports,
                                           replace=False)
     else:
-        raise ValueError("Mode invalide. Utilisez 'frequent' ou 'random'.")
+        raise ValueError("Mode invalide. Utilisez 'frequence' ou 'random'.")
     df_copie = df.copy()
     df_copie['Sport'] = df_copie['Sport'].apply(lambda s: s if s in sports_choisis
                                                 else 'Autre')
@@ -141,12 +157,12 @@ def filtrer_sports_avec_autre(df, nb_sports=10, mode='frequent'):
 
 
 # 4. Fonction d'affichage
-def plot_cercle_correlation(pca_model, carac):
-    pcs = pca_model.components_[:2, :]
+def plot_cercle_correlation(pca_modele, carac):
+    pcs = pca_modele.components_[:2, :]
     corvars = pcs.T
 
-    var_PC1 = pca_model.explained_variance_ratio_[0] * 100
-    var_PC2 = pca_model.explained_variance_ratio_[1] * 100
+    var_PC1 = pca_modele.explained_variance_ratio_[0] * 100
+    var_PC2 = pca_modele.explained_variance_ratio_[1] * 100
 
     fig, ax = plt.subplots(figsize=(8, 8))
 
@@ -172,9 +188,9 @@ def plot_cercle_correlation(pca_model, carac):
     plt.show()
 
 
-def plot_pca_individuals(pca_df, pca_model, color_by=None):
-    var_PC1 = pca_model.explained_variance_ratio_[0] * 100
-    var_PC2 = pca_model.explained_variance_ratio_[1] * 100
+def plot_pca_individuals(pca_df, pca_modele, color_by=None):
+    var_PC1 = pca_modele.explained_variance_ratio_[0] * 100
+    var_PC2 = pca_modele.explained_variance_ratio_[1] * 100
 
     plt.figure(figsize=(10, 7))
     if color_by is None:
@@ -195,7 +211,7 @@ def plot_pca_individuals(pca_df, pca_model, color_by=None):
     plt.show()
 
 
-plot_cercle_correlation(acp_modele, caractéristiques)
+# plot_cercle_correlation(acp_modele, caractéristiques)
 plot_pca_individuals(df_acp, acp_modele)
 
 # 5. Application : sports les plus fréquents + "Autre"
@@ -226,6 +242,7 @@ def highlight_one_sport(df, sport_cible):
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
+    plt.savefig(str(f"Resultat/Apprentissage_ACP_{sport_cible}"))
     plt.show()
 
 
@@ -239,8 +256,8 @@ def lister_sports(df):
         print(sport)
 
 
-lister_sports(df_acp)
-highlight_one_sport(df_acp, 'Archery')
+# lister_sports(df_acp)
+# highlight_one_sport(df_acp, "Gymnastics")
 
 # CLUSTERING
 # 2. Clustering K-means (k=4)
@@ -248,6 +265,29 @@ k = 4
 X_kmeans = df_acp[['PC1', 'PC2']].values
 kmeans = KMeans(n_clusters=k, random_state=42)
 df_acp['Cluster'] = kmeans.fit_predict(X_kmeans)
+
+
+# Méthode du coude :
+def plot_methode_coude(X, k_max=10):
+    inerties = []
+    ks = range(1, k_max + 1)
+
+    for k in ks:
+        kmeans = KMeans(n_clusters=k, random_state=42)
+        kmeans.fit(X)
+        inerties.append(kmeans.inertia_)
+
+    plt.figure(figsize=(8, 5))
+    plt.plot(ks, inerties, marker='o')
+    plt.xticks(ks)
+    plt.xlabel("Nombre de clusters (k)")
+    plt.ylabel("Inertie intra-cluster (somme des distances)")
+    plt.title("Méthode du coude pour choisir k")
+    plt.grid(True)
+
+    plt.savefig("Resultat/Apprentissage_Kmeans_Coude.png")
+
+    plt.show()
 
 
 # 3. Visualisation des clusters
@@ -263,6 +303,7 @@ def plot_kmeans_clusters(df, k):
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
+    plt.savefig("Resultat/Apprentissage_Kmeans.png")
     plt.show()
 
 
