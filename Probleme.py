@@ -32,9 +32,16 @@ def preprocess_donnees_athletes(df, drop_duplicates=True):
 df_avec_doublons = preprocess_donnees_athletes(athletes_df, drop_duplicates=False)
 df_sans_doublons = preprocess_donnees_athletes(athletes_df, drop_duplicates=True)
 
+df = input("Utiliser les doublons ou non ? (o/n) :").lower()
+if df == "o":
+    df = df_avec_doublons
+else:
+    df = df_sans_doublons
+
 
 # Fonction pour tracer les distributions, avec option pour effectif ou pourcentage
-def plot_distributions(df, mode='pourcentage'):
+def plot_distributions(mode='pourcentage'):
+
     fig, axes = plt.subplots(2, 2, figsize=(12, 10))
 
     # Définir les poids si on est en mode pourcentage
@@ -76,7 +83,7 @@ def plot_distributions(df, mode='pourcentage'):
 
 
 # Afficher en pourcentage
-# plot_distributions(df_avec_doublons, mode='pourcentage')
+# plot_distributions("avec", mode='pourcentage')
 
 
 # Créons une liste de tuples (variable_num, variable_cat)
@@ -91,7 +98,7 @@ tests = [(q, c) for q in quantitative_vars for c in categorical_vars]
 
 
 # Analyse buvariée
-def plot_boxplot(df, variable_quant, variable_qual):
+def plot_boxplot(variable_quant, variable_qual):
     """
     Affiche un boxplot de variable_quant (quantitative) en fonction de variable_qual
       (qualitative).
@@ -112,15 +119,15 @@ def plot_boxplot(df, variable_quant, variable_qual):
 # plot_boxplot(df_sans_doublons, variable_num='Weight', variable_qual='Sport')
 
 # 1. Préparation des données avec option pour inclure ou non "Sex"
-def preparer_donnees(df_source, utiliser_sex=True):
-    df = df_source.copy()
+def preparer_donnees(utiliser_sex=True):
+    df_fonc = df.copy()
     if utiliser_sex:
         caractéristiques = ['Age', 'Height', 'Weight', 'Sex']
     else:
         caractéristiques = ['Age', 'Height', 'Weight']
     scaler = StandardScaler()
-    X_norm = scaler.fit_transform(df[caractéristiques])
-    return X_norm, caractéristiques, df
+    X_norm = scaler.fit_transform(df_fonc[caractéristiques])
+    return X_norm, caractéristiques, df_fonc
 
 
 # 2. ACP
@@ -134,14 +141,19 @@ def appliquer_acp(X_norm, df, n_components=3):
 
 
 # Choix : inclure ou non la variable 'Sex' dans l'ACP
-utiliser_sex = False  # mettre True pour inclure 'Sex'
+utiliser_sex = input("Utiliser le sex ? (o/n)")  # mettre True pour inclure 'Sex'
 
-X_norm, carac_utilisees, df = preparer_donnees(df_sans_doublons, utiliser_sex)
+if utiliser_sex.lower() == "o":
+    utiliser_sex = True
+else:
+    utiliser_sex = False
+
+X_norm, carac_utilisees, df = preparer_donnees(utiliser_sex)
 acp_modele, df_acp = appliquer_acp(X_norm, df)
 
 
 # 3. Fonction : filtrer les sports + catégorie Autre
-def filtrer_sports_avec_autre(df, nb_sports=10, mode='frequence'):
+def filtrer_sports_avec_autre(nb_sports=10, mode='frequence'):
     sports_uniques = df['Sport'].value_counts()
     if mode == 'frequence':
         sports_choisis = sports_uniques.head(nb_sports).index
@@ -188,16 +200,16 @@ def plot_cercle_correlation(pca_modele, carac):
     plt.show()
 
 
-def plot_pca_individuals(pca_df, pca_modele, color_by=None):
+def plot_pca_individuals(pca_modele, color_by=None):
     var_PC1 = pca_modele.explained_variance_ratio_[0] * 100
     var_PC2 = pca_modele.explained_variance_ratio_[1] * 100
 
     plt.figure(figsize=(10, 7))
     if color_by is None:
-        plt.scatter(pca_df["PC1"], pca_df["PC2"], alpha=0.5, s=10)
+        plt.scatter(df_acp["PC1"], df_acp["PC2"], alpha=0.5, s=10)
         plt.title("Projection dans le plan des composantes principales (PC1 vs PC2)")
     else:
-        groups = pca_df.groupby(color_by)
+        groups = df_acp.groupby(color_by)
         for name, group in groups:
             plt.scatter(group["PC1"], group["PC2"], alpha=0.5, s=10, label=name)
         plt.title(f"Projection dans le plan (PC1 vs PC2) - Couleur : {color_by}")
@@ -212,7 +224,7 @@ def plot_pca_individuals(pca_df, pca_modele, color_by=None):
 
 
 # plot_cercle_correlation(acp_modele, caractéristiques)
-plot_pca_individuals(df_acp, acp_modele)
+plot_pca_individuals(acp_modele)
 
 # 5. Application : sports les plus fréquents + "Autre"
 # df_acp_catégorise = filtrer_sports_avec_autre(df_acp, nb_sports=8, mode='frequent')
@@ -221,7 +233,7 @@ plot_pca_individuals(df_acp, acp_modele)
 
 # 6. Si on choisi nous le sport :
 # Fonction spécifique pour un seul sport
-def highlight_one_sport(df, sport_cible):
+def highlight_one_sport(sport_cible):
     """
     Affiche les individus dans le plan ACP :
     - sport_cible : str, sport à mettre en évidence
@@ -247,7 +259,7 @@ def highlight_one_sport(df, sport_cible):
 
 
 # Fonction simple pour afficher la liste des sports disponibles dans df_acp
-def lister_sports(df):
+def lister_sports():
     """
     Affiche la liste des sports uniques présents dans un DataFrame ACP.
     """
@@ -291,10 +303,10 @@ def plot_methode_coude(X, k_max=10):
 
 
 # 3. Visualisation des clusters
-def plot_kmeans_clusters(df, k):
+def plot_kmeans_clusters(k):
     plt.figure(figsize=(10, 7))
     for i in range(k):
-        cluster_data = df[df['Cluster'] == i]
+        cluster_data = df_acp[df_acp['Cluster'] == i]
         plt.scatter(cluster_data['PC1'], cluster_data['PC2'], label=f'Cluster {i}',
                     s=10, alpha=0.6)
     plt.title(f'K-means avec k={k} (ACP)')
@@ -308,31 +320,71 @@ def plot_kmeans_clusters(df, k):
 
 
 # 4. Affichage
-plot_kmeans_clusters(df_acp, k)
+plot_kmeans_clusters(k)
 
 
 # 5. Analyse des sports par cluster
 # Fonction pour afficher la part (%) des sports dans chaque cluster par rapport à
 # leur effectif total
-def pourcentage_sports_par_cluster(df, n=5):
+def pourcentage_sports_par_cluster(n=5):
     """
-    Affiche pour chaque cluster les n sports les plus représentés en proportion
-    du total de ce sport (i.e., parmi tous les boxeurs, combien sont dans ce cluster).
+    Affiche et sauvegarde pour chaque cluster les n sports les plus représentés
+    en proportion du total de ce sport.
     """
-    clusters = sorted(df['Cluster'].unique())
-    sports_totaux = df['Sport'].value_counts()
+    chemin_fichier = "Resultat/Apprentissage_pourcentage_sports_par_cluster.txt"
 
-    for cluster in clusters:
-        print(f"\n🌀 Cluster {cluster} :")
-        cluster_df = df[df['Cluster'] == cluster]
-        sport_counts_in_cluster = cluster_df['Sport'].value_counts()
+    with open(chemin_fichier, "w", encoding="utf-8") as f:
+        clusters = sorted(df_acp['Cluster'].unique())
+        sports_totaux = df_acp['Sport'].value_counts()
 
-        # Calcul du pourcentage d'appartenance au cluster par rapport au total
-        # de ce sport
-        sport_percentage = ((sport_counts_in_cluster / sports_totaux * 100)
-                            .dropna().sort_values(ascending=False))
-        print(sport_percentage.head(n).round(1).astype(str) + ' %')
+        for cluster in clusters:
+            f.write(f"\n🌀 Cluster {cluster} :\n")
+            print(f"\n🌀 Cluster {cluster} :")
+
+            cluster_df = df_acp[df_acp['Cluster'] == cluster]
+            sport_counts_in_cluster = cluster_df['Sport'].value_counts()
+
+            sport_percentage = (
+                (sport_counts_in_cluster / sports_totaux * 100)
+                .dropna().sort_values(ascending=False)
+            )
+
+            top_sports = sport_percentage.head(n).round(1).astype(str) + ' %'
+            for sport, pct in top_sports.items():
+                line = f"{sport}: {pct}"
+                print(line)
+                f.write(line + "\n")
 
 
-# Appel de la fonction avec les 5 sports les plus concentrés dans chaque cluster
-pourcentage_sports_par_cluster(df_acp, n=5)
+def repartition_sport_par_cluster(sport_cible):
+    """
+    Affiche la répartition d'un sport donné dans les différents clusters :
+    - effectif par cluster
+    - pourcentage par rapport à l'ensemble des athlètes pratiquant ce sport
+    """
+    df_sport = df_acp[df_acp['Sport'] == sport_cible]
+    total = len(df_sport)
+
+    if total == 0:
+        print(f"Aucun athlète trouvé pour le sport : {sport_cible}")
+        return
+
+    repartition = df_sport['Cluster'].value_counts().sort_index()
+    pourcentages = (repartition / total * 100).round(1)
+
+    print(f"\nRépartition du sport '{sport_cible}' dans les clusters (total = {total}) :\n")
+    for cluster, count in repartition.items():
+        pct = pourcentages[cluster]
+        print(f"Cluster {cluster} : {count} athlètes ({pct}%)")
+
+    # Optionnel : visualisation
+    plt.figure(figsize=(8, 5))
+    sns.barplot(x=repartition.index, y=pourcentages.values)
+    plt.title(f"Répartition de '{sport_cible}' dans les clusters")
+    plt.xlabel("Cluster")
+    plt.ylabel("Pourcentage (%)")
+    plt.ylim(0, 100)
+    plt.grid(True, axis='y')
+    plt.tight_layout()
+    plt.savefig(f"Resultat/Apprentissage_Kmeans_Repartition_{sport_cible}.png")
+    plt.show()

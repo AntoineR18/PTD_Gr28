@@ -73,6 +73,9 @@ def main():
               " nationalité au cours de leur carrière.")
         print("10c - Question 10 : Version carte.")
         print("Streamlit_Fermeture - Fermer  Streamlit")
+        print("--- Partie problème ---")
+        print("AppNonSup - Accéder au résultat de la partie apprentissage"
+              " non supervise")
         print("0. Quitter")
 
         choix = input("Votre choix : ")
@@ -88,7 +91,8 @@ def main():
                         "streamlit",
                         "plotly",
                         "pycountry",
-                        "seaborn"
+                        "seaborn",
+                        "subprocess"
                     ]
 
                     print("🔍 Vérification des dépendances...\n")
@@ -317,6 +321,21 @@ def main():
                     streamlit_process = None
                 else:
                     print("Aucune application Streamlit en cours.")
+            elif choix.lower() == "appnonsup":
+                print("=--= Liste des choix pour l'apprentissage non supervisée =--=")
+                print("1. Afficher la distribution des variables")
+                print("2. Boxplot comparaison de variable")
+                print("3. ACP : Nuage de points + Cercle des correlations")
+                print("4. ACP : Nuage de points pour un sport")
+                print("5. Clustering : K-means")
+                print("6. Repartiton par sport")
+                choix_app = input("Votre choix : ")
+                import Probleme
+                if choix_app == "1":
+                    Probleme.plot_distributions()
+                elif choix_app == "2":
+                    var1 = input("Choix de la première variable (Age, Height, Weight):")
+                    Probleme.plot_boxplot()
             elif choix == "0":
                 if streamlit_process is not None and streamlit_process.poll() is None:
                     print("Fermeture de Streamlit avant de quitter...")
