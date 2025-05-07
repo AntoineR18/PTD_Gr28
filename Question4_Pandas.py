@@ -24,7 +24,7 @@ def table_sport(genre: str):
         raise ValueError("Le genre doit être 'M' ou 'F'")
     table = dta[["Sport", "Age", "Sex", "Medal"]]
     table = table[table["Sex"] == genre]
-    table = table.dropna(subset=["Age", "Medal"])
+    table = table.dropna(subset=["Age"])
     return table
 
 
