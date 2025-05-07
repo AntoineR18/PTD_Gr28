@@ -236,32 +236,47 @@ def get_new_nationalities_opti(df):
     return iso_countries
 
 
-# Récupérer la liste de tous les pays "d'arrivée" après changement de nationalité
-new_noc_list = get_new_nationalities(df, athletes_changed_nationality)
-# new_noc_list = get_new_nationalities_opti(df)
-
-# Compter le nombre d'athlètes reçus par pays
-noc_counts = pd.Series(new_noc_list).value_counts().reset_index()
-noc_counts.columns = ['NOC', 'Nb_Athletes']
-
-
 # Afficher la carte
-def afficher_carte():
-    carte = px.choropleth(
-        noc_counts,
-        locations="NOC",
-        color="Nb_Athletes",
-        hover_name="NOC",
-        color_continuous_scale="Purples",
-        projection="natural earth",
-        title="Pays ayant reçu des athlètes après changement de nationalité à partir"
-        " de 1993",
-    )
+def afficher_carte(option=True):
+    if option:
+        # Récupérer la liste de tous les pays "d'arrivée" après changement
+        # de nationalité
+        new_noc_list_opti = get_new_nationalities_opti(df)
+        # Compter le nombre d'athlètes reçus par pays
+        noc_counts_opti = pd.Series(new_noc_list_opti).value_counts().reset_index()
+        noc_counts_opti.columns = ['NOC', 'Nb_Athletes']
+
+        carte = px.choropleth(
+            noc_counts_opti,
+            locations="NOC",
+            color="Nb_Athletes",
+            hover_name="NOC",
+            color_continuous_scale="Purples",
+            projection="natural earth",
+            title="Pays ayant reçu des athlètes après changement de nationalité à "
+                  "partir de 1993 (transferts d’athlètes successifs compris)",
+        )
+    else:
+        # Récupérer la liste de tous les pays "d'arrivée" après changement
+        # de nationalité
+        new_noc_list = get_new_nationalities(df, athletes_changed_nationality)
+
+        # Compter le nombre d'athlètes reçus par pays
+        noc_counts = pd.Series(new_noc_list).value_counts().reset_index()
+        noc_counts.columns = ['NOC', 'Nb_Athletes']
+
+        carte = px.choropleth(
+            noc_counts,
+            locations="NOC",
+            color="Nb_Athletes",
+            hover_name="NOC",
+            color_continuous_scale="Purples",
+            projection="natural earth",
+            title="Pays ayant reçu des athlètes après changement de nationalité à"
+            " partir de 1993",
+        )
 
     # Sauvegarde en PNG
     carte.write_html("resultat/carte_transferts_nationalite.html")
 
     carte.show()
-
-
-afficher_carte()
