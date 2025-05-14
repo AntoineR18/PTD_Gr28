@@ -69,20 +69,24 @@ def main():
         print("8c - Question 8.c : Top pays médaillés pour une saison donnée.")
         print("8d - Question 8.d : Part moyenne des médailles pour un pays.")
         print("9 - Question 9 : Proportion de femmes aux JO (par saison ou toutes).")
-        print("10 - Question 10 : Établir la liste des athlètes ayant changé de"
-              " nationalité au cours de leur carrière.")
+        print(
+            "10 - Question 10 : Établir la liste des athlètes ayant changé de"
+            " nationalité au cours de leur carrière."
+        )
         print("10c - Question 10 : Version carte.")
         print("noc - Conversion entre code NOC et pays")
         print("Streamlit_Fermeture - Fermer  Streamlit")
         print("--- Partie problème ---")
-        print("AppNonSup - Accéder au résultat de la partie apprentissage"
-              " non supervise")
+        print(
+            "AppNonSup - Accéder au résultat de la partie apprentissage"
+            " non supervise"
+        )
         print("0. Quitter")
 
         choix = input("Votre choix : ")
 
         try:
-            if choix.lower() == "Install":
+            if choix.lower() == "install":
                 try:
                     packages = [
                         "pandas",
@@ -93,7 +97,7 @@ def main():
                         "plotly",
                         "pycountry",
                         "seaborn",
-                        "subprocess"
+                        "subprocess",
                     ]
 
                     print("🔍 Vérification des dépendances...\n")
@@ -114,18 +118,17 @@ def main():
 
                     print("\n📦 Packages manquants à installer :")
                     print(", ".join(to_install))
-                    confirmer = input("Souhaitez-vous installer les packages"
-                                      " manquants ? (o/n) : ").lower()
+                    confirmer = input(
+                        "Souhaitez-vous installer les packages" " manquants ? (o/n) : "
+                    ).lower()
 
                     if confirmer == "o":
                         python_exec = sys.executable
                         for pkg in to_install:
                             print(f"🔧 Installation de {pkg}...")
-                            subprocess.check_call([python_exec,
-                                                   "-m",
-                                                   "pip",
-                                                   "install",
-                                                   pkg])
+                            subprocess.check_call(
+                                [python_exec, "-m", "pip", "install", pkg]
+                            )
                         print("\n✅ Installation terminée.")
                     else:
                         print("⛔ Installation annulée par l'utilisateur.")
@@ -135,6 +138,7 @@ def main():
             elif choix == "1":
                 t0 = time.time()
                 import Question1
+
                 Question1.afficher_resultat()
                 t1 = time.time()
                 print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
@@ -142,6 +146,7 @@ def main():
             elif choix.lower() == "1p":
                 t0 = time.time()
                 import Question1_Pandas
+
                 Question1_Pandas.afficher_resultat()
                 t1 = time.time()
                 print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
@@ -149,6 +154,7 @@ def main():
                 annee = int(input("Entrez l'année des JO : "))
                 t0 = time.time()
                 import Question2
+
                 Question2.afficher_bornes_medailles(annee)
                 t1 = time.time()
                 print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
@@ -156,6 +162,7 @@ def main():
                 annee = int(input("Entrez l'année des JO : "))
                 t0 = time.time()
                 import Question2_Pandas
+
                 Question2_Pandas.afficher_bornes_medailles_par_nation_pandas(annee)
                 t1 = time.time()
                 print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
@@ -164,6 +171,7 @@ def main():
                 annee = input("Entrez l'année des JO : ")
                 t0 = time.time()
                 import Question3
+
                 Question3.affichage_medaille_pays_JO(pays, annee)
                 t1 = time.time()
                 print(f"⌛ Temps d'exécution : {t1 - t0:.3f} secondes")
@@ -181,8 +189,13 @@ def main():
                     print("Lancement de l'application Streamlit...")
                     python_exec = sys.executable
                     streamlit_process = subprocess.Popen(
-                        [python_exec, "-m", "streamlit", "run", "Question3_"
-                         "Pandas_Streamlit.py"]
+                        [
+                            python_exec,
+                            "-m",
+                            "streamlit",
+                            "run",
+                            "Question3_" "Pandas_Streamlit.py",
+                        ]
                     )
                 else:
                     print("Streamlit est déjà en cours.")
@@ -211,8 +224,13 @@ def main():
                     python_exec = sys.executable
                     print("Lancement de l'application Streamlit...")
                     streamlit_process = subprocess.Popen(
-                        [python_exec, "-m", "streamlit", "run",
-                         "Question4_streamlit.py"]
+                        [
+                            python_exec,
+                            "-m",
+                            "streamlit",
+                            "run",
+                            "Question4_streamlit.py",
+                        ]
                     )
                 else:
                     print("Streamlit est déjà en cours.")
@@ -237,9 +255,11 @@ def main():
             elif choix.lower() == "5pb":
                 annee = int(input("Entrez l'année des JO : "))
                 import Question5_Pandas
+
                 Question5_Pandas.diagramme_annee(annee)
             elif choix.lower() == "5pc":
                 import Question5_Pandas
+
                 Question5_Pandas.diagramme_histoire()
             elif choix == "6":
                 pays = input("Entrez le nom du pays (ex: France) : ")
@@ -252,6 +272,7 @@ def main():
             elif choix.lower() == "6p":
                 t0 = time.time()
                 import Question6_Pandas
+
                 # L'import suffit à exécuter la question et le graphique.
                 Question6_Pandas.plot_frise_participations_jo()
                 t1 = time.time()
@@ -262,15 +283,23 @@ def main():
                 annee_input = input("Filtrer par année ? (ex: 2016 ou vide) : ").strip()
                 annee = int(annee_input) if annee_input else None
 
-                pays_input = input("Filtrer par pays (code NOC, ex: FRA)"
-                                   " ou vide : ").strip().upper()
+                pays_input = (
+                    input("Filtrer par pays (code NOC, ex: FRA)" " ou vide : ")
+                    .strip()
+                    .upper()
+                )
                 pays = pays_input if pays_input else None
 
                 sexe_input = input("Filtrer par sexe (M/F) ou vide : ").strip().upper()
                 sexe = sexe_input if sexe_input in ("M", "F") else None
 
-                medaille_input = input("Filtrer par médaillé ? (o = oui, n = non, "
-                                       "vide = tous) : ").strip().lower()
+                medaille_input = (
+                    input(
+                        "Filtrer par médaillé ? (o = oui, n = non, " "vide = tous) : "
+                    )
+                    .strip()
+                    .lower()
+                )
                 if medaille_input == "o":
                     medaille = True
                 elif medaille_input == "n":
@@ -278,8 +307,9 @@ def main():
                 else:
                     medaille = None
 
-                Question7_Pandas.nb_participants(annee=annee, pays=pays, sexe=sexe,
-                                                 medaille=medaille)
+                Question7_Pandas.nb_participants(
+                    annee=annee, pays=pays, sexe=sexe, medaille=medaille
+                )
 
             elif choix.lower() == "8a":
                 pays = input("Entrez le code NOC du pays (ex: FRA, USA, CHN) : ")
@@ -302,17 +332,23 @@ def main():
 
                 Question8_Pandas.plot_medaille_normalisee_pays(pays.upper())
             elif choix == "9":
-                saison = input("Saison (summer/winter) ou "
-                               "vide pour les deux : ").strip().lower()
+                saison = (
+                    input("Saison (summer/winter) ou " "vide pour les deux : ")
+                    .strip()
+                    .lower()
+                )
                 if saison == "":
                     saison = None
                 import Question9_Pandas
+
                 Question9_Pandas.plot_proportion_femmes(saison)
             elif choix.lower() == "10":
                 import Question10_Pandas
+
                 Question10_Pandas.afficher_list()
             elif choix.lower() == "10c":
                 import Question10_Carte
+
                 option = input("Voulez-vous compter les allées venues ? (o/n)")
                 if option.lower() == "o":
                     option = True
@@ -321,8 +357,10 @@ def main():
                 Question10_Carte.afficher_carte(option)
             elif choix.lower() == "noc":
                 from noc_country import noc_to_country, country_to_noc
-                sous_choix = input("Tapez 1 pour convertir NOC → pays,"
-                                   " ou 2 pour pays → NOC : ")
+
+                sous_choix = input(
+                    "Tapez 1 pour convertir NOC → pays," " ou 2 pour pays → NOC : "
+                )
 
                 if sous_choix == "1":
                     code = input("Entrez le code NOC (ex : FRA, USA, CHN) : ").upper()
@@ -357,6 +395,7 @@ def main():
                 print("6. Repartiton par sport")
                 choix_app = input("Votre choix : ")
                 import Probleme
+
                 if choix_app == "1":
                     Probleme.plot_distributions()
                 elif choix_app == "2":
@@ -369,14 +408,16 @@ def main():
                 elif choix_app == "4":
                     Probleme.plot_cercle_correlation()
                     Probleme.highlight_one_sport(
-                        input("Donner le sport (Archery, Gymnastics, Basketball,...):"))
+                        input("Donner le sport (Archery, Gymnastics, Basketball,...):")
+                    )
                 elif choix_app == "5":
                     print("k est fixé à 4")
                     Probleme.plot_methode_coude()
                     Probleme.plot_kmeans_clusters()
                 elif choix_app == "6":
                     Probleme.repartition_sport_par_cluster(
-                        input("Donner le sport (Archery, Gymnastics, Basketball,...):"))
+                        input("Donner le sport (Archery, Gymnastics, Basketball,...):")
+                    )
                 else:
                     print("Erreur dans ton choix !")
             elif choix == "0":
