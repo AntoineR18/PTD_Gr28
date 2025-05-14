@@ -340,7 +340,7 @@ def main():
                         print(f"❌ Aucun code trouvé pour le pays : {nom}")
                 else:
                     print("Choix invalide.")
-            elif choix.lower() == "Streamlit_Fermeture":
+            elif choix.lower() == "streamlit_fermeture":
                 if streamlit_process is not None and streamlit_process.poll() is None:
                     print("Fermeture de Streamlit...")
                     streamlit_process.terminate()
